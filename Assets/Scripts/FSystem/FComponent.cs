@@ -1,9 +1,9 @@
 
-namespace FSystem
-{
+// namespace FSystem
+// {
     [System.Serializable]
-    public class FComponent 
+    public class FComponent
     {
         
     }
-}
+// }
