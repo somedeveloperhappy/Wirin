@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Blur
   m_Shader: {fileID: 4800000, guid: 3a89a48356331b746a103b75b0260d07, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: BLUR_GUASSIAN
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -75,10 +75,11 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     - _blurCombiner: 1
+    - _blurGuassian: 1
     - _blurIntensity: 18
     - _blurQuality_high: 0
     - _blurQuality_mid: 0
-    - _blur_intensity: 10
+    - _blur_intensity: 59
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

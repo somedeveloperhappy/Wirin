@@ -85,18 +85,18 @@ Shader "Hidden/blue"
                         //      = x + 0.5
                         // else 
                         //      = (_blur_intensity * 2) - x + 0.5
-                        if(n <= _blur_intensity)    multip = n + 0.5f;
-                        else                        multip = (2 * _blur_intensity) - n + 0.5f;
+                        if (n <= 0) multip = n + _blur_intensity + 0.5f;
+                        else        multip = - n + _blur_intensity + 0.5f;
                         
-                        if(m <= _blur_intensity)    multip += m + 0.5f;
-                        else                        multip += (2 * _blur_intensity) - m + 0.5f;
+                        if (m <= 0) multip += m + _blur_intensity + 0.5f;
+                        else        multip += - m + _blur_intensity + 0.5f;
                         
                         col += tmp_pixel * multip;
-                        multip_sum += multip;
                     }
                 }
                 
-                col /= multip_sum;
+                n = _blur_intensity + 1;
+                col /= (2*n - 1)*(2*(pow(n,2)) - 2*n + 1);
                 
                 // return 1;
                 return lerp(tex2D(_MainTex, i.uv), fixed4(col, 1), _blurCombiner);
