@@ -120,4 +120,9 @@ public class InputGetter : MonoBehaviour
         
         return Vector2.positiveInfinity;
     }
+
+    static public Vector2 GetPointerWorldPosition(int index = 0)
+    {
+        return Camera.main.ScreenToWorldPoint(pointerPosition);
+    }
 }

@@ -23,7 +23,9 @@ public class Center : MonoBehaviour
     
     private void Update() 
     {
-        if(InputGetter.isPoinerDown &&  spriteRenderer.bounds.Contains(InputGetter.pointerPosition))
+        Debug.Log($"{InputGetter.pointerPosition}");
+        
+        if(InputGetter.isPoinerDown &&  spriteRenderer.bounds.Contains(InputGetter.GetPointerWorldPosition()))
         {
             // first frame
             if(!was_down)   onPointerDownStart();
