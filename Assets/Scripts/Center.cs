@@ -10,14 +10,13 @@ public class Center : MonoBehaviour
     public float unheldScaleSpeed = 10f;
     
     #region privae vars
-        SpriteRenderer spriteRenderer;
+        public SpriteRenderer targetSpriteRenderer;
     #endregion
     
     bool was_down = false;
     
     private void Start() 
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     
     
@@ -25,7 +24,7 @@ public class Center : MonoBehaviour
     {
         Debug.Log($"{InputGetter.pointerPosition}");
         
-        if(InputGetter.isPoinerDown &&  spriteRenderer.bounds.Contains(InputGetter.GetPointerWorldPosition()))
+        if(InputGetter.isPoinerDown &&  targetSpriteRenderer.bounds.Contains(InputGetter.GetPointerWorldPosition()))
         {
             // first frame
             if(!was_down)   onPointerDownStart();
