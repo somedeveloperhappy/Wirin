@@ -6,9 +6,21 @@ Shader "Hidden/blue"
         [HideInInspector]
         _blur_intensity ("Blur intensity", Int) = 10
         [HideInInspector]
-        _blurCombiner ("Blur Combiner", Range(0, 1)) = 0.5
-        [HideInInspector]
         [Toggle(BLUR_GUASSIAN)] _blurGuassian ("Is Guassian", Float) = 0
+        [HideInInspector]
+        _blur_mask ("blur mask", 2D) = "white" {}
+        [HideInInspector]
+        [Toggle(BLUR_MASK)] _is_blur_mask ("is blur mask", Float) = 0
+        
+        [HideInInspector]
+        [Toggle(BLUR_ULTRA)] _blur_ultra ("blur ultra", Float) = 0
+        [HideInInspector]
+        [Toggle(BLUR_HIGH)] _blur_high ("blur high", Float) = 0
+        [HideInInspector]
+        [Toggle(BLUR_MEDIUM)] _blur_medium ("blur medium", Float) = 0
+        
+        
+        
         
         [HideInInspector]
         _MainTex ("Texture", 2D) = "white" {}
@@ -17,14 +29,29 @@ Shader "Hidden/blue"
     {
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
-
-        Pass
+        
+        // horizontal pass
+        Pass 
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma shader_feature BLUR_GUASSIAN
+            #pragma shader_feature BLUR_MASK
+            #pragma shader_feature BLUR_ULTRA
+            #pragma shader_feature BLUR_HIGH
+            #pragma shader_feature BLUR_MEDIUM
             #pragma fragment frag
 
+            // blur quality
+#ifdef BLUR_ULTRA
+            #define BLUR_SAMPLES 20
+#elif BLUR_HIGH
+            #define BLUR_SAMPLES 10
+#elif BLUR_MEDIUM
+            #define BLUR_SAMPLES 9
+#else
+            #define BLUR_SAMPLES 2
+#endif
             #include "UnityCG.cginc"
 
             struct appdata
@@ -33,14 +60,12 @@ Shader "Hidden/blue"
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
-            {
+            struct v2f {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };
 
-            v2f vert (appdata v)
-            {
+            v2f vert (appdata v) {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
@@ -51,84 +76,156 @@ Shader "Hidden/blue"
             sampler2D _MainTex;
             float2 _MainTex_TexelSize;
             
-            
             float _blur_intensity;
-            float _blurCombiner;
+            sampler2D _blur_mask;
             
 
             fixed4 frag (v2f i) : SV_Target
             {
+                fixed4 actual_col = tex2D(_MainTex, i.uv);
                 
-#ifdef BLUR_GUASSIAN
+#ifdef BLUR_MASK
+                float _blurCombiner = tex2D(_blur_mask, i.uv).y;
+#else
+                float _blurCombiner = 1;
+#endif
 
+#ifdef BLUR_GUASSIAN
+                // GUASSIAN BLUR
                 float3 col = 0; // returning color
                 
                 // current kernel uv
-                float2 c_uv;
-                float3 tmp_pixel; // tmp
                 float multip; // multiplier for each elemnt
-                float multip_sum = 0;
                 
-                // finding out the sum of all colors
-                for(int n = -_blur_intensity; n <= _blur_intensity; n++)
-                {
-                    c_uv.x = i.uv.x + (_MainTex_TexelSize.x * n);
-                    for(int m = -_blur_intensity; m <= _blur_intensity; m++)
-                    {
-                        c_uv.y = i.uv.y + (_MainTex_TexelSize.y * m);
-                        tmp_pixel = tex2D(_MainTex, c_uv);
+                for(int n = -BLUR_SAMPLES; n <= BLUR_SAMPLES; n++) {
+                    multip = BLUR_SAMPLES - abs(n) + 1;
                         
-                        // INSTRUCTION :
-                        // col += tmp_pixel * ( P(x) + P(y) )
-                        // P(x) :
-                        // if x <= _blur_intensity :
-                        //      = x + 0.5
-                        // else 
-                        //      = (_blur_intensity * 2) - x + 0.5
-                        if (n <= 0) multip = n + _blur_intensity + 0.5f;
-                        else        multip = - n + _blur_intensity + 0.5f;
-                        
-                        if (m <= 0) multip += m + _blur_intensity + 0.5f;
-                        else        multip += - m + _blur_intensity + 0.5f;
-                        
-                        col += tmp_pixel * multip;
-                    }
+                    // horizontal sample
+                    col += tex2D( _MainTex, float2( i.uv.x + (_MainTex_TexelSize.x * (n/(float)BLUR_SAMPLES) * _blur_intensity),
+                                                    i.uv.y )
+                    ) * multip;
                 }
                 
-                n = _blur_intensity + 1;
-                col /= (2*n - 1)*(2*(pow(n,2)) - 2*n + 1);
+                col /= pow(BLUR_SAMPLES + 1, 2);
+#else
+                // BOX BLUR
+                float3 col = 0;
                 
-                // return 1;
-                return lerp(tex2D(_MainTex, i.uv), fixed4(col, 1), _blurCombiner);
-                    
-                    
-#else 
-                    fixed4 actual_col = tex2D(_MainTex, i.uv);
-                    
-                    fixed3 col_avg = fixed3(0, 0, 0);
-                    float2 uv_offset;
-                    
-                    for(int n = -_blur_intensity; n <= _blur_intensity; n++)
-                    {
-                        uv_offset.x = i.uv.x + (_MainTex_TexelSize.x * n);
-                        for(int m = -_blur_intensity; m <= _blur_intensity; m++)
-                        {
-                            uv_offset.y = i.uv.y + (_MainTex_TexelSize.y * m);
-                            col_avg += tex2D(_MainTex, uv_offset);
-                        }
-                    }
-                    
-                    // center
-                    col_avg /= pow(_blur_intensity * 2 + 1, 2);
-                    
-                    return fixed4(lerp(actual_col.xyz, col_avg, _blurCombiner), 1);
+                for(int n = -BLUR_SAMPLES; n <= BLUR_SAMPLES; n++) {
+                    col += tex2D( _MainTex, float2( i.uv.x + (_MainTex_TexelSize.x * (n/(float)BLUR_SAMPLES) * _blur_intensity),
+                                                    i.uv.y));
+                }
+                
+                // center
+                col /= BLUR_SAMPLES * 2 + 1;
 #endif
-            
+                
+#ifdef BLUR_MASK
+                return lerp(actual_col, fixed4(col, 1), _blurCombiner);
+#else
+                return fixed4(col, 1);
+#endif
             }
             
+            ENDCG
+        }
+        
+        // vertical pass
+        Pass 
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma shader_feature BLUR_GUASSIAN
+            #pragma shader_feature BLUR_MASK
+            #pragma shader_feature BLUR_ULTRA
+            #pragma shader_feature BLUR_HIGH
+            #pragma shader_feature BLUR_MEDIUM
+            #pragma fragment frag
+
+            // blur quality
+#ifdef BLUR_ULTRA
+            #define BLUR_SAMPLES 20
+#elif BLUR_HIGH
+            #define BLUR_SAMPLES 10
+#elif BLUR_MEDIUM
+            #define BLUR_SAMPLES 9
+#else
+            #define BLUR_SAMPLES 2
+#endif
+            #include "UnityCG.cginc"
+
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct v2f {
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
+            };
+
+            v2f vert (appdata v) {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
+                return o;
+            }
             
+            // built-in
+            sampler2D _MainTex;
+            float2 _MainTex_TexelSize;
             
+            float _blur_intensity;
+            sampler2D _blur_mask;
             
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed4 actual_col = tex2D(_MainTex, i.uv);
+                
+#ifdef BLUR_MASK
+                float _blurCombiner = tex2D(_blur_mask, i.uv).y;
+#else
+                float _blurCombiner = 1;
+#endif
+
+#ifdef BLUR_GUASSIAN
+                // GUASSIAN BLUR
+                float3 col = 0; // returning color
+                
+                // current kernel uv
+                float multip; // multiplier for each elemnt
+                
+                for(int n = -BLUR_SAMPLES; n <= BLUR_SAMPLES; n++) {
+                    multip = BLUR_SAMPLES - abs(n) + 1;
+                        
+                    // horizontal sample
+                    col += tex2D( _MainTex, float2( i.uv.x,
+                                                    i.uv.y + (_MainTex_TexelSize.y * (n/(float)BLUR_SAMPLES) * _blur_intensity))
+                    ) * multip;
+                }
+                
+                col /= pow(BLUR_SAMPLES + 1, 2);
+#else
+                // BOX BLUR
+                float3 col = 0;
+                
+                for(int n = -BLUR_SAMPLES; n <= BLUR_SAMPLES; n++) {
+                    col += tex2D( _MainTex, float2( i.uv.x,
+                                                    i.uv.y + (_MainTex_TexelSize.y * (n/(float)BLUR_SAMPLES) * _blur_intensity)));
+                }
+                
+                // center
+                col /= BLUR_SAMPLES * 2 + 1;
+#endif
+                
+#ifdef BLUR_MASK
+                return lerp(actual_col, fixed4(col, 1), _blurCombiner);
+#else
+                return fixed4(col, 1);
+#endif
+            }
             ENDCG
         }
     }
