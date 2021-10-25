@@ -13,7 +13,7 @@ public class Center : MonoBehaviour
         public SpriteRenderer targetSpriteRenderer;
         public PostPro postPro;
         public string blur_intensity_name = "_blur_intensity";
-        public int min = 0, max = 40;
+        public float min = 0, max = 40;
         private float blur;
     #endregion
     

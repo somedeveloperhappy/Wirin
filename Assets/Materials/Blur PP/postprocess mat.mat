@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blur
-  m_Shader: {fileID: 4800000, guid: 3a89a48356331b746a103b75b0260d07, type: 3}
-  m_ShaderKeywords: BLUR_GUASSIAN BLUR_MEDIUM BLUR_PULSE
+  m_Name: postprocess mat
+  m_Shader: {fileID: 4800000, guid: 5d5882e3973fa54489af1f31ede8810a, type: 3}
+  m_ShaderKeywords: BLUR_GUASSIAN BLUR_MEDIUM MEDIUM
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -59,13 +59,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _blur_pulse_tex:
-        m_Texture: {fileID: 2800000, guid: 18f20dd09f2a8f340a521d007a86ca20, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BlurCombiner: 0.386
-    - _BlurIntensity: 10
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -82,23 +76,9 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _blurCombiner: 1
     - _blurGuassian: 1
-    - _blurIntensity: 18
-    - _blurQuality_high: 0
-    - _blurQuality_mid: 0
-    - _blur_high: 0
-    - _blur_intensity: 7.818863
-    - _blur_mask: 0
-    - _blur_mask_power: 0
-    - _blur_medium: 0
-    - _blur_pulse: 0.18
-    - _blur_pulse_spd: 1
-    - _blur_ultra: 0
-    - _horizontal: 0
-    - _is_blurPulse: 1
+    - _blur_intensity: 0
     - _is_blur_mask: 0
-    - _time: 50.018623
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

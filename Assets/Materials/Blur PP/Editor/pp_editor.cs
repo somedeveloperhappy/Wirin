@@ -5,14 +5,14 @@ using UnityEditor;
 
 public class pp_editor : ShaderGUI
 {
-    enum BlurSamples {
+    enum Samples {
         low     = 2,
         medum   = 6,
         high    = 10,
         ultra   = 20
     };
     
-    BlurSamples blurSamples = 0;
+    Samples samples = 0;
     
     
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
@@ -25,48 +25,58 @@ public class pp_editor : ShaderGUI
         
         GUIStyle style = new GUIStyle(EditorStyles.label);
         
+        if(samples == 0) {
+            // start of inspector. lets fix it
+            if(mat.IsKeywordEnabled("ULTRA")) samples = Samples.ultra;
+            else if(mat.IsKeywordEnabled("HIGH")) samples = Samples.high;
+            else if(mat.IsKeywordEnabled("MEDIUM")) samples = Samples.medum;
+            else if(mat.IsKeywordEnabled("LOW")) samples = Samples.low;
+            
+            Debug.Log($"{string.Join(", ", mat.shaderKeywords)}");
+        }
+        
+        EditorGUI.BeginChangeCheck();
+        samples = (Samples)EditorGUILayout.EnumPopup("Quality", samples);
+        
+        if(EditorGUI.EndChangeCheck()) {
+            switch(samples) {
+                case Samples.ultra :
+                    mat.EnableKeyword("ULTRA");
+                    mat.DisableKeyword("HIGH");
+                    mat.DisableKeyword("MEDIUM");
+                    mat.DisableKeyword("LOW");
+                    break;
+                case Samples.high :
+                    mat.DisableKeyword("ULTRA");
+                    mat.EnableKeyword("HIGH");
+                    mat.DisableKeyword("MEDIUM");
+                    mat.DisableKeyword("LOW");
+                    break;
+                case Samples.medum :
+                    mat.DisableKeyword("ULTRA");
+                    mat.DisableKeyword("HIGH");
+                    mat.EnableKeyword("MEDIUM");
+                    mat.DisableKeyword("LOW");
+                    break;
+                case Samples.low :
+                    mat.DisableKeyword("ULTRA");
+                    mat.DisableKeyword("HIGH");
+                    mat.DisableKeyword("MEDIUM");
+                    mat.EnableKeyword("LOW");
+                    break;
+            }
+        }
+
+        
 #region blur
              
         style.fontStyle = FontStyle.Bold;
         style.fontSize *= 2;
         
         EditorGUILayout.LabelField("Blur effect", style);
-        EditorGUILayout.Space(10);
+        EditorGUILayout.Space(10);        
         
-        if(blurSamples == 0) {
-            // start of inspector. lets fix it
-            if(mat.IsKeywordEnabled("BLUR_ULTRA")) blurSamples = BlurSamples.ultra;
-            else if(mat.IsKeywordEnabled("BLUR_HIGH")) blurSamples = BlurSamples.high;
-            else if(mat.IsKeywordEnabled("BLUR_MEDIUM")) blurSamples = BlurSamples.medum;
-            else blurSamples = BlurSamples.low;
-        }
-        
-        EditorGUI.BeginChangeCheck();
-        blurSamples = (BlurSamples)EditorGUILayout.EnumPopup("Quality", blurSamples);
-        
-        if(EditorGUI.EndChangeCheck()) {
-            switch(blurSamples) {
-                case BlurSamples.ultra :
-                    mat.EnableKeyword("BLUR_ULTRA");
-                    break;
-                case BlurSamples.high :
-                    mat.DisableKeyword("BLUR_ULTRA");
-                    mat.EnableKeyword("BLUR_HIGH");
-                    break;
-                case BlurSamples.medum :
-                    mat.DisableKeyword("BLUR_ULTRA");
-                    mat.DisableKeyword("BLUR_HIGH");
-                    mat.EnableKeyword("BLUR_MEDIUM"); 
-                    break;
-                case BlurSamples.low :
-                    mat.DisableKeyword("BLUR_ULTRA");
-                    mat.DisableKeyword("BLUR_HIGH");
-                    mat.DisableKeyword("BLUR_MEDIUM"); 
-                    break;
-            }
-        }
-        
-        props["_blur_intensity"].floatValue = EditorGUILayout.Slider( "Blur Intensity", props["_blur_intensity"].floatValue, 0, 100);
+        props["_blur_intensity"].floatValue = EditorGUILayout.Slider( "Blur Intensity", props["_blur_intensity"].floatValue, 0, 1);
         
         EditorGUI.BeginChangeCheck();
         props["_blurGuassian"].floatValue = EditorGUILayout.Toggle("Is Guassian", props["_blurGuassian"].floatValue==1) ? 1 : 0;
@@ -87,6 +97,7 @@ public class pp_editor : ShaderGUI
         
 #endregion
         
+        foreach (var kw in mat.shaderKeywords) EditorGUILayout.LabelField(kw + " : "+mat.IsKeywordEnabled(kw));
         
         base.OnGUI(materialEditor, properties);
         
