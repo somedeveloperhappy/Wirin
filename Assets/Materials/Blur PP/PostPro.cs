@@ -50,31 +50,29 @@ public class PostPro : MonoBehaviour
         switch(index)
         {
         case 0 :
-            blur_effect.EnableKeyword("ULTRA");
-            blur_effect.DisableKeyword("HIGH");
-            blur_effect.DisableKeyword("MEDIUM");
-            blur_effect.DisableKeyword("LOW");
+            set_ultra(true);
+            set_high(false); set_medium(false); set_low(false);
             break;
         case 1:
-            blur_effect.DisableKeyword("ULTRA");
-            blur_effect.EnableKeyword("HIGH");
-            blur_effect.DisableKeyword("MEDIUM");
-            blur_effect.DisableKeyword("LOW");
+            set_high(true);
+            set_ultra(false); set_medium(false); set_low(false);
             break;
         case 2 :
-            blur_effect.DisableKeyword("ULTRA");
-            blur_effect.DisableKeyword("HIGH");
-            blur_effect.EnableKeyword("MEDIUM");
-            blur_effect.DisableKeyword("LOW");
+            set_medium(true);
+            set_ultra(false); set_high(false); set_low(false);
             break;
         case 3 :
-            blur_effect.DisableKeyword("ULTRA");
-            blur_effect.DisableKeyword("HIGH");
-            blur_effect.DisableKeyword("MEDIUM");
-            blur_effect.EnableKeyword("LOW");
+            set_low(true);
+            set_ultra(false); set_high(false); set_medium(false);
             break;
         }
         
         Debug.Log($"{index}");
+        
+        void set_ultra(bool b) { if(b) blur_effect.EnableKeyword("_SAMPLES_ULTRA"); else blur_effect.DisableKeyword("_SAMPLES_ULTRA"); }
+        void set_high(bool b)  { if(b) blur_effect.EnableKeyword("_SAMPLES_HIGH");  else blur_effect.DisableKeyword("_SAMPLES_HIGH"); }
+        void set_medium(bool b){ if(b) blur_effect.EnableKeyword("_SAMPLES_MEDIUM");  else blur_effect.DisableKeyword("_SAMPLES_MEDIUM"); }
+        void set_low(bool b)   { if(b) blur_effect.EnableKeyword("_SAMPLES_LOW");  else blur_effect.DisableKeyword("_SAMPLES_LOW"); }
     }
+    
 }

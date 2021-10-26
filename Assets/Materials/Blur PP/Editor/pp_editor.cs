@@ -25,78 +25,64 @@ public class pp_editor : ShaderGUI
         
         GUIStyle style = new GUIStyle(EditorStyles.label);
         
-        if(samples == 0) {
-            // start of inspector. lets fix it
-            if(mat.IsKeywordEnabled("ULTRA")) samples = Samples.ultra;
-            else if(mat.IsKeywordEnabled("HIGH")) samples = Samples.high;
-            else if(mat.IsKeywordEnabled("MEDIUM")) samples = Samples.medum;
-            else if(mat.IsKeywordEnabled("LOW")) samples = Samples.low;
-            
-            Debug.Log($"{string.Join(", ", mat.shaderKeywords)}");
-        }
         
-        EditorGUI.BeginChangeCheck();
-        samples = (Samples)EditorGUILayout.EnumPopup("Quality", samples);
-        
-        if(EditorGUI.EndChangeCheck()) {
-            switch(samples) {
-                case Samples.ultra :
-                    mat.EnableKeyword("ULTRA");
-                    mat.DisableKeyword("HIGH");
-                    mat.DisableKeyword("MEDIUM");
-                    mat.DisableKeyword("LOW");
-                    break;
-                case Samples.high :
-                    mat.DisableKeyword("ULTRA");
-                    mat.EnableKeyword("HIGH");
-                    mat.DisableKeyword("MEDIUM");
-                    mat.DisableKeyword("LOW");
-                    break;
-                case Samples.medum :
-                    mat.DisableKeyword("ULTRA");
-                    mat.DisableKeyword("HIGH");
-                    mat.EnableKeyword("MEDIUM");
-                    mat.DisableKeyword("LOW");
-                    break;
-                case Samples.low :
-                    mat.DisableKeyword("ULTRA");
-                    mat.DisableKeyword("HIGH");
-                    mat.DisableKeyword("MEDIUM");
-                    mat.EnableKeyword("LOW");
-                    break;
-            }
-        }
-
+        materialEditor.ShaderProperty(props["_Samples"], "Quality");
         
 #region blur
              
-        style.fontStyle = FontStyle.Bold;
-        style.fontSize *= 2;
+        materialEditor.ShaderProperty(props["_blurEffect"], "Blur");
         
-        EditorGUILayout.LabelField("Blur effect", style);
-        EditorGUILayout.Space(10);        
-        
-        props["_blur_intensity"].floatValue = EditorGUILayout.Slider( "Blur Intensity", props["_blur_intensity"].floatValue, 0, 1);
-        
-        EditorGUI.BeginChangeCheck();
-        props["_blurGuassian"].floatValue = EditorGUILayout.Toggle("Is Guassian", props["_blurGuassian"].floatValue==1) ? 1 : 0;
-        if(EditorGUI.EndChangeCheck()) {
-            if(props["_blurGuassian"].floatValue == 1) 
-                mat.EnableKeyword("BLUR_GUASSIAN");
-            else
-                mat.DisableKeyword("BLUR_GUASSIAN");
-        }
-        
-        EditorGUI.BeginChangeCheck();
-        props["_blur_mask"].textureValue = (Texture)EditorGUILayout.ObjectField("Blur Mask", props["_blur_mask"].textureValue, typeof(Texture), false);
-        if(EditorGUI.EndChangeCheck()) {
-            // check for texture being null
-            if(props["_blur_mask"].textureValue == null) mat.DisableKeyword("BLUR_MASK"); else mat.EnableKeyword("BLUR_MASK");
+        if(mat.IsKeywordEnabled("BLUR"))
+        {
+            style.fontStyle = FontStyle.Bold;
+            style.fontSize *= 2;
             
+            EditorGUILayout.LabelField("Blur effect", style);
+            EditorGUILayout.Space(10);
+            
+            // x and y are for pass 1 direcition. z and w are for pass 2 direction
+            var blur_dir1 = new Vector2(props["_blur_1_dir_x"].floatValue, props["_blur_1_dir_y"].floatValue);
+            var blur_dir2 = new Vector2(props["_blur_2_dir_x"].floatValue, props["_blur_2_dir_y"].floatValue);
+            EditorGUI.BeginChangeCheck();
+            // pass 1 dir
+            blur_dir1.x = EditorGUILayout.Slider("blur direction : pass 1 X", blur_dir1.x, -1, 1);
+            blur_dir1.y = EditorGUILayout.Slider("blur direction : pass 1 Y", blur_dir1.y, -1, 1);
+            blur_dir2.x = EditorGUILayout.Slider("blur direction : pass 2 X", blur_dir2.x, -1, 1);
+            blur_dir2.y = EditorGUILayout.Slider("blur direction : pass 2 Y", blur_dir2.y, -1, 1);
+            if(EditorGUI.EndChangeCheck()) {
+                props["_blur_1_dir_x"].floatValue = blur_dir1.x;
+                props["_blur_1_dir_y"].floatValue = blur_dir1.y;
+                props["_blur_2_dir_x"].floatValue = blur_dir2.x;
+                props["_blur_2_dir_y"].floatValue = blur_dir2.y;
+            }
+            
+            
+            props["_blur_intensity"].floatValue = EditorGUILayout.Slider( "Blur Intensity", props["_blur_intensity"].floatValue, 0, 1);
+            
+            materialEditor.ShaderProperty(props["_blur"], "Blur Type");
+            
+            EditorGUI.BeginChangeCheck();
+            materialEditor.ShaderProperty(props["_blur_mask"], "Blur Mask");
+            if(EditorGUI.EndChangeCheck()) 
+                // check for texture being null
+                if(props["_blur_mask"].textureValue == null) mat.DisableKeyword("BLUR_MASK"); else mat.EnableKeyword("BLUR_MASK");
         }
         
 #endregion
+
+#region chromatic aberration
+        materialEditor.ShaderProperty(props["_chromEffect"], "Chromatic Aberration");
         
+        if(mat.IsKeywordEnabled("CHROM"))
+        {
+            props["_chrom_intensity"].floatValue = EditorGUILayout.Slider(props["_chrom_intensity"].floatValue, 0, 1);
+        }
+
+#endregion
+        
+        if(GUILayout.Button("reset keywords")) {
+            foreach(var kw in mat.shaderKeywords) mat.DisableKeyword(kw);
+        }
         foreach (var kw in mat.shaderKeywords) EditorGUILayout.LabelField(kw + " : "+mat.IsKeywordEnabled(kw));
         
         base.OnGUI(materialEditor, properties);
