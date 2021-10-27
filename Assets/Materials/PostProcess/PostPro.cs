@@ -13,17 +13,34 @@ public class PostPro : MonoBehaviour
     
     private float t = 0;
     
+    [System.Serializable]
+    public class BlurSettings {
+        Vector2 _direction1, _direction2;
+        [Range(0f, 1f)] public float intensity;
+        
+    }
+    public BlurSettings blurSettings;
+    
+    public void ApplyIntensity()
+    {
+        blur_effect.SetFloat("_blur_intensity", blurSettings.intensity);
+    }
+    
+    
     private void Awake() {
         camera = GetComponent<Camera>();
     }
     
     RenderTexture rt;
     
+    
+    
     private void OnPreRender() {
         rt = RenderTexture.GetTemporary(Screen.width, Screen.height, 16);    
         camera.targetTexture = rt;
         
     }
+    
     private void OnPostRender() 
     {
         

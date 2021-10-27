@@ -4,6 +4,10 @@ using System;
 public class InputGetter : MonoBehaviour
 {
     
+    /// <summary>
+    /// returns true if the pointer is held down ( also true for the first and last frame )
+    /// </summary>
+    /// <value></value>
     static public bool isPoinerDown {
         get {
             // mouse check

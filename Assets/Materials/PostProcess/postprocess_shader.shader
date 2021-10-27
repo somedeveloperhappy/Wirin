@@ -48,11 +48,11 @@ Shader "custom/post process"
             // blur quality
 #if defined(_SAMPLES_ULTRA)
             #define SAMPLE_COUNT 20
-    #elif defined (_SAMPLES_HIGH)
+#elif defined (_SAMPLES_HIGH)
             #define SAMPLE_COUNT 9
-    #elif defined (_SAMPLES_MEDIUM)
+#elif defined (_SAMPLES_MEDIUM)
             #define SAMPLE_COUNT 4
-    #elif defined (_SAMPLES_LOW)
+#elif defined (_SAMPLES_LOW)
             #define SAMPLE_COUNT 2
 #endif
             #include "UnityCG.cginc"
@@ -114,7 +114,7 @@ Shader "custom/post process"
                 float3 chrom_col = 0;
                 half2 chrom_dir = half2(1, 1);
                 float chrom_r;
-                float chrom_b = tex2D(_MainTex, i.uv - chrom_dir * _chrom_intensity).z;
+                float chrom_b;
                 half chrom_samples_total_count = 0;
                 for(half ind = 0; ind<= SAMPLE_COUNT; ind++) chrom_samples_total_count += ind;
 #endif
@@ -134,7 +134,11 @@ Shader "custom/post process"
 #endif
 #ifdef CHROM
                     // getting Red channel
-                    chrom_col = tex2D( _MainTex, i.uv).x; // (abs(n)-SAMPLE_COUNT) / chrom_samples_total_count;
+                    if(n < 0) {
+                        chrom_r += tex2D(_MainTex, i.uv + chrom_dir * (n / (half)SAMPLE_COUNT) * _chrom_intensity).x / SAMPLE_COUNT; // * (abs(n)-SAMPLE_COUNT + 1) / chrom_samples_total_count;
+                    } else if ( n > 0 ) {
+                        chrom_b += tex2D(_MainTex, i.uv + chrom_dir * (n / (half)SAMPLE_COUNT) * _chrom_intensity).z / SAMPLE_COUNT; // * (abs(n)-SAMPLE_COUNT + 1) / chrom_samples_total_count;
+                    }
 #endif 
                 }
                 
@@ -155,9 +159,9 @@ Shader "custom/post process"
 
 #ifdef CHROM
                 chrom_col.x = chrom_r;
-                chrom_col.y = actual_col.y;
+                chrom_col.y = actual_col;
                 chrom_col.z = chrom_b;
-                actual_col = (actual_col + fixed4(chrom_col, 1)) / 2;
+                actual_col = fixed4(chrom_col, 1);
 #endif
                 
                 return actual_col;
