@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: postprocess mat
   m_Shader: {fileID: 4800000, guid: 5d5882e3973fa54489af1f31ede8810a, type: 3}
-  m_ShaderKeywords: BLUR _BLUR_BOX
+  m_ShaderKeywords: BLUR _BLUR_GUASSIAN _SAMPLES_ULTRA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -71,13 +71,13 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Samples: 3
+    - _Samples: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _blur: 1
+    - _blur: 0
     - _blurEffect: 1
     - _blurGuassian: 1
     - _blur_1_dir_x: 1

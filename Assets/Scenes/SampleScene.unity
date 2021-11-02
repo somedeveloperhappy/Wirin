@@ -329,7 +329,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48994a915ba00b348b42d0f5e305ce39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1360438730}
+  scaleOnPress:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.2837207
+      outSlope: -0.2837207
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.100472614
+    - serializedVersion: 3
+      time: 1
+      value: 0.85
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.107596815
+      outWeight: 0.14942575
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedOnDown: 2
+  speedOnUp: 20
 --- !u!1 &858817380
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,8 +364,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 858817381}
-  - component: {fileID: 858817382}
   - component: {fileID: 858817383}
+  - component: {fileID: 858817382}
   m_Layer: 0
   m_Name: ------ Game Manager
   m_TagString: Untagged
@@ -371,126 +396,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 858817380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a02c7474fcbd5e949a5aef7b818b6ef2, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ca92895a9b75384a86a352115f5ea56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pivotScaleSettings:
-    scale:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: -0.53506196
-        outSlope: -0.53506196
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.046532508
-      - serializedVersion: 3
-        time: 1.0111694
-        value: 0.7715637
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.010691539
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    downSpeed: 15
-    upSpeed: 1
-  blurOnPressSettings:
-    intensity: 0.01
-    intensityMultiplier:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0.5438418
-        outSlope: 0.5438418
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.2812404
-      - serializedVersion: 3
-        time: 0.46848768
-        value: 0.4684877
-        inSlope: 1.8254569
-        outSlope: 1.8254569
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.24266815
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0.17041658
-        outSlope: 0.17041658
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.25300738
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    intensity_down_speed: 10
-    intensity_up_speed: 0.4
-  trinonRotateSettings:
-    speedMultiplier:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: -1
-        tangentMode: 69
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    downSpeed: 15
-    upSpeed: 1
-  bulletSpeedSettings:
-    bulletSpeedMultiplier:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    curveSpeed: 1
+  pressableRange: 0.95
 --- !u!114 &858817383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,9 +486,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '4.88
+  m_Text: '1574.07
 
-    0.00'
+    0.07'
 --- !u!222 &1090265655
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -650,7 +559,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10.32, y: 10.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -665,7 +574,7 @@ Transform:
   m_GameObject: {fileID: 1360438729}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.4811}
   m_Children: []
   m_Father: {fileID: 748151702}
   m_RootOrder: 0
@@ -732,7 +641,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.9, y: 5.12}
+  m_Size: {x: 5.67, y: 4.21}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -747,7 +656,7 @@ Transform:
   m_GameObject: {fileID: 1799950965}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.110570006, y: 0.110570006, z: 1}
+  m_LocalScale: {x: 0.17, y: 0.17, z: 1}
   m_Children: []
   m_Father: {fileID: 2117434226}
   m_RootOrder: 0

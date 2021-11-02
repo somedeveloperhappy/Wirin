@@ -125,6 +125,9 @@ public class InputGetter : MonoBehaviour
         return Vector2.positiveInfinity;
     }
 
+    /// <summary>
+    /// returns the pointer position in world in 2D. where Z is ignored
+    /// </summary>
     static public Vector2 GetPointerWorldPosition(int index = 0)
     {
         return Camera.main.ScreenToWorldPoint(pointerPosition);
