@@ -5,52 +5,42 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed;
-    public string targetTag = "Enemy";
-    [SerializeField] float distanceFromScreen = 2;
-    
-    Collider col;
-    
-    float t = 0;
-    const float SCREEN_BOUND_CHECK = 1;
-    
-    #region static calculations
-         static public List<Bullet> bullets = new List<Bullet>();
+    #region main settings
+    [SerializeField] AnimationCurve damageCurve;
+    [SerializeField] AnimationCurve speedCurve;
+    [SerializeField] float maxTime; // the time to reach damageCurve and speedCurve's max
     #endregion
     
-    private void Awake() {
-        col = GetComponent<Collider>();
-        bullets.Add(this);
+    [HideInInspector] public float damage;
+    [HideInInspector] public float speed;
+    
+    public void Init(float t)
+    {
+        float time = t/maxTime;
+        damage = damageCurve.Evaluate(time);
+        speed = speedCurve.Evaluate(time);
     }
     
-    private void Update() 
+    #region editor settings
+    [SerializeField] float boundryRange = 2;
+    #endregion
+    
+    private void FixedUpdate() 
     {
-        transform.position += transform.up * speed * Time.deltaTime;
+        transform.position += transform.up * speed * Time.fixedDeltaTime;
         
-        if((t+=Time.deltaTime)>=SCREEN_BOUND_CHECK) DestroyIfOutOfScreen();
+        checkForScreenBound();
     }
 
-    private void OnCollisionEnter(Collision other) 
+    private void checkForScreenBound()
     {
-        if(other.transform.CompareTag(targetTag)) {
+        if( transform.position.x + boundryRange < 0 ||
+            transform.position.x - boundryRange > Screen.width ||
+            transform.position.y + boundryRange < 0 ||
+            transform.position.y - boundryRange > Screen.height)
+        {
+            // it's out of screen
             Destroy(gameObject);
         }
-    }
-    
-    private void OnDestroy() {
-        bullets.Remove(this);
-    }
-    
-
-    private void DestroyIfOutOfScreen()
-    {
-        Vector2 pos = Camera.main.WorldToScreenPoint(transform.position);
-        
-        if(pos.x + distanceFromScreen < 0 || pos.x - distanceFromScreen > Screen.width || pos.y + distanceFromScreen < 0 || pos.y - distanceFromScreen > Screen.height)
-            Destroy(gameObject);
-    }
-    
-    private void OnDrawGizmosSelected() {
-        Gizmos.DrawWireCube(transform.position, Vector3.one * distanceFromScreen);
     }
 }
