@@ -74,7 +74,9 @@ public class Trinon : MonoBehaviour, IOnPlayerPress
     [HideInInspector]
     public float rotateSpeedMultiplier = 1;
     float rotateSpeedMultiplier_internal = 1;
-
+    
+    
+    
     private void Start() 
     {
         this.Initialize();
@@ -82,17 +84,17 @@ public class Trinon : MonoBehaviour, IOnPlayerPress
         speedUp.Init();
     }
     
-    public void OnPressDown()
+    public void OnPressDown(float duration)
     {
         // speed up should be cancelled
     }
 
-    public void OnPressUp()
+    public void OnPressUp(float duration)
     {
-        Shoot();
+        Shoot(duration);
     }
 
-    public void OnPressDownUpdate(float duration)
+    public void OnPressDownUpdate()
     {
         speedDown.IncreaseTime();
         speedUp.DecreaseTime();
@@ -101,7 +103,7 @@ public class Trinon : MonoBehaviour, IOnPlayerPress
         Move();
     }
 
-    public void OnPressUpUpdate(float duration)
+    public void OnPressUpUpdate()
     {
         speedDown.DecreaseTime();
         speedUp.IncreaseTime();
@@ -120,8 +122,8 @@ public class Trinon : MonoBehaviour, IOnPlayerPress
         transform.RotateAround(pivot.transform.position, Vector3.forward, rotateSpeed * rotateSpeedMultiplier_internal * rotateSpeedMultiplier * Time.deltaTime);
     }
     
-    void Shoot()
+    void Shoot(float duration)
     {
-        
+        Instantiate(bulletPrefab, GetBulletPositionInWorld(), transform.rotation).Init(duration);
     }
 }

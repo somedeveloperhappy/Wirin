@@ -8,7 +8,10 @@ public class BulletEditor : Editor
     {
         var tar = target as Bullet;
         
+        float boundryRange = (float)(tar.GetType().GetField("boundryRange",
+             System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(tar));
+        
         Handles.color = Color.green;
-        Handles.DrawWireCube(tar.transform.position, Vector3.one * (float)(tar.GetType().GetField("boundryRange").GetValue(tar)));
+        Handles.DrawWireCube(tar.transform.position, Vector3.one * boundryRange);
     }
 }

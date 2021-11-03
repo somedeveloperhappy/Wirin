@@ -7,6 +7,7 @@ namespace PlayManagement
     {
         
         bool wasPressed = false; // for checking if in previous frame the pivot was pressed
+        
         float pressedDuration = 0;
         
         public float pressableRange = 4;
@@ -28,14 +29,14 @@ namespace PlayManagement
                     // check if its the first time
                     if(!wasPressed) {
                         wasPressed = true;
-                        IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressDown() );
+                        IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressDown(pressedDuration) );
                         pressedDuration = 0;
                         
                     } else {
                         
                         // update 
                         pressedDuration += Time.deltaTime;
-                        IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressDownUpdate(pressedDuration) );
+                        IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressDownUpdate() );
                         
                     }
                     
@@ -47,14 +48,14 @@ namespace PlayManagement
                 // check if it was pressed before
                 if(wasPressed) {
                     wasPressed = false;
-                    IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressUp() );
+                    IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressUp(pressedDuration) );
                     pressedDuration = 0;
                     
                 } else {
                     
                     // update
                     pressedDuration += Time.deltaTime;
-                    IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressUpUpdate(pressedDuration) );
+                    IOnPlayerPressHelper.ForeachInstance((pp) => pp.OnPressUpUpdate() );
                     
                 }
                 

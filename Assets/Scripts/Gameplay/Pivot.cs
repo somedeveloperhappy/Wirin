@@ -19,24 +19,24 @@ public class Pivot : MonoBehaviour, IOnPlayerPress
         scale_onpress_curve_last_time = scaleOnPress.keys[scaleOnPress.keys.Length-1].time;
     }
 
-    public void OnPressDown()
+    public void OnPressDown(float duration)
     {
         
     }
 
-    public void OnPressUp()
+    public void OnPressUp(float duration)
     {
         
     }
 
-    public void OnPressDownUpdate(float duration)
+    public void OnPressDownUpdate()
     {
         scale_curve_t += Time.deltaTime * speedOnDown;
         ApplyScale();
     }
 
 
-    public void OnPressUpUpdate(float duration)
+    public void OnPressUpUpdate()
     {
         scale_curve_t -= Time.deltaTime * speedOnUp;
         ApplyScale();

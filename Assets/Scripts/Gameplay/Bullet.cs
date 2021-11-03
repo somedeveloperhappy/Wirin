@@ -8,21 +8,20 @@ public class Bullet : MonoBehaviour
     #region main settings
     [SerializeField] AnimationCurve damageCurve;
     [SerializeField] AnimationCurve speedCurve;
-    [SerializeField] float maxTime; // the time to reach damageCurve and speedCurve's max
     #endregion
     
-    [HideInInspector] public float damage;
-    [HideInInspector] public float speed;
+    public float damage;
+    public float speed;
     
-    public void Init(float t)
-    {
-        float time = t/maxTime;
-        damage = damageCurve.Evaluate(time);
-        speed = speedCurve.Evaluate(time);
+    public void Init(float pressed_duration) {
+        damage = damageCurve.Evaluate(pressed_duration);
+        speed = speedCurve.Evaluate(pressed_duration);
     }
     
     #region editor settings
     [SerializeField] float boundryRange = 2;
+    const int CHECK_FOR_SCREEN_BOUND_T = 1;
+    float last_screen_bound_check = 0;
     #endregion
     
     private void FixedUpdate() 
@@ -34,13 +33,20 @@ public class Bullet : MonoBehaviour
 
     private void checkForScreenBound()
     {
-        if( transform.position.x + boundryRange < 0 ||
-            transform.position.x - boundryRange > Screen.width ||
-            transform.position.y + boundryRange < 0 ||
-            transform.position.y - boundryRange > Screen.height)
+        if(Time.timeSinceLevelLoad - last_screen_bound_check > CHECK_FOR_SCREEN_BOUND_T) 
         {
-            // it's out of screen
-            Destroy(gameObject);
+            last_screen_bound_check = Time.timeSinceLevelLoad;
+            
+            Vector2 pos_in_screen = References.currentCamera.WorldToScreenPoint(transform.position);
+            
+            if( pos_in_screen.x + boundryRange < 0 ||
+                pos_in_screen.x - boundryRange > Screen.width ||
+                pos_in_screen.y + boundryRange < 0 ||
+                pos_in_screen.y - boundryRange > Screen.height)
+            {
+                // it's out of screen
+                Destroy(gameObject);
+            }
         }
     }
 }

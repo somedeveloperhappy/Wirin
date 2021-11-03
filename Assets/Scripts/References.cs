@@ -15,9 +15,11 @@ public class References : MonoBehaviour
     static public PostPro postPro => instance?._postPro;
     [SerializeField] PostPro _postPro;
     
-    static public Bullet bulletPrefab => instance?._bulletPrefab;
-    [SerializeField] Bullet _bulletPrefab;
+    static public PlayManagement.PlayerPressManager playerPressManager => instance?._playerPressManager;
+    [SerializeField] PlayManagement.PlayerPressManager _playerPressManager;
     
+    static public Camera currentCamera => instance?._currentCamera;
+    [SerializeField] Camera _currentCamera;
     
     private void Awake() {
         if(!instance) {

@@ -1,9 +1,9 @@
 public interface IOnPlayerPress
 {
-    void OnPressDown();
-    void OnPressUp();
-    void OnPressDownUpdate(float duration);
-    void OnPressUpUpdate(float duration);
+    void OnPressDown(float duration);
+    void OnPressUp(float duration);
+    void OnPressDownUpdate();
+    void OnPressUpUpdate();
 }
 
 public static class IOnPlayerPressHelper
