@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2299828311482426097}
   - component: {fileID: 2299828311482426096}
-  - component: {fileID: 1150479037}
-  - component: {fileID: 1150479038}
   m_Layer: 0
   m_Name: Trinon
   m_TagString: Untagged
@@ -27,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2299828311482426098}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.02, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2299828311699196916}
@@ -116,55 +114,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3084275624705232902, guid: 661307f2950e67c479b6a935aae63c5c, type: 3}
   playerInfo: {fileID: 2044437615}
   rotateSpeedMultiplier: 1
---- !u!50 &1150479037
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2299828311482426098}
-  m_BodyType: 1
-  m_Simulated: 0
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!60 &1150479038
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2299828311482426098}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 0.263358}
-      - {x: -0.3239154, y: -0.23185071}
-      - {x: 0.32729685, y: -0.23743343}
 --- !u!1 &2299828311699196918
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,4 +380,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c214417271846540b0fbd1cf0b8230f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
+  health: 1

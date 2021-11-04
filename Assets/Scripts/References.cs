@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using LevelManaging;
 using UnityEngine;
 
 public class References : MonoBehaviour
@@ -20,6 +21,12 @@ public class References : MonoBehaviour
     
     static public Camera currentCamera => instance?._currentCamera;
     [SerializeField] Camera _currentCamera;
+    
+    static public Enemy[] enemies => instance?._enemies;
+    [SerializeField] Enemy[] _enemies;
+    
+    static public LevelManager levelManager => instance?._levelManager;
+    [SerializeField] LevelManager _levelManager;
     
     private void Awake() {
         if(!instance) {
