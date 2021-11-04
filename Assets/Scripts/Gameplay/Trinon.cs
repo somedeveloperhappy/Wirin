@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trinon : MonoBehaviour, IOnPlayerPress
+public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 {
     private const int SPEEDUP_BREAKSPD_MULTIP = 2;
     
@@ -69,6 +69,10 @@ public class Trinon : MonoBehaviour, IOnPlayerPress
          public Pivot pivot => References.pivot;
     #endregion
     
+    #region refs
+    public PlayerInfo playerInfo;
+    #endregion
+    
     public Vector3 GetBulletPositionInWorld() => transform.position + transform.up * bulletPosOffset.y + transform.right * bulletPosOffset.x;
     
     [HideInInspector]
@@ -124,6 +128,8 @@ public class Trinon : MonoBehaviour, IOnPlayerPress
     
     void Shoot(float duration)
     {
-        Instantiate(bulletPrefab, GetBulletPositionInWorld(), transform.rotation).Init(duration);
+        Instantiate(bulletPrefab, GetBulletPositionInWorld(), transform.rotation).Init(playerInfo, duration);
     }
+
+    public PlayerInfo GetPlayerInfo() => playerInfo;
 }
