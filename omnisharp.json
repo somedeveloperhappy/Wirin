@@ -10,6 +10,11 @@
         "NewLinesForBracesInAccessors": false,
         "NewLineForElse": false,
         "NewLineForCatch": false,
-        "NewLineForFinally": false
+        "NewLineForFinally": false,
+        "SpaceAfterCast": true,
+        "SpaceAfterComma": true,
+        "SpaceAfterMethodCallName": true,
+        "SpaceAfterSemicolonsInForStatement": true,
+        "SpaceWithinSquareBrackets": true
     }
 }

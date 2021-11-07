@@ -5,16 +5,6 @@ using UnityEditor;
 
 public class pp_editor : ShaderGUI
 {
-    enum Samples {
-        low     = 2,
-        medum   = 6,
-        high    = 10,
-        ultra   = 20
-    };
-    
-    Samples samples = 0;
-    
-    
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         var mat = materialEditor.target as Material;
