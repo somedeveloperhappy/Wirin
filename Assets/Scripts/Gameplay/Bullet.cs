@@ -6,7 +6,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour, IPlayerPart
 {
     #region main settings
-    [SerializeField] AnimationCurve damageCurve;
+    [SerializeField] public AnimationCurve damageCurve;
     [SerializeField] AnimationCurve speedCurve;
     [SerializeField] AnimationCurve stunCurve;
     #endregion

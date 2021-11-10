@@ -4,7 +4,7 @@ Shader "Custom/GreyScaleSpriteShader"
 {
 	Properties
     {
-	    _GrayScale("Saturation", Range(-1.0, 1.0)) = 0.0
+	    _GrayScale("Saturation", Range(0, 1.0)) = 0.0
         _Smooth("Smoothness", Range(0.0, 1)) = 0.5
         
 	    [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
@@ -102,11 +102,23 @@ Shader "Custom/GreyScaleSpriteShader"
                 IN.uv.x = IN.uv.x * 2 - 1;
                 IN.uv.y = IN.uv.y * 2 - 1;
                 
-                c.a *= lerp(dot(float2(0, 1), normalize(IN.uv)), _GrayScale, _Smooth);
-                if(c.a <0.1f) c.a = 0;
-
-			    c.rgb *= c.a;
-			    return c;
+				float alpha = c.a;
+				float d = (dot(float2(0, 1), normalize(IN.uv)) + 1)/2;
+				if ( d < 0 ) d = 0;
+				
+				if(_GrayScale >= d) {
+					alpha *= 1 - distance(_GrayScale, d);
+					alpha = (alpha-1+_Smooth)/_Smooth;
+					if(alpha<0) discard;
+				}
+				
+				saturate(alpha);
+				// return alpha;
+                // if(c.a <0.1f) c.a = 0;
+				
+				c.a = alpha;
+				c.rgb *= alpha;
+				return c;
 		    }
 
 		    ENDCG

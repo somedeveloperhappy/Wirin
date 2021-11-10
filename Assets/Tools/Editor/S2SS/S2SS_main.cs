@@ -43,18 +43,25 @@ public class S2SS_main : MonoBehaviour
 
                 // Color color = new Color (UnityEngine.Random.Range (0, 1f), UnityEngine.Random.Range (0, 1f), UnityEngine.Random.Range (0, 1f));
 
-                for (int x = 0; x < currentTex.width; x++) {
-                    for (int y = 0; y < currentTex.height; y++) {
+                result.SetPixels (
+                    (int) startingPosInResultTex.x,
+                    (int) startingPosInResultTex.y,
+                    currentTex.width,
+                    currentTex.height,
+                    currentTex.GetPixels ());
 
-                        result.SetPixel (
-                            (int) startingPosInResultTex.x + x,
-                            (int) startingPosInResultTex.y + y,
-                            currentTex.GetPixel(x, y)
-                            // color
-                        );
+                // for (int x = 0; x < currentTex.width; x++) {
+                //     for (int y = 0; y < currentTex.height; y++) {
 
-                    }
-                }
+                //         result.SetPixel (
+                //             (int) startingPosInResultTex.x + x,
+                //             (int) startingPosInResultTex.y + y,
+                //             currentTex.GetPixel (x, y)
+                //         // color
+                //         );
+
+                //     }
+                // }
 
             }
 
@@ -80,21 +87,21 @@ public class S2SS_main : MonoBehaviour
 
     public static void SlideSprite(string path, int cols, int rows, Texture refTex, float margin) {
 
-        AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
-        
+        AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+
         TextureImporter ti = AssetImporter.GetAtPath (path) as TextureImporter;
         ti.isReadable = true;
 
         List<SpriteMetaData> smd = new List<SpriteMetaData> ();
 
         int count = 0;
-        
+
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
 
-                SpriteMetaData meta = new SpriteMetaData();
-                meta.name = count++.ToString();
-                meta.rect = new Rect(
+                SpriteMetaData meta = new SpriteMetaData ();
+                meta.name = count++.ToString ();
+                meta.rect = new Rect (
                     (refTex.width + margin) * col,
                     (refTex.height + margin) * row,
                     refTex.width,
@@ -103,14 +110,14 @@ public class S2SS_main : MonoBehaviour
                 meta.alignment = 0;
                 meta.pivot = Vector2.zero;
                 meta.border = Vector4.zero;
-                smd.Add(meta);
+                smd.Add (meta);
             }
         }
-        
-        ti.spriteImportMode = SpriteImportMode.Multiple;
-        ti.spritesheet = smd.ToArray();
-        AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 
-        Debug.Log($"Spritesheet sliced!");
+        ti.spriteImportMode = SpriteImportMode.Multiple;
+        ti.spritesheet = smd.ToArray ();
+        AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
+
+        Debug.Log ($"Spritesheet sliced!");
     }
 }
