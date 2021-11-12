@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [ExecuteAlways]
 public class OnPresseffects : MonoBehaviour, IOnPlayerPress
 {
-    public pivotSettings.FillingEffect fillingEffect;
+    public OnPressFxSettings.FillingEffect fillingEffect;
+    public OnPressFxSettings.ShaderEffect shaderEffect;
+    public OnPressFxSettings.CameraEffect cameraEffect;
+    
     [SerializeField] float discardSpeed = 5;
 
     #region handy refs
@@ -18,7 +20,7 @@ public class OnPresseffects : MonoBehaviour, IOnPlayerPress
     float max_bulletdmg;
     float t = 0;
 
-    [Range (0f, 1f)] public float fillingEffectIntensity = 0;
+    [Range (0f, 1f)] public float fxIntensity = 0;
 
 
     private void Start() {
@@ -40,19 +42,21 @@ public class OnPresseffects : MonoBehaviour, IOnPlayerPress
         t += Time.deltaTime;
         if (t >= max_bulletdmg_time)
             t = max_bulletdmg_time;
-        fillingEffectIntensity = bullet.damageCurve.Evaluate (t) / max_bulletdmg;
+        fxIntensity = bullet.damageCurve.Evaluate (t) / max_bulletdmg;
         UpdateFillingEffect();
     }
 
     public void OnPressUpUpdate() {
         t -= Time.deltaTime * discardSpeed;
         if (t < 0) t = 0;
-        fillingEffectIntensity = bullet.damageCurve.Evaluate (t) / max_bulletdmg;
+        fxIntensity = bullet.damageCurve.Evaluate (t) / max_bulletdmg;
         UpdateFillingEffect();
     }
 
     [ContextMenu (nameof (UpdateFillingEffect))]
     public void UpdateFillingEffect() {
-        fillingEffect.Update (fillingEffectIntensity);
+        fillingEffect.Update (fxIntensity);
+        shaderEffect.Update (fxIntensity);
+        cameraEffect.Update(fxIntensity);
     }
 }

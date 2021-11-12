@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using LevelManaging;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
     #region general settings
     [SerializeField] float health;
     public float damage;
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour {
     float deltaTime;
 
     #region static
-    static public List<Enemy> instances = new List<Enemy>();
+    static public List<Enemy> instances = new List<Enemy> ();
     static public float timeScale = 1;
     #endregion
 
@@ -30,12 +31,23 @@ public class Enemy : MonoBehaviour {
     bool was_stunned = false;
     #endregion
 
-    
-    
+    #region events
+    public event System.Action<float, PlayerBulletDamageInfo> OnTakeDamage;
+    #endregion
+
+
+
     private void Start() {
-        instances.Add(this);
-        RotateTowardsPivot();
-        points += UnityEngine.Random.Range(-points/5, points/5);
+        instances.Add (this);
+        RotateTowardsPivot ();
+    }
+
+    public void Init(int points) {
+
+        this.points = points;
+
+        health = points / (10f + UnityEngine.Random.Range (-5f, 5f));
+
     }
 
     private void FixedUpdate() {
@@ -46,31 +58,31 @@ public class Enemy : MonoBehaviour {
 
             if (was_stunned) {
                 was_stunned = false;
-                StunEnd();
+                StunEnd ();
             }
-            MoveForward();
+            MoveForward ();
 
         } else {
 
             stunTime -= deltaTime;
-            if (was_stunned) StunUpdate();
+            if (was_stunned) StunUpdate ();
             else {
-                StunStart();
+                StunStart ();
                 was_stunned = true;
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        var playerpart = other.GetComponent<IPlayerPart>();
+        var playerpart = other.GetComponent<IPlayerPart> ();
         if (playerpart != null) {
-            HitPlayer(playerpart.GetPlayerInfo());
-            DestroyEnemy();
+            HitPlayer (playerpart.GetPlayerInfo ());
+            DestroyEnemy ();
         }
     }
-    
+
     private void OnDestroy() {
-        instances.Remove(this);
+        instances.Remove (this);
     }
 
 
@@ -84,8 +96,8 @@ public class Enemy : MonoBehaviour {
 
     }
     private void DestroyEnemy() {
-        Destroy(gameObject);
-        levelManager.OnEnemyDestroy(this);
+        Destroy (gameObject);
+        levelManager.OnEnemyDestroy (this);
     }
 
 
@@ -94,21 +106,26 @@ public class Enemy : MonoBehaviour {
     }
 
     private void MoveForward() {
-        transform.Translate(transform.up * speed * deltaTime, Space.World);
+        transform.Translate (transform.up * speed * deltaTime, Space.World);
     }
 
     public void TakeDamage(PlayerBulletDamageInfo damageInfo) {
+
+        var health_before = health;
+
         health -= damageInfo.damage;
         stunTime += damageInfo.stunDuration;
 
         if (health < 0) health = 0;
 
         if (health == 0)
-            DestroyEnemy();
+            DestroyEnemy ();
+
+        OnTakeDamage?.Invoke (health_before, damageInfo);
     }
 
 
     private void HitPlayer(PlayerInfo playerInfo) {
-        playerInfo.TakeDamage(new EnemyDamageInfo(damage));
+        playerInfo.TakeDamage (new EnemyDamageInfo (damage));
     }
 }

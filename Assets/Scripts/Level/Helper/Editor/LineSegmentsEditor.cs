@@ -7,11 +7,12 @@ namespace LevelManaging
     [CustomEditor(typeof(LineSegments))]
     public class LineSegmentsEditor : Editor
     {
+        [Obsolete]
         void OnEnable() {
             SceneView.onSceneGUIDelegate += OnSceneGUI;
         }
 
-
+        [Obsolete]
         void OnDisable() {
             SceneView.onSceneGUIDelegate -= OnSceneGUI;
         }

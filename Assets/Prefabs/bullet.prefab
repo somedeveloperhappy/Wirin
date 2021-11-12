@@ -223,29 +223,38 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.25
-      outSlope: 1.25
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 2
-      value: 2.5
-      inSlope: 1.25
-      outSlope: 1.9598801
-      tangentMode: 5
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.17465746
-    - serializedVersion: 3
-      time: 4
-      value: 7.5
-      inSlope: 4.9079137
-      outSlope: 4.9079137
+      inSlope: 11.700439
+      outSlope: 11.700439
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.29223967
+      inWeight: 0
+      outWeight: 0.113013685
+    - serializedVersion: 3
+      time: 1.6917725
+      value: 33.98619
+      inSlope: 50.238556
+      outSlope: 50.238556
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.12847939
+    - serializedVersion: 3
+      time: 5
+      value: 100
+      inSlope: 5.3316455
+      outSlope: 5.3316455
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.52641845
+    - serializedVersion: 3
+      time: 7.3496704
+      value: 151.29774
+      inSlope: 29.168474
+      outSlope: 29.168474
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.19489479
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -298,6 +307,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  playerInfo: {fileID: 0}
   damage: 0
   speed: 0
   stunDuration: 0

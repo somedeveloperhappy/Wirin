@@ -18,49 +18,49 @@ namespace LevelManaging
         public int level = 0;
 
         private void Awake() {
-            LoadLevel();
+            LoadLevel ();
         }
 
-        private void LoadLevel() => level = PlayerPrefs.GetInt("lvl", 0);
-        private void SaveLevel() => PlayerPrefs.SetInt("lvl", level);
+        private void LoadLevel() => level = PlayerPrefs.GetInt ("lvl", 1);
+        private void SaveLevel() => PlayerPrefs.SetInt ("lvl", level);
 
         private void Start() {
-            StartLevel();
+            StartLevel ();
         }
         private void Update() {
-            CheckForSpawn();
+            CheckForSpawn ();
         }
 
         public void StartLevel() {
-            level_making.LevelsMaker.UpdateLevelValues(ref levelContaining, level);
+            level_making.LevelsMaker.UpdateLevelValues (ref levelContaining, level);
         }
 
         public void WinLevel() {
             level++;
-            SaveLevel();
-            StartLevel();
+            SaveLevel ();
+            StartLevel ();
         }
 
         public void OnEnemyDestroy(Enemy enemy) {
             levelContaining.pointsTaken += enemy.points;
-            Debug.Log($"enemy died. checking for win...");
-            CheckForWin(enemy);
+            Debug.Log ($"enemy died. checking for win...");
+            CheckForWin (enemy);
         }
-        
+
         public void CheckForWin(Enemy enemy) {
-            if ((Enemy.instances.Count < 1 || (Enemy.instances.Count == 1 && Enemy.instances[0] == enemy)) && levelContaining.pointsTaken >= levelContaining.goalPoints) {
-                WinLevel();
+            if ((Enemy.instances.Count < 1 || (Enemy.instances.Count == 1 && Enemy.instances[ 0 ] == enemy)) && levelContaining.pointsTaken >= levelContaining.goalPoints) {
+                WinLevel ();
             } else {
-                Debug.Log($"did not win yet. points remaining : {levelContaining.goalPoints - levelContaining.pointsTaken} and {Enemy.instances.Count} enemies left");
+                Debug.Log ($"did not win yet. points remaining : {levelContaining.goalPoints - levelContaining.pointsTaken} and {Enemy.instances.Count} enemies left");
             }
         }
 
 
         private void CheckForSpawn() {
-            if (CanSpawn()) {
-                Spawn();
-                next_spawn_time += levelContaining.GetSpawnTime();
-                Debug.Log($"spawned an enemy. next spawn at {next_spawn_time}");
+            if (CanSpawn ()) {
+                Spawn ();
+                next_spawn_time += levelContaining.GetSpawnTime ();
+                Debug.Log ($"spawned an enemy. next spawn at {next_spawn_time}");
             }
         }
 
@@ -70,9 +70,11 @@ namespace LevelManaging
 
         private void Spawn() {
 
-            int enem_index = UnityEngine.Random.Range(0, References.enemies.Length);
-            Vector2 position = lineSegments.GetPoint(UnityEngine.Random.Range(0f, lineSegments.maximumX));
-            var enem = Instantiate<Enemy>(References.enemies[enem_index], position, Quaternion.identity);
+            int enem_index = UnityEngine.Random.Range (0, References.enemies.Length);
+            Vector2 position = lineSegments.GetPoint (UnityEngine.Random.Range (0f, lineSegments.maximumX));
+            var enem = Instantiate<Enemy> (References.enemies[ enem_index ], position, Quaternion.identity);
+            enem.Init(levelContaining.GetSpawningPoint());
         }
+
     }
 }
