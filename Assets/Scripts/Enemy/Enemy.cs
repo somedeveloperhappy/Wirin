@@ -56,7 +56,8 @@ public class Enemy : MonoBehaviour
 
         if (stunTime <= 0) {
 
-            if (was_stunned) {
+            if (was_stunned) 
+            {
                 was_stunned = false;
                 StunEnd ();
             }

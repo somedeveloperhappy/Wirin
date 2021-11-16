@@ -13,8 +13,6 @@ namespace LevelManaging
         public float next_spawn_time;
 
 
-
-
         public int level = 0;
 
         private void Awake() {
@@ -24,10 +22,10 @@ namespace LevelManaging
         private void LoadLevel() => level = PlayerPrefs.GetInt ("lvl", 1);
         private void SaveLevel() => PlayerPrefs.SetInt ("lvl", level);
 
-        private void Start() {
+        public void Init() {
             StartLevel ();
         }
-        private void Update() {
+        public void Tick() {
             CheckForSpawn ();
         }
 
@@ -73,7 +71,7 @@ namespace LevelManaging
             int enem_index = UnityEngine.Random.Range (0, References.enemies.Length);
             Vector2 position = lineSegments.GetPoint (UnityEngine.Random.Range (0f, lineSegments.maximumX));
             var enem = Instantiate<Enemy> (References.enemies[ enem_index ], position, Quaternion.identity);
-            enem.Init(levelContaining.GetSpawningPoint());
+            enem.Init (levelContaining.GetSpawningPoint ());
         }
 
     }
