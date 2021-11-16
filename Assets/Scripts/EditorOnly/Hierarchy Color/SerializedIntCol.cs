@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -34,3 +35,5 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
 }
 
 [System.Serializable] public class Dictionary_Int_Color : SerializableDictionary<int, Color> {}
+
+#endif

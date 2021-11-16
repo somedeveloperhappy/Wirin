@@ -3,38 +3,45 @@ using UnityEngine;
 
 namespace PlayManagement
 {
-    public class GameController : MonoBehaviour
-    {
-        public Canvas mainMenuCanvas;
-        public bool isPlaying = false;
+	public class GameController : MonoBehaviour
+	{
+		public Canvas mainMenuCanvas;
+        public Canvas ingameCanvas;
+        
+		public bool isPlaying = false;
 
-        #region handy refs
+		#region handy refs
 
-        LevelManaging.LevelManager levelManager => References.levelManager;
-        PlayerPressManager playerPressManager => References.playerPressManager;
+		LevelManaging.LevelManager levelManager => References.levelManager;
+		PlayerPressManager playerPressManager => References.playerPressManager;
 
-        #endregion
+		#endregion
 
-        private void Start() {
-            Time.timeScale = 0;
+		private void Start() {
+			Time.timeScale = 0;
 
-            playerPressManager.enabled = false;
-        }
+			playerPressManager.enabled = false;
+		}
 
-        public void StartGame() {
-            Time.timeScale = 1;
-            isPlaying = true;
+		public void StartGame() {
+            
+            // set data
+			isPlaying = true;
 
-            mainMenuCanvas.enabled = false;
-            levelManager.Init ();
+			// canvas
+			mainMenuCanvas.enabled = false;
+            ingameCanvas.enabled = true;
 
-            playerPressManager.enabled = true;
-        }
+            // start gameplay
+			Time.timeScale = 1;
+			levelManager.Init ();
+			playerPressManager.enabled = true;
+		}
 
-        private void Update() {
-            if (isPlaying) {
-                levelManager.Tick ();
-            }
-        }
-    }
+		private void Update() {
+			if (isPlaying) {
+				levelManager.Tick ();
+			}
+		}
+	}
 }
