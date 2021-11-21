@@ -65,8 +65,9 @@ public class Bullet : MonoBehaviour, IPlayerPart
             }
         }
     }
-
-
+    private void OnTriggerEnter2D(Collider2D other) {
+        Debug.Log($"here with {other.name}");
+    }
     public void OnCollisionEnter2D(Collision2D other) 
     {
         Debug.Log($"collided with {other.gameObject.name}");

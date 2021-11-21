@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3084275624705232901}
   - component: {fileID: 3084275624705232902}
+  - component: {fileID: 3635758954082513108}
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -139,6 +140,27 @@ MonoBehaviour:
   speed: 0
   stunDuration: 0
   boundryRange: 0.95
+--- !u!50 &3635758954082513108
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3084275624705232900}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &7204728548765017958
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +171,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7863125344572058550}
   - component: {fileID: 1898330378141648721}
-  - component: {fileID: 5510249067233503100}
   - component: {fileID: 202966399956426565}
   m_Layer: 0
   m_Name: img
@@ -223,27 +244,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!50 &5510249067233503100
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7204728548765017958}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: e963bc69d833e5747a69b877ce665f93, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!60 &202966399956426565
 PolygonCollider2D:
   m_ObjectHideFlags: 0

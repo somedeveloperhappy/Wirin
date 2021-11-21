@@ -83,6 +83,7 @@ public class Enemy : MonoBehaviour
         Debug.Log($"Hit {other.name}");
         var playerpart = other.GetComponent<IPlayerPart>();
         if (playerpart != null) {
+            Debug.Log($"even here!");
             HitPlayer(playerpart.GetPlayerInfo());
             DestroyEnemy();
         }
