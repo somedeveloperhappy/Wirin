@@ -79,9 +79,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log($"Hit {other.name}");
-        var playerpart = other.GetComponent<IPlayerPart>();
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        
+        Debug.Log($"{name} on trigger with {other.gameObject.name}");;
+        var playerpart = other.gameObject.GetComponent<IPlayerPart>();
         if (playerpart != null) {
             Debug.Log($"even here!");
             HitPlayer(playerpart.GetPlayerInfo());

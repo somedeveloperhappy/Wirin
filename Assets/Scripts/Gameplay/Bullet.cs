@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour, IPlayerPart
+public class Bullet : MonoBehaviour
 {
     #region main settings
 
@@ -65,10 +65,9 @@ public class Bullet : MonoBehaviour, IPlayerPart
             }
         }
     }
-    private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log($"here with {other.name}");
-    }
-    public void OnCollisionEnter2D(Collision2D other) 
+    
+    
+    public void OnCollide(Collision2D other) 
     {
         Debug.Log($"collided with {other.gameObject.name}");
         var enemy = other.gameObject.GetComponent<Enemy>();
@@ -85,5 +84,4 @@ public class Bullet : MonoBehaviour, IPlayerPart
         Destroy(gameObject);
     }
 
-    public PlayerInfo GetPlayerInfo() => playerInfo;
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3084275624705232901}
   - component: {fileID: 3084275624705232902}
-  - component: {fileID: 3635758954082513108}
+  - component: {fileID: 3400697658332929978}
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -140,7 +140,7 @@ MonoBehaviour:
   speed: 0
   stunDuration: 0
   boundryRange: 0.95
---- !u!50 &3635758954082513108
+--- !u!50 &3400697658332929978
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -150,7 +150,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 3084275624705232900}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -171,7 +171,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7863125344572058550}
   - component: {fileID: 1898330378141648721}
-  - component: {fileID: 202966399956426565}
+  - component: {fileID: 573514107839290978}
+  - component: {fileID: 94077856330872785}
   m_Layer: 0
   m_Name: img
   m_TagString: Untagged
@@ -188,7 +189,7 @@ Transform:
   m_GameObject: {fileID: 7204728548765017958}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.19, y: 0.19, z: 1}
   m_Children: []
   m_Father: {fileID: 3084275624705232901}
   m_RootOrder: 0
@@ -233,7 +234,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 64ce10a43f0ecaf479dcb59036be77ff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d4ddc82553666da43a8ea012be98b528, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -244,7 +245,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!60 &202966399956426565
+--- !u!60 &573514107839290978
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,7 +262,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1, y: 2.9}
+    oldSize: {x: 0.32, y: 0.81}
     newSize: {x: 0.32, y: 0.81}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -269,12 +270,42 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.25, y: 0.01}
-      - {x: -0.45999998, y: 0.29999998}
-      - {x: -0.26, y: 0.89}
-      - {x: -0.26, y: 2.61}
-      - {x: -0.01, y: 2.87}
-      - {x: 0.24, y: 2.6499999}
-      - {x: 0.24676543, y: 0.8706897}
-      - {x: 0.45999998, y: 0.31}
-      - {x: 0.25, y: 0.02}
+    - - {x: -0.04, y: 0.03}
+      - {x: -0.16, y: 0.66999996}
+      - {x: -0.07, y: 0.81}
+      - {x: 0.07, y: 0.81}
+      - {x: 0.14999999, y: 0.66999996}
+      - {x: 0.04, y: 0.03}
+--- !u!114 &94077856330872785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7204728548765017958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daaf602bff98c2143aab048c6df88a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onCollisionEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3084275624705232902}
+        m_TargetAssemblyTypeName: Bullet, Assembly-CSharp
+        m_MethodName: OnCollide
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onCollisionExit:
+    m_PersistentCalls:
+      m_Calls: []
+  onCollisionStay:
+    m_PersistentCalls:
+      m_Calls: []
