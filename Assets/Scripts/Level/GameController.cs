@@ -1,47 +1,95 @@
+using System;
 using LevelManaging;
 using UnityEngine;
 
 namespace PlayManagement
 {
-	public class GameController : MonoBehaviour
-	{
-		public Canvas mainMenuCanvas;
-        public Canvas ingameCanvas;
+    public class GameController : MonoBehaviour
+    {
+        public CanvasSystem.CanvasSystemOperator mainMenuCanvas;
+        public CanvasSystem.CanvasSystemOperator ingameCanvas;
+        public CanvasSystem.CanvasSystemOperator winMenuCanvas;
         
-		public bool isPlaying = false;
+        public bool isPlaying = false;
 
-		#region handy refs
+        #region handy refs
 
-		LevelManaging.LevelManager levelManager => References.levelManager;
-		PlayerPressManager playerPressManager => References.playerPressManager;
+        LevelManaging.LevelManager levelManager => References.levelManager;
+        PlayerPressManager playerPressManager => References.playerPressManager;
 
-		#endregion
+        #endregion
 
-		private void Start() {
-			Time.timeScale = 0;
+        private void Start() {
+            OpenMainMenu();
+        }
 
-			playerPressManager.enabled = false;
-		}
-
-		public void StartGame() {
-            
+        public void StartGame() {
             // set data
-			isPlaying = true;
+            isPlaying = true;
 
-			// canvas
-			mainMenuCanvas.enabled = false;
+            // canvas enable/disable
+            mainMenuCanvas.enabled = false;
             ingameCanvas.enabled = true;
+            winMenuCanvas.enabled = false;
 
             // start gameplay
-			Time.timeScale = 1;
-			levelManager.Init ();
-			playerPressManager.enabled = true;
-		}
+            Time.timeScale = 1;
+            levelManager.Init();
+            playerPressManager.enabled = true;
+        }
 
-		private void Update() {
-			if (isPlaying) {
-				levelManager.Tick ();
-			}
-		}
-	}
+        private void Update() {
+            if (isPlaying) {
+                levelManager.Tick();
+            }
+        }
+
+        /// <summary>
+        /// opens main menu, disables gameplay and handles timescale. it's safe to use anywhere.
+        /// </summary>
+        public void OpenMainMenu() {
+            
+            Time.timeScale = 0;
+            playerPressManager.enabled = false;
+            isPlaying = false;
+            
+            // canvas enable/disable
+            ingameCanvas.enabled = false;
+            mainMenuCanvas.enabled = true;
+            winMenuCanvas.enabled = false;
+            
+        }
+        
+        public void WinGame() {
+            
+            // disable functionalities
+            Time.timeScale = 0;
+            playerPressManager.enabled = false;
+            isPlaying = false;
+            
+            // canvas enable/disable
+            ingameCanvas.enabled = false;
+            mainMenuCanvas.enabled = false;
+            winMenuCanvas.enabled = true;
+            
+            
+        }
+
+        public void StarNextGame() {
+            
+            // set data
+            isPlaying = true;
+
+            // canvas enable/disable
+            mainMenuCanvas.enabled = false;
+            ingameCanvas.enabled = true;
+            winMenuCanvas.enabled = false;
+            
+            // start game functionalities
+            Time.timeScale = 1;
+            levelManager.Init();
+            playerPressManager.enabled = true;
+            
+        }
+    }
 }

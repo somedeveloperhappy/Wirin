@@ -15,33 +15,31 @@ namespace OnPressFxSettings
         [SerializeField] float min, max;
 
 
-
         [System.Serializable]
         struct ColorChangers
         {
             public SpriteRenderer colorChagingSprite;
             public Gradient colorOverPress;
         }
+
         [SerializeField] ColorChangers[] colorChangers;
 
         float last;
 
         public void Update(float t) {
-
             if (t == last) return;
             last = t;
 
 
             // applyign color for sprite renderer
             foreach (var c in colorChangers) {
-                c.colorChagingSprite.color = c.colorOverPress.Evaluate (t);
+                c.colorChagingSprite.color = c.colorOverPress.Evaluate(t);
             }
 
             // applying emission rate for particle system
             var emission = particleSystem.emission;
-            emission.rateOverTimeMultiplier = Mathf.Lerp (min, max, t);
+            emission.rateOverTimeMultiplier = Mathf.Lerp(min, max, t);
         }
-
     }
 
     [System.Serializable]
@@ -53,12 +51,11 @@ namespace OnPressFxSettings
         float last;
 
         public void Update(float t) {
-
             if (t == last) return;
             last = t;
 
-            References.postPro.SetChromIntensity (Mathf.Lerp (chromaticIntensity.min, chromaticIntensity.max, t));
-            References.postPro.SetLensDistortion (Mathf.Lerp (lensDistortion.min, lensDistortion.max, t));
+            References.postPro.SetChromIntensity(Mathf.Lerp(chromaticIntensity.min, chromaticIntensity.max, t));
+            References.postPro.SetLensDistortion(Mathf.Lerp(lensDistortion.min, lensDistortion.max, t));
         }
     }
 
@@ -70,11 +67,10 @@ namespace OnPressFxSettings
         float last;
 
         public void Update(float t) {
-
             if (t == last) return;
             last = t;
 
-            References.currentCamera.orthographicSize = Mathf.Lerp (cameraSize.min, cameraSize.max, t);
+            References.currentCamera.orthographicSize = Mathf.Lerp(cameraSize.min, cameraSize.max, t);
         }
     }
 }

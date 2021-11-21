@@ -2,13 +2,12 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(Trinon))]
-public class TrinonEditor : Editor 
+public class TrinonEditor : Editor
 {
-    public override void OnInspectorGUI() 
-    {
+    public override void OnInspectorGUI() {
         base.OnInspectorGUI();
     }
-    
+
     private void OnSceneGUI() {
         var tar = target as Trinon;
         Handles.color = Color.red;

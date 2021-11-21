@@ -1,5 +1,5 @@
 [System.Serializable]
-internal struct MinMax
+public struct MinMax
 {
     public float min, max;
 }

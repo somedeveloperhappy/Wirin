@@ -8,8 +8,9 @@ public interface IOnPlayerPress
 
 public static class IOnPlayerPressHelper
 {
-    static public System.Collections.Generic.List<IOnPlayerPress> instances = new System.Collections.Generic.List<IOnPlayerPress>();
-     
+    static public System.Collections.Generic.List<IOnPlayerPress> instances =
+        new System.Collections.Generic.List<IOnPlayerPress>();
+
     public static void Initialize(this IOnPlayerPress onPlayerPress) {
         instances.Add(onPlayerPress);
     }

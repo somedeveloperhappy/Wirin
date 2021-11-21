@@ -9,161 +9,168 @@ using System.Reflection;
 [ExecuteInEditMode]
 public class HierarchyColor : MonoBehaviour
 {
+    public Texture2D tex;
 
-	public Texture2D tex;
+    private void OnEnable() {
+        // Debug.Log ($"on enable");
+        EditorApplication.hierarchyWindowItemOnGUI += onGUI;
 
-	private void OnEnable() {
+        tex = (Texture2D) (Texture) AssetDatabase.LoadAssetAtPath(
+            @"Assets/Scripts/EditorOnly/Hierarchy Color/eyedropper_icon.png", typeof(Texture));
 
-		Debug.Log ($"on enable");
-		EditorApplication.hierarchyWindowItemOnGUI += onGUI;
+        if (!EditorGUIUtility.isProSkin) {
+            // set colors black
+            var cols = tex.GetPixels();
+            for (int i = 0; i < cols.Length; i++) {
+                cols[i].r = cols[i].g = cols[i].b = 0;
+            }
 
-		tex = (Texture2D) (Texture) AssetDatabase.LoadAssetAtPath (@"Assets/Scripts/EditorOnly/Hierarchy Color/eyedropper_icon.png", typeof (Texture));
+            tex.SetPixels(cols);
+            tex.Apply();
+        }
 
-		if (!EditorGUIUtility.isProSkin) {
-			Debug.Log ($"setting it black...");
-			// set colors black
-			var cols = tex.GetPixels ();
-			for (int i = 0; i < cols.Length; i++) {
-				cols[ i ].r = cols[ i ].g = cols[ i ].b = 0;
-			}
-			tex.SetPixels (cols);
-			tex.Apply ();
-		}
+        buttonContent = new GUIContent(string.Empty, tex);
+        buttonContent.tooltip = "Click on this to open the color editor window";
 
-		buttonContent = new GUIContent (string.Empty, tex);
-		buttonContent.tooltip = "Click on this to open the color editor window";
+        labelStyles = null;
 
-		labelStyles = null;
+        EditorApplication.RepaintHierarchyWindow();
+    }
 
-		EditorApplication.RepaintHierarchyWindow ();
+    private void OnDisable() {
+        EditorApplication.hierarchyWindowItemOnGUI -= onGUI;
 
-	}
+        EditorApplication.RepaintHierarchyWindow();
+    }
 
-	private void OnDisable() {
+    static Color32 gui_normal_background = new Color32(56, 56, 56, 255);
+    static Color32 gui_normal_background_light = new Color32(200, 200, 200, 255);
 
-		EditorApplication.hierarchyWindowItemOnGUI -= onGUI;
-
-		EditorApplication.RepaintHierarchyWindow ();
-	}
-
-	static Color32 gui_normal_background = new Color32 (56, 56, 56, 255);
-	static Color32 gui_normal_background_light = new Color32 (200, 200, 200, 255);
-
-	[SerializeField]
-	public Dictionary_Int_Color col_memory = new Dictionary_Int_Color ();
+    [SerializeField] public Dictionary_Int_Color col_memory = new Dictionary_Int_Color();
 
 
-
-	[HideInInspector] public Color editingColor_fore;
-	GUIContent buttonContent = null;
-
-
-	static public List<int> instancIDs = new List<int> ();
-	int firstItemID = 0;
-
-	GUIStyle labelStyles;
-
-	private void onGUI(int _instanceID, Rect selectionRect) {
+    [HideInInspector] public Color editingColor_fore;
+    GUIContent buttonContent = null;
 
 
+    static public List<int> instancIDs = new List<int>();
+    int firstItemID = 0;
 
-		if (labelStyles == null) labelStyles = new GUIStyle (EditorStyles.label);
+    GUIStyle labelStyles;
 
-
-		// button
-		if (firstItemID == 0) firstItemID = _instanceID;
-		if (_instanceID == firstItemID) {
-			var btnRect = selectionRect;
-			btnRect.x = btnRect.x + btnRect.width - 40;
-			btnRect.width = 30;
-
-			if (GUI.Button (btnRect, buttonContent)) {
-				HierarchyColorWindow.hierarchyColor = this;
-				HierarchyColorWindow.ShowWindow ();
-			}
-		}
-
-		GameObject current = (GameObject) EditorUtility.InstanceIDToObject (_instanceID);
-		if (current == null) return;
-		int instanceID = GetLocalID (current);
-
-		if (!instancIDs.Contains (instanceID)) instancIDs.Add (instanceID);
-
-		if (current.CompareTag ("EditorOnly")) {
-
-			// if selected, ignore
-			if (Selection.Contains (_instanceID)) return;
+    private void onGUI(int _instanceID, Rect selectionRect) {
+        if (labelStyles == null) labelStyles = new GUIStyle(EditorStyles.label);
 
 
+        // button
+        if (firstItemID == 0) firstItemID = _instanceID;
+        if (!HierarchyColorWindow.isOpen && _instanceID == firstItemID) {
+            var btnRect = selectionRect;
+            btnRect.x = btnRect.x + btnRect.width - 40;
+            btnRect.width = 30;
+
+            if (GUI.Button(btnRect, buttonContent)) {
+                HierarchyColorWindow.hierarchyColor = this;
+                HierarchyColorWindow.ShowWindow();
+            }
+
+            return;
+        }
+
+        GameObject current = (GameObject) EditorUtility.InstanceIDToObject(_instanceID);
+        if (current == null) return;
+        int instanceID = GetLocalID(current);
+
+        if (!instancIDs.Contains(instanceID)) instancIDs.Add(instanceID);
 
 
+        // draw label
+        if (col_memory.ContainsKey(instanceID)) {
+            Rect initRect = selectionRect;
 
-			// draw label
-			if (col_memory.ContainsKey (instanceID)) {
-
-				float x = selectionRect.x;
-
-				selectionRect.x += 17;
-				// selectionRect.width -= 17;
-				selectionRect.y += -1;
-
-				// draw on top of the current label
-				labelStyles.normal.textColor = Color.black;
-				EditorGUI.LabelField (selectionRect, current.name, labelStyles);
-
-				selectionRect.x += 1;
-				selectionRect.y += -1;
-
-				labelStyles.normal.textColor = col_memory[ instanceID ];
-				EditorGUI.LabelField (selectionRect, current.name, labelStyles);
-
-				selectionRect.x = x;
-
-			} else {
-				labelStyles.normal.textColor = Color.white;
-			}
-
-			// editor only notice
-			selectionRect.x -= 40;
-			selectionRect.width = 30;
-			labelStyles.fontStyle = FontStyle.Italic;
-			EditorGUI.LabelField (selectionRect, "X", labelStyles);
-			labelStyles.fontStyle = FontStyle.Normal;
+            // if selected, ignore
+            if (Selection.Contains(_instanceID)) goto afterLabel;
 
 
+            float x = selectionRect.x;
 
-		} else {
+            selectionRect.x += 17;
+            // selectionRect.width -= 17;
+            selectionRect.y += -1;
 
-			// if selected or does not have a color preference, ignore everything else
-			if (Selection.Contains (_instanceID) || !col_memory.ContainsKey (instanceID)) return;
+            Color txtCol;
 
-			selectionRect.x += 17;
-			// selectionRect.width -= 17;
-			selectionRect.y += -1;
+            if (current.activeInHierarchy) {
+                txtCol = Color.black;
+                labelStyles.normal.textColor = txtCol;
 
-			// draw on top of the current label
-			// labelStyles.normal.textColor = Color.black;
-			// EditorGUI.LabelField (selectionRect, current.name, labelStyles);
+                // black behind ( shadow )
+                EditorGUI.LabelField(selectionRect, current.name, labelStyles);
+            }
 
-			// selectionRect.x += 1;
-			// selectionRect.y += -1;
+            selectionRect.x += 1;
+            selectionRect.y += -1;
 
-			// draw label
-			labelStyles.normal.textColor = col_memory[ instanceID ];
-			EditorGUI.LabelField (selectionRect, current.name, labelStyles);
+            txtCol = col_memory[instanceID];
+            if (!current.activeInHierarchy) txtCol.a = 0.4f; // fade if not enabled
+            labelStyles.normal.textColor = txtCol;
 
-		}
-	}
+            // main label
+            EditorGUI.LabelField(selectionRect, current.name, labelStyles);
 
-	static public int GetLocalID(GameObject go) {
-		PropertyInfo inspectorModeInfo = typeof (SerializedObject).GetProperty ("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+            selectionRect.x = x;
 
-		SerializedObject serializedObject = new SerializedObject (go);
-		inspectorModeInfo.SetValue (serializedObject, InspectorMode.Debug, null);
+            afterLabel:
 
-		SerializedProperty localIdProp = serializedObject.FindProperty ("m_LocalIdentfierInFile");   //note the misspelling!
+            // draw copy-color button if color widow is open
+            if (HierarchyColorWindow.isOpen) {
+                Rect btnRect = initRect;
+                btnRect.x = btnRect.x + btnRect.width - 10;
+                btnRect.width = 30;
 
-		return localIdProp.intValue;
-	}
+                if (GUI.Button(btnRect, buttonContent)) {
+                    // copy the color to color picker
+                    editingColor_fore = col_memory[instanceID];
+                }
+            }
+        }
+        else {
+            labelStyles.normal.textColor = Color.white;
+        }
+
+        if (current.CompareTag("EditorOnly")) {
+            // editor only notice
+            selectionRect.x -= 40;
+            selectionRect.width = 30;
+            labelStyles.fontStyle = FontStyle.Italic;
+            EditorGUI.LabelField(selectionRect, "X", labelStyles);
+            labelStyles.fontStyle = FontStyle.Normal;
+        }
+    }
+
+    static public int GetLocalID(GameObject go) {
+        PropertyInfo inspectorModeInfo =
+            typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        SerializedObject serializedObject = new SerializedObject(go);
+        inspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
+
+        SerializedProperty
+            localIdProp = serializedObject.FindProperty("m_LocalIdentfierInFile"); //note the misspelling!
+
+        return localIdProp.intValue;
+    }
+
+
+    [ContextMenu("Optimize")]
+    public void Optimize() {
+        int[] keys = new int[col_memory.Count];
+        int i = 0;
+        foreach (var mem in col_memory) keys[i++] = mem.Key;
+
+        foreach (var key in keys)
+            if (col_memory[key] == Color.white || col_memory[key] == Color.black)
+                col_memory.Remove(key);
+    }
 }
 #endif
