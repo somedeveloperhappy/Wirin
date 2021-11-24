@@ -5,83 +5,111 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    #region main settings
+#region main settings
 
-    [SerializeField] public AnimationCurve damageCurve;
-    [SerializeField] AnimationCurve speedCurve;
-    [SerializeField] AnimationCurve stunCurve;
+	[SerializeField] public AnimationCurve damageCurve;
+	[SerializeField] AnimationCurve speedCurve;
+	[SerializeField] AnimationCurve stunCurve;
 
-    #endregion
+#endregion
 
-    #region refs
+#region refs
 
-    public PlayerInfo playerInfo;
+	public PlayerInfo playerInfo;
 
-    #endregion
+#endregion
 
-    public float damage;
-    public float speed;
-    public float stunDuration;
+	public float damage;
+	public float speed;
+	public float stunDuration;
+	
+#region events
+	public delegate void OnInit(float t);
+	/// <summary>
+	/// executes on initializing it
+	/// </summary>
+	public OnInit onInit;
+#endregion
+	
+#region effects
+	public GameObject spawnOnHit;
+#endregion
 
-    public void Init(PlayerInfo playerInfo, float pressed_duration) {
-        this.playerInfo = playerInfo;
-        damage = damageCurve.Evaluate(pressed_duration);
-        speed = speedCurve.Evaluate(pressed_duration);
-        stunDuration = stunCurve.Evaluate(pressed_duration);
-    }
+	public void Init(PlayerInfo playerInfo, float pressed_duration)
+	{
+		float normalizedDuration = pressed_duration / damageCurve.keys[damageCurve.keys.Length - 1].time;
+		
+		this.playerInfo = playerInfo;
+		damage = damageCurve.Evaluate (pressed_duration);
+		speed = speedCurve.Evaluate (pressed_duration);
+		stunDuration = stunCurve.Evaluate (pressed_duration);
+		
+		onInit?.Invoke(normalizedDuration);
+	}
 
-    #region editor settings
+	#region editor settings
 
-    [SerializeField] float boundryRange = 2;
-    const int CHECK_FOR_SCREEN_BOUND_T = 1;
-    float last_screen_bound_check = 0;
+	[SerializeField] float boundryRange = 2;
+	const int CHECK_FOR_SCREEN_BOUND_T = 1;
+	float last_screen_bound_check = 0;
 
-    #endregion
+	#endregion
 
-    Rigidbody2D rigid;
+	Rigidbody2D rigid;
 
-    private void Awake() {
-        rigid = GetComponent<Rigidbody2D>();
-    }
+	private void Awake()
+	{
+		rigid = GetComponent<Rigidbody2D> ();
+	}
 
-    private void FixedUpdate() {
-        transform.position += transform.up * speed * Time.fixedDeltaTime;
+	private void FixedUpdate()
+	{
+		transform.position += transform.up * speed * Time.fixedDeltaTime;
 
-        checkForScreenBound();
-    }
+		checkForScreenBound ();
+	}
 
-    private void checkForScreenBound() {
-        if (Time.timeSinceLevelLoad - last_screen_bound_check > CHECK_FOR_SCREEN_BOUND_T) {
-            last_screen_bound_check = Time.timeSinceLevelLoad;
+	private void checkForScreenBound()
+	{
+		if (Time.timeSinceLevelLoad - last_screen_bound_check > CHECK_FOR_SCREEN_BOUND_T)
+		{
+			last_screen_bound_check = Time.timeSinceLevelLoad;
 
-            Vector2 pos_in_screen = References.currentCamera.WorldToScreenPoint(transform.position);
+			Vector2 pos_in_screen = References.currentCamera.WorldToScreenPoint (transform.position);
 
-            if (pos_in_screen.x + boundryRange < 0 ||
-                pos_in_screen.x - boundryRange > Screen.width ||
-                pos_in_screen.y + boundryRange < 0 ||
-                pos_in_screen.y - boundryRange > Screen.height) {
-                // it's out of screen
-                Destroy(gameObject);
-            }
-        }
-    }
-    
-    
-    public void OnCollide(Collision2D other) 
-    {
-        Debug.Log($"collided with {other.gameObject.name}");
-        var enemy = other.gameObject.GetComponent<Enemy>();
+			if (pos_in_screen.x + boundryRange < 0 ||
+				pos_in_screen.x - boundryRange > Screen.width ||
+				pos_in_screen.y + boundryRange < 0 ||
+				pos_in_screen.y - boundryRange > Screen.height)
+			{
+				// it's out of screen
+				Destroy (gameObject);
+			}
+		}
+	}
 
-        if (enemy != null) {
-            Debug.Log($"Damaging enemy {enemy.name} , damage : {damage}");
-            enemy.TakeDamage(new PlayerBulletDamageInfo(damage, stunDuration));
 
-            DestroyBullet();
-        }
-    }
+	public void OnCollide(Collision2D other)
+	{
+		Debug.Log ($"collided with {other.gameObject.name}");
+		var enemy = other.gameObject.GetComponent<Enemy> ();
 
-    private void DestroyBullet() {
-        Destroy(gameObject);
-    }
+		if (enemy != null)
+		{
+			Debug.Log ($"Damaging enemy {enemy.name} , damage : {damage}");
+			enemy.TakeDamage (new PlayerBulletDamageInfo (damage, stunDuration));
+
+			DestroyBullet ();
+		}
+	}
+
+	private void DestroyBullet()
+	{
+		// spawn game object on the tangent direction
+		var obj = Instantiate<GameObject>(spawnOnHit, transform.position, transform.rotation);
+		Debug.Break();
+		
+		Destroy (gameObject);
+	}
 
 }

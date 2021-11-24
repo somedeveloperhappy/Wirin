@@ -3,27 +3,10 @@ Shader "custom/post process"
     
     Properties
     {
-        // shared
-        // [HideInInspector]
-        // [KeywordEnum(ULTRA, HIGH, MEDIUM, LOW)] _Samples ("sample amount", Float) = 2
-        
-        // [HideInInspector] [Toggle(BLUR)] _blurEffect("Blur", float) = 0
-        // [HideInInspector] _blur_1_dir_x ("Blur direction pass 1 x", Float) = 1
-        // [HideInInspector] _blur_1_dir_y ("Blur direction pass 1 y", Float) = 0
-        // [HideInInspector] _blur_2_dir_x ("Blur direction pass 2 x", Float) = 0
-        // [HideInInspector] _blur_2_dir_y ("Blur direction pass 2 y", Float) = 1
-        // [HideInInspector] [KeywordEnum(GUASSIAN, BOX)] _blur ("Blur Type", Float) = 0
-        // [HideInInspector] _blur_intensity ("Intensity", Float) = 10
-        // [HideInInspector] _blur_mask ("blur mask", 2D) = "white" {}
-        
-        // [HideInInspector] [Toggle(CHROM)] _chromEffect("Chromatic Aberration", float) = 0
-        // [HideInInspector] _chrom_intensity ("Intensity", Float) = 10
-        
         _chromatic_intensity ("Chromatic Intensity", Range(0, 1)) = 0.5
         _lens_distortion ("Lens Distortion", Float) = 1
         
         
-         
         [HideInInspector]
         _MainTex ("Texture", 2D) = "white" {}
     }
@@ -39,7 +22,7 @@ Shader "custom/post process"
             #pragma vertex vert
             #pragma fragment frag
             
-            #define SAMPLE_COUNT 2
+            #define CHROMATIC_SAMPLES 1
             
             #include "UnityCG.cginc"
 
@@ -95,22 +78,23 @@ Shader "custom/post process"
                 
                 fixed4 actual_col = tex2D(_MainTex, i.uv);
                 
+                 
+                // chromatic abberation
                 float r = 0;
                 float b = 0;
                 
-                for(float k=1; k<=SAMPLE_COUNT; k ++) {
-                    r += tex2D(_MainTex, 
-                            lerp(i.uv, Cent2Sat(float2(0,0)), (k/SAMPLE_COUNT) * _chromatic_intensity)
-                        ).r;
-                    b += tex2D(_MainTex,
-                            lerp(i.uv, Cent2Sat(normalize(Sat2Cent(i.uv))), (k/SAMPLE_COUNT) * _chromatic_intensity)
-                        ).b;
+                for(float k=1; k<=CHROMATIC_SAMPLES; k ++) 
+                {
+                    r += saturate(tex2D(_MainTex, 
+                            lerp(i.uv, Cent2Sat(float2(0,0)), (k/CHROMATIC_SAMPLES) * _chromatic_intensity)
+                        ).r);
+                    b += saturate(tex2D(_MainTex,
+                            lerp(i.uv, Cent2Sat(normalize(Sat2Cent(i.uv))), (k/CHROMATIC_SAMPLES) * _chromatic_intensity)
+                        ).b);
                 }
                 
-                
-                
-                actual_col.r = (actual_col.r + r*5) / (5*SAMPLE_COUNT + 1);
-                actual_col.b = (actual_col.b + b*5) / (5*SAMPLE_COUNT + 1);
+                actual_col.r = (actual_col.r + r*5) / (5*CHROMATIC_SAMPLES + 1);
+                actual_col.b = (actual_col.b + b*5) / (5*CHROMATIC_SAMPLES + 1);
                 
                 return actual_col;    
             }
