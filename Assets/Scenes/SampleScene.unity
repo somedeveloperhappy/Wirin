@@ -1250,12 +1250,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2975,6 +2975,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1679687614}
   - component: {fileID: 1679687615}
+  - component: {fileID: 1679687616}
   m_Layer: 0
   m_Name: hierarchy color
   m_TagString: EditorOnly
@@ -3045,6 +3046,35 @@ MonoBehaviour:
     - {r: 0, g: 1, b: 0.6476085, a: 1}
     - {r: 0.9529412, g: 0.0602907, b: 0, a: 1}
   editingColor_fore: {r: 0.9529412, g: 0.0602907, b: 0, a: 1}
+--- !u!114 &1679687616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679687613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 726659ed5e537814cbb7bf31fb680428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  position:
+    enabled: 1
+    x: 0
+    y: 0
+    z: 0
+  rotation:
+    enabled: 1
+    x: 0
+    y: 0
+    z: 0
+  scale:
+    enabled: 0
+    x: 0
+    y: 0
+    z: 0
+  applyTime: 0
 --- !u!198 &1824123838 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 1861243685, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
@@ -3132,7 +3162,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1861767492
 MonoBehaviour:
@@ -3558,7 +3588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2299828312801376789, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2299828312801376789, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
       propertyPath: m_LocalPosition.x

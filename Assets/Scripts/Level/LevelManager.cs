@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace LevelManaging
@@ -21,12 +22,14 @@ namespace LevelManaging
         #endregion
 
         public int level = 0;
+        
+        public bool WaitingForWin { get; private set; } = false;
 
         private void Awake() {
             LoadLevel();
         }
 
-        private void LoadLevel() => level = PlayerPrefs.GetInt("lvl", 1);
+        public void LoadLevel() => level = PlayerPrefs.GetInt("lvl", 1);
         private void SaveLevel() => PlayerPrefs.SetInt("lvl", level);
 
         public void Init() {
@@ -36,6 +39,7 @@ namespace LevelManaging
         }
 
         public void Tick() {
+            if(WaitingForWin) return;
             CheckForSpawn();
         }
 
@@ -47,10 +51,14 @@ namespace LevelManaging
         public void WinLevel() {
             level++;
             SaveLevel();
+            
             References.gameController.WinGame();
         }
 
         public void OnEnemyDestroy(Enemy enemy) {
+            
+            if(WaitingForWin) return;
+            
             levelContaining.pointsTaken += enemy.points;
             Debug.Log($"enemy died. checking for win...");
             CheckForWin(enemy);
@@ -58,6 +66,9 @@ namespace LevelManaging
         }
 
         public void CheckForWin(Enemy enemy) {
+            
+            if(WaitingForWin) return;
+            
             if ((Enemy.instances.Count < 1 || (Enemy.instances.Count == 1 && Enemy.instances[0] == enemy)) &&
                 levelContaining.pointsTaken >= levelContaining.goalPoints) {
                 WinLevel();

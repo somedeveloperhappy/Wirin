@@ -5,6 +5,10 @@ using LevelManaging;
 [CustomEditor(typeof(LevelManager))]
 public class LevelManagerEditor : Editor
 {
+    private void OnEnable() 
+    {
+        (target as LevelManager).LoadLevel();
+    }
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
 

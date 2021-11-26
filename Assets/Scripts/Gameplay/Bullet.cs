@@ -106,8 +106,9 @@ public class Bullet : MonoBehaviour
 	private void DestroyBullet()
 	{
 		// spawn game object on the tangent direction
-		var obj = Instantiate<GameObject>(spawnOnHit, transform.position, transform.rotation);
-		Debug.Break();
+		Vector3 rot = transform.rotation.eulerAngles;
+		rot.z = -rot.z; // facing opposite
+		var obj = Instantiate<GameObject>(spawnOnHit, transform.position, Quaternion.Euler(rot));
 		
 		Destroy (gameObject);
 	}
