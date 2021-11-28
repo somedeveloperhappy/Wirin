@@ -16,6 +16,6 @@ public class LevelNumberFx : MonoBehaviour
     }
 
     private void UpdateText() {
-        text.text = "Level " + References.levelManager.level;
+        text.text = "Level " + References.levelManager.levelNumber;
     }
 }

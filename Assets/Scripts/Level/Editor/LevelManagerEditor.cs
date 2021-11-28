@@ -7,7 +7,7 @@ public class LevelManagerEditor : Editor
 {
     private void OnEnable() 
     {
-        (target as LevelManager).LoadLevel();
+        (target as LevelManager).LoadLevelNumberFromPrefs();
     }
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();

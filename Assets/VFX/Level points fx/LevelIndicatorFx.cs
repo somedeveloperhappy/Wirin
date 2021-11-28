@@ -13,7 +13,7 @@ namespace CanvasSystem
         #region handy refs
 
         LevelManaging.LevelManager levelManager => References.levelManager;
-        int pointsTaken => levelManager.levelContaining.pointsTaken;
+        int pointsTaken => levelManager.levelStats.pointsTaken;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace CanvasSystem
 
         private void onLevelStart() {
             // level number display
-            levelText.text = string.Concat("Level ", levelManager.level);
+            levelText.text = string.Concat("Level ", levelManager.levelNumber);
             Show();
         }
 
@@ -63,8 +63,8 @@ namespace CanvasSystem
         }
 
         private void Show() {
-            pointsText.text = (int) showingValue + " / " + levelManager.levelContaining.goalPoints;
-            fillImage.material.SetFloat("_value", showingValue / levelManager.levelContaining.goalPoints);
+            pointsText.text = (int) showingValue + " / " + levelManager.levelStats.goalPoints;
+            fillImage.material.SetFloat("_value", showingValue / levelManager.levelStats.goalPoints);
         }
 
         private bool IsNotPlaying() => !References.gameController.isPlaying;

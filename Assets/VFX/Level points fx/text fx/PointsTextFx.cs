@@ -14,7 +14,7 @@ namespace InGameFX
         #region handy refs
 
         LevelManaging.LevelManager levelManager => References.levelManager;
-        int pointsTaken => levelManager.levelContaining.pointsTaken;
+        int pointsTaken => levelManager.levelStats.pointsTaken;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace InGameFX
         }
 
         private void Show() {
-            text.text = (int) showingValue + " / " + levelManager.levelContaining.goalPoints;
+            text.text = (int) showingValue + " / " + levelManager.levelStats.goalPoints;
         }
     }
 }

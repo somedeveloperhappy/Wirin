@@ -448,7 +448,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 858817385}
         m_TargetAssemblyTypeName: PlayManagement.GameController, Assembly-CSharp
-        m_MethodName: StarNextGame
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1825,7 +1825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025b8b676fcca2b42ac52d2d69d30e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelContaining:
+  levelStats:
     spawningPoints: 0
     spawningPointsSpread: 0
     goalPoints: 0
@@ -1834,7 +1834,7 @@ MonoBehaviour:
     spawnTimeRateSpread: 0
   lineSegments: {fileID: 11400000, guid: 2de613c21f73cbc499a20e5af5c95b90, type: 2}
   next_spawn_time: 0
-  level: 0
+  levelNumber: 1
 --- !u!114 &858817385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2975,7 +2975,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1679687614}
   - component: {fileID: 1679687615}
-  - component: {fileID: 1679687616}
   m_Layer: 0
   m_Name: hierarchy color
   m_TagString: EditorOnly
@@ -3011,7 +3010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tex: {fileID: 2800000, guid: 22f38cf8734dafe4d93a89457f850d91, type: 3}
   col_memory:
-    keys: bdff1d64804aa23bd3a3b53e9b3a7311121cda7a11d5dd5d161b091ebce2463ab222205a2ad05235d74871285ac4c44fee5fbf0997ad7b0b3b50567260295e080c68454ce0b1c662a60ad0115f43237a177b1e1559ee8d5e52a2fa086e94127adb2bc036d7470c22b8e72d443340e22ff430a020adb54b21adc82a0c4051f86e
+    keys: bdff1d64804aa23bd3a3b53e9b3a7311121cda7a11d5dd5d161b091ebce2463ab222205a2ad05235d74871285ac4c44fee5fbf0997ad7b0b3b50567260295e080c68454ce0b1c662a60ad0115f43237a177b1e1559ee8d5e52a2fa086e94127adb2bc036d7470c22b8e72d443340e22ff430a020adb54b21adc82a0c4051f86e5958380b
     values:
     - {r: 0, g: 0.57777786, b: 1, a: 1}
     - {r: 0, g: 1, b: 0.6476085, a: 1}
@@ -3045,36 +3044,8 @@ MonoBehaviour:
     - {r: 0, g: 1, b: 0.6476085, a: 1}
     - {r: 0, g: 1, b: 0.6476085, a: 1}
     - {r: 0.9529412, g: 0.0602907, b: 0, a: 1}
-  editingColor_fore: {r: 0.9529412, g: 0.0602907, b: 0, a: 1}
---- !u!114 &1679687616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679687613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 726659ed5e537814cbb7bf31fb680428, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  position:
-    enabled: 1
-    x: 0
-    y: 0
-    z: 0
-  rotation:
-    enabled: 1
-    x: 0
-    y: 0
-    z: 0
-  scale:
-    enabled: 0
-    x: 0
-    y: 0
-    z: 0
-  applyTime: 0
+    - {r: 0.5707547, g: 0.5926379, b: 1, a: 1}
+  editingColor_fore: {r: 0.5707547, g: 0.5926379, b: 1, a: 1}
 --- !u!198 &1824123838 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 1861243685, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
@@ -3585,6 +3556,18 @@ PrefabInstance:
     - target: {fileID: 1861243685, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2299828311699196917, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2299828311699196917, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2299828311699196917, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2299828312801376789, guid: 81d788cddde3fc24f89c8d55cd4c8ddb, type: 3}
       propertyPath: m_RootOrder
