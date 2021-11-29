@@ -18,7 +18,7 @@ namespace FlatVFX
 		public BlastFX[] blasts;
 
 		private void Awake() {
-			bullet.onInit += Init;
+			bullet.onInit_fine += Init;
 			bullet.onHit += onBulletHit;
 		}
 

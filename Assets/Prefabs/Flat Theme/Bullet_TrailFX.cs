@@ -29,7 +29,7 @@ namespace FlatVFX
 				Debug.LogError ("Parent of object is not Bullet. Deleting self...");
 				Destroy (gameObject);
 			}
-            parentBullet.onInit += Setup;
+            parentBullet.onInit_fine += Setup;
 		}
 
 		/// <summary>

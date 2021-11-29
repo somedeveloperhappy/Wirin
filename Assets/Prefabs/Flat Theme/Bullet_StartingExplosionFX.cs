@@ -31,7 +31,7 @@ namespace FlatVFX
 				Debug.LogError ("Parent of object is not Bullet. Deleting self...");
 				Destroy (gameObject);
 			}
-            parentBullet.onInit += Init;
+            parentBullet.onInit_fine += Init;
 		}
 		
 		private void Init(float normalizedT)

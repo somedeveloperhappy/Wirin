@@ -10,11 +10,16 @@ public class PostProEditor : Editor
 
 		var tar = target as PostPro;
 
-		if (tar.pp_mat)
-		{
-			// var mat_prop = serializedObject.FindProperty (nameof (tar.pp_mat));
-			var mat = new SerializedObject(tar.pp_mat);
-			EditorGUILayout.PropertyField(mat.GetIterator());
-		}
+		// if (tar.pp_mat)
+		// {
+		// 	// var mat_prop = serializedObject.FindProperty (nameof (tar.pp_mat));
+		// 	var mat = new SerializedObject(tar.pp_mat);
+		// 	var iter = mat.GetIterator();
+		// 	iter.Next(true);
+		// 	do
+		// 	{
+		// 		EditorGUILayout.PropertyField(iter, true);
+		// 	} while(iter.Next(false));
+		// }
 	}
 }

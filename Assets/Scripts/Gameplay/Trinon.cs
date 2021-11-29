@@ -20,7 +20,7 @@ public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 
 		public void Init()
 		{
-			last_key_time = curve.keys[ curve.keys.Length - 1 ].time;
+			last_key_time = curve.keys[curve.keys.Length - 1].time;
 		}
 	}
 
@@ -62,7 +62,7 @@ public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 		}
 	}
 
-#region general settigns
+	#region general settigns
 
 	public SpeedDownCurve speedDown;
 	public SpeedUpCurve speedUp;
@@ -71,37 +71,36 @@ public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 	[SerializeField] Vector2 bulletPosOffset;
 	public Bullet bulletPrefab;
 
-#endregion
+	#endregion
 
-#region quick references
+	#region quick references
 
 	public Pivot pivot => References.pivot;
 
-#endregion
+	#endregion
 
-#region refs
+	#region refs
 
 	public PlayerInfo playerInfo;
-	public ParticleSystem particleOnShoot;
 
-#endregion
+	#endregion
 
 	public Vector3 GetBulletPositionInWorld() =>
 		transform.position + transform.up * bulletPosOffset.y + transform.right * bulletPosOffset.x;
 
 	[HideInInspector] public float rotateSpeedMultiplier = 1;
 	float rotateSpeedMultiplier_internal = 1;
-	
-#region actions
+
+	#region actions
 	/// <summary>
 	/// gets called every Update frame during shooting press
 	/// </summary>
 	public delegate void onShootingPressHandler(float duration);
-	
+
 	public event onShootingPressHandler onShootingPressUpdate;
 	public event onShootingPressHandler onShootingPressEnd;
 	public event System.Action onShootingPressStart;
-#endregion
+	#endregion
 
 
 	private void Start()
@@ -114,13 +113,13 @@ public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 	public void OnPressDown(float duration)
 	{
 		// speed up should be cancelled
-		onShootingPressStart?.Invoke();
+		onShootingPressStart?.Invoke ();
 	}
 
 	public void OnPressUp(float duration)
 	{
-		Shoot (duration);
-		onShootingPressEnd?.Invoke(duration);
+		Shoot ();
+		onShootingPressEnd?.Invoke (duration);
 	}
 
 	public void OnPressDownUpdate()
@@ -130,8 +129,8 @@ public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 
 		apply_internal_speedMultiplier ();
 		Move ();
-		
-		onShootingPressUpdate?.Invoke(References.playerPressManager.stateDuration);
+
+		onShootingPressUpdate?.Invoke (References.playerPressManager.stateDuration);
 	}
 
 	public void OnPressUpUpdate()
@@ -154,12 +153,9 @@ public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 			rotateSpeed * rotateSpeedMultiplier_internal * rotateSpeedMultiplier * Time.deltaTime);
 	}
 
-	void Shoot(float duration)
+	void Shoot()
 	{
-		Instantiate (bulletPrefab, GetBulletPositionInWorld (), transform.rotation).Init (playerInfo, duration);
-
-		if (particleOnShoot)
-			Instantiate<ParticleSystem> (particleOnShoot, GetBulletPositionInWorld (), transform.rotation);
+		Instantiate (bulletPrefab, GetBulletPositionInWorld (), transform.rotation).Init (playerInfo);
 	}
 
 	public PlayerInfo GetPlayerInfo() => playerInfo;

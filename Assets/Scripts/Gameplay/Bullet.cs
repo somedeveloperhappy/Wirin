@@ -7,9 +7,9 @@ public class Bullet : MonoBehaviour
 {
 #region main settings
 
-	[SerializeField] public AnimationCurve damageCurve;
-	[SerializeField] AnimationCurve speedCurve;
-	[SerializeField] AnimationCurve stunCurve;
+	[SerializeField, Tooltip("T between 0 and 1")] AnimationCurve damageCurve;
+	[SerializeField, Tooltip("T between 0 and 1")] AnimationCurve speedCurve;
+	[SerializeField, Tooltip("T between 0 and 1")] AnimationCurve stunCurve;
 
 #endregion
 
@@ -24,11 +24,15 @@ public class Bullet : MonoBehaviour
 	public float stunDuration;
 	
 #region events
-	public delegate void OnInit(float t);
+	public delegate void OnInit(float normalizedT);
 	/// <summary>
-	/// executes on initializing it
+	/// executes on initializing it, T normalized
 	/// </summary>
-	public OnInit onInit;
+	public OnInit onInit_fine;
+	/// <summary>
+	/// executes on initializing it, T not normalized
+	/// </summary>
+	public OnInit onInit_raw;
 	public delegate void OnHit(float damage);
 	/// <summary>
 	/// happens on damage
@@ -37,16 +41,19 @@ public class Bullet : MonoBehaviour
 	
 #endregion
 
-	public void Init(PlayerInfo playerInfo, float pressed_duration)
+	public void Init(PlayerInfo playerInfo)
 	{
-		float normalizedDuration = pressed_duration / damageCurve.keys[damageCurve.keys.Length - 1].time;
-		
 		this.playerInfo = playerInfo;
-		damage = damageCurve.Evaluate (pressed_duration);
-		speed = speedCurve.Evaluate (pressed_duration);
-		stunDuration = stunCurve.Evaluate (pressed_duration);
+		var raw_charge = playerInfo.GetRawCharge();
+		var normal_charge = raw_charge / playerInfo.GetMaxPossibleCharge ();
 		
-		onInit?.Invoke(normalizedDuration);
+
+		damage = damageCurve.Evaluate (normal_charge);
+		speed = speedCurve.Evaluate (normal_charge);
+		stunDuration = stunCurve.Evaluate (normal_charge);
+		
+		onInit_fine?.Invoke(normal_charge);
+		onInit_raw?.Invoke(raw_charge);
 	}
 
 	#region editor settings
