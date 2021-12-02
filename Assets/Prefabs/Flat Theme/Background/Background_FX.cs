@@ -9,19 +9,14 @@ namespace FlatVFX
 	public class Background_FX : MonoBehaviour, IOnPressFx
 	{
 		[System.Serializable]
-		public class Overlay
+		public class PostProcess
 		{
-			public MeshRenderer meshRenderer;
-			[HideInInspector] public Material material;
-			[HideInInspector] public float hueChangeSpeed = 0;
-			[HideInInspector] public Color overlayBaseColor;
-			[HideInInspector] public float current_hue;
-
+			public FlatBackgroundPP main;
+			
 			[System.Serializable]
 			public class Settings
 			{
-				public MinMax hueChangeSpeed;
-				public MinMax alpha;
+				public MinMax fogIntensity, saturation;
 			}
 			public Settings settings;
 		}
@@ -30,32 +25,38 @@ namespace FlatVFX
 		{
 			public MeshRenderer meshRenderer;
 			[HideInInspector] public Material mateiral;
-
+			public Vector2 rotatingPivot;
+			
+			[HideInInspector] public float speed;
+			
 			[System.Serializable]
 			public class Settings
 			{
-				public MinMax steps;
+				public MinMax steps;	
+				public MinMax rotatingSpeed;
 			}
 			public Settings settings;
 		}
+		
+		[System.Serializable]
+		public class Lightfx
+		{
+			public Light light;
+			public MinMax speed;
+			[HideInInspector] public float m_speed;
+		}
 
-		public Overlay overlay;
+		public PostProcess postPro;
 		public Models[] models;
+		public Lightfx lightfx;
 
 #region handy refs
 		public Trinon trinon => References.trinon;
 		public Bullet bullet => References.trinon.bulletPrefab;
 #endregion
 
-		private float bulletMaxPower = 0;
-
 		private void Start()
 		{
-			// overlay stuff
-			overlay.material = overlay.meshRenderer.material;
-			overlay.overlayBaseColor = overlay.material.GetColor ("_MainColor");
-			Color.RGBToHSV (overlay.overlayBaseColor, out overlay.current_hue, out _, out _); // getting the first hue
-
 			// models stuff
 			foreach (var model in models)
 			{
@@ -64,40 +65,37 @@ namespace FlatVFX
 
 			this.Initialize ();
 		}
-
-		private void Update()
-		{
-			// overlay stuff
-			ChangeHue (Time.deltaTime * overlay.hueChangeSpeed);
-		}
-
-		private void ChangeHue(float delta)
-		{
-			// getting HSV
-			float s, v, a;
-			Color.RGBToHSV (overlay.overlayBaseColor, out _, out s, out v);
-			// Changing Hue
-			overlay.current_hue = (overlay.current_hue + delta) % 1;
-			var col = Color.HSVToRGB (overlay.current_hue, s, v);
-			col.a = overlay.overlayBaseColor.a;
-			// Applying to material
-			overlay.material.SetColor ("_MainColor", col);
-		}
-
+		
 		public void Apply(float normalizedT)
 		{
 			// overlay
-			overlay.hueChangeSpeed = Mathf.Lerp (overlay.settings.hueChangeSpeed.min, overlay.settings.hueChangeSpeed.max, normalizedT);
-			overlay.overlayBaseColor.a = Mathf.Lerp (overlay.settings.alpha.min, overlay.settings.alpha.max, normalizedT);
+			postPro.main.SetFogIntensity (postPro.settings.fogIntensity.Evaluate (normalizedT));
+			postPro.main.SetSaturation (postPro.settings.saturation.Evaluate (normalizedT));
 
 			// models
 			foreach (var model in models)
 			{
-				model.mateiral.SetFloat (
-					"_Steps",
-					Mathf.Lerp (model.settings.steps.min, model.settings.steps.max, normalizedT));
+				model.mateiral.SetFloat ("_Steps", model.settings.steps.Evaluate (normalizedT));
+				model.speed = model.settings.rotatingSpeed.Evaluate (normalizedT);
 			}
+			
+			// light
+			lightfx.m_speed = lightfx.speed.Evaluate (normalizedT);
 		}
 		public void Initialize() => this.DefaultInitialize ();
+		
+		private void Update() 
+		{
+			// models
+			foreach (var model in models)
+			{
+				model.meshRenderer.transform.RotateAround (
+					model.rotatingPivot, Vector3.back, Time.deltaTime * model.speed);
+			}
+
+			// light
+			lightfx.light.transform.Rotate (Vector3.right * Time.deltaTime * lightfx.m_speed);
+
+		}
 	}
 }

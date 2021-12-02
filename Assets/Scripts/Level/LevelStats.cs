@@ -47,7 +47,7 @@ namespace LevelManaging
 			float normalized_level = 1 - Mathf.Exp (-0.005f * level);
 
 
-			this.goalPoints = (int) (3000f * (Mathf.Sin (0.3f * level) + 0.3f * level) - 1000);
+			this.goalPoints = (int) (3000f * (Mathf.Sin (0.3f * level) + 0.3f * level) - 1000) / 10;
 
 			this.spawningPoints =
 				(int) ((1f / Mathf.Pow (level, 0.5f) *

@@ -46,5 +46,5 @@ public class Pivot : MonoBehaviour, IOnPlayerPress, IPlayerPart
         transform.localScale = Vector3.one * scaleOnPress.Evaluate(scale_curve_t);
     }
 
-    public PlayerInfo GetPlayerInfo() => playerInfo;
+    public PlayerInfo GetPlayerInfo() => playerInfo;    
 }

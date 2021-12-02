@@ -164,7 +164,7 @@ MonoBehaviour:
   health: 1
   damage: 2
   points: 10
-  speed: 0.06
+  speed: 0.5
 --- !u!50 &2002652442641132760
 Rigidbody2D:
   serializedVersion: 4

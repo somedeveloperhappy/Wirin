@@ -7,7 +7,8 @@ public class version2txt : MonoBehaviour
 {
     public string text = "dev version %VER%";
 
-    private void OnEnable() {
+    private void OnEnable() 
+    {
         GetComponent<UnityEngine.UI.Text>().text = text.Replace("%VER%", Application.version);
     }
 }

@@ -3,12 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Enemies;
 using UnityEngine;
 
 namespace LevelManaging
 {
 	public class LevelManager : MonoBehaviour
 	{
+		#region consts
+		const float WIN_DELAY_WAIT = 2;
+		const float LOSE_DELAY_WAIT = 2;
+		const float CLOSE_DELAY_WAIT = 2;
+		#endregion
+
+		#region handy refs
+		public PlayManagement.GameController gameController => References.gameController;
+		#endregion
+
+
 		public LevelStats levelStats;
 		public LineSegments lineSegments;
 
@@ -45,13 +57,43 @@ namespace LevelManaging
 			onStartLevel?.Invoke ();
 		}
 
-		public void WinLevel()
+		public IEnumerator WinLevel()
 		{
-			Debug.Log($"won level {levelNumber}");
+			Debug.Log ($"won level {levelNumber} ... ");
 			levelNumber++;
 			SaveLevelNumberToPrefs ();
 
+			gameController.DisableAllGameplayMechanics (timeScale_zero: false);
+
+			// timescale towards 0
+			while (Time.timeScale > 0.01f)
+			{
+				Time.timeScale = Mathf.Lerp (Time.timeScale, 0, WIN_DELAY_WAIT * Time.unscaledDeltaTime);
+				yield return null; // wait for next frame
+			}
+			Time.timeScale = 0;
+
 			References.gameController.OnWinLevel ();
+		}
+
+		public IEnumerator LostLevel()
+		{
+			Debug.Log ($"lost on level {levelNumber}");
+			SaveLevelNumberToPrefs (); // for making sure
+
+			// wait and lose
+			gameController.DisableAllGameplayMechanics (stopInputingAbruptly: false);
+			foreach (var enem in Enemy.instances) enem.enabled = false;
+
+			// timescale towards 0
+			while (Time.timeScale > 0.01f)
+			{
+				Time.timeScale = Mathf.Lerp (Time.timeScale, 0, WIN_DELAY_WAIT * Time.unscaledDeltaTime);
+				yield return null; // wait for next frame
+			}
+			Time.timeScale = 0;
+			
+			gameController.OnLoseLevel ();
 		}
 
 		public void OnEnemyDestroy(Enemy enemy)
@@ -72,7 +114,7 @@ namespace LevelManaging
 			if ((Enemy.instances.Count < 1 || (Enemy.instances.Count == 1 && Enemy.instances[0] == enemy)) &&
 				levelStats.pointsTaken >= levelStats.goalPoints)
 			{
-				WinLevel ();
+				StartCoroutine (WinLevel ());
 			}
 			else
 			{

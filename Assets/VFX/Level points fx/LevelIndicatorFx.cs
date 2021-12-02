@@ -1,4 +1,5 @@
 using System;
+using Enemies;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,6 +68,6 @@ namespace CanvasSystem
             fillImage.material.SetFloat("_value", showingValue / levelManager.levelStats.goalPoints);
         }
 
-        private bool IsNotPlaying() => !References.gameController.isPlaying;
+        private bool IsNotPlaying() => !References.gameController.gameplayMechanicsActive;
     }
 }

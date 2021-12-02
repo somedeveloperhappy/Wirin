@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 
 
@@ -28,7 +29,7 @@ public class EnemyLifeShow : MonoBehaviour
         normal_col = textMesh.color;
         normal_scale = transform.localScale;
 
-        enemy.OnTakeDamage += onTakeDamage;
+        enemy.onTakeDamage += onTakeDamage;
     }
 
 

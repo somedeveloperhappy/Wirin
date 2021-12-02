@@ -7,45 +7,94 @@ namespace PlayManagement
 	{
 		bool wasPressed = false; // for checking if in previous frame the pivot was pressed
 
-        /// <summary>
-        /// the duration of the current state ( press, release)
-        /// </summary>
+		/// <summary>
+		/// the duration of the current state ( press, release)
+		/// </summary>
 		public float stateDuration = 0;
 
 		public float pressableRange = 4;
 
-		private void Update() {
+		/// <summary>
+		/// if false, it won't recieve any inputs
+		/// </summary>
+		public bool canGetInputs = true;
+
+		private void Update()
+		{
 			InputUpdates ();
 		}
 
-		private void InputUpdates() {
-            
-			if (wasPressed) {
-				if (InputGetter.isPoinerDown) {
-					// update 
-					stateDuration += Time.deltaTime;
-					IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressDownUpdate ());
-				} else {
-					wasPressed = false;
-					IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressUp (stateDuration));
-					stateDuration = 0;
+		private void InputUpdates()
+		{
+
+			if (wasPressed)
+			{
+				if (InputGetter.isPoinerDown && canGetInputs)
+				{
+					// on down update 
+					downUpdate ();
+				}
+				else
+				{
+					// on up start
+					upStart ();
+					upUpdate ();
 				}
 
-			} else {
+			}
+			else
+			{
 
-				bool pointerInsideRange() => 
-                    Vector2.Distance (InputGetter.GetPointerWorldPosition (), Vector2.zero) <= pressableRange;
-                
-				if (InputGetter.isPoinerDown && pointerInsideRange ()) {
-					wasPressed = true;
-					IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressDown (stateDuration));
-					stateDuration = 0;
-				} else {
-					// update
-					stateDuration += Time.deltaTime;
-					IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressUpUpdate ());
+				bool pointerInsideRange() =>
+					Vector2.Distance (InputGetter.GetPointerWorldPosition (), Vector2.zero) <= pressableRange;
+
+				if (InputGetter.isPoinerDown && pointerInsideRange () && canGetInputs)
+				{
+					// on down start
+					downStart ();
+					downUpdate ();
+				}
+				else
+				{
+					// on up update
+					upUpdate ();
 				}
 			}
 		}
+
+		private void downUpdate()
+		{
+			stateDuration += Time.deltaTime;
+			IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressDownUpdate ());
+		}
+
+		private void upStart()
+		{
+			wasPressed = false;
+			IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressUp (stateDuration));
+			stateDuration = 0;
+		}
+
+		private void downStart()
+		{
+			wasPressed = true;
+			IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressDown (stateDuration));
+			stateDuration = 0;
+		}
+
+		private void upUpdate()
+		{
+			stateDuration += Time.deltaTime;
+			IOnPlayerPressHelper.ForeachInstance ((pp) => pp.OnPressUpUpdate ());
+		}
+
+#if UNITY_EDITOR
+		public void OnDrawGizmos()
+		{
+			UnityEditor.Handles.color = new Color (1, 0, 0, 0.1f);
+			UnityEditor.Handles.DrawSolidDisc (Vector3.zero, Vector3.forward, pressableRange);
+		}
+#endif
+
 	}
 }

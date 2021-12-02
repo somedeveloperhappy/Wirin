@@ -23,8 +23,6 @@ namespace FlatVFX
 		public Bullet bullet => References.trinon.bulletPrefab;
 		#endregion
 
-		float bulletMaxPower = 0; // bullet's max power
-
 		private void Start()
 		{
 			particleSystem ??= GetComponent<ParticleSystem> ();

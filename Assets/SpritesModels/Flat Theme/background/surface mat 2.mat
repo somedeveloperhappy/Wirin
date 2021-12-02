@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: surface1 mat
+  m_Name: surface mat 2
   m_Shader: {fileID: 4800000, guid: 42573b3653c8b5040bf54a2603c80984, type: 3}
   m_ShaderKeywords: _SPEC_ON
   m_LightmapFlags: 4
@@ -79,14 +79,14 @@ Material:
     - _Spec: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Steps: 10
+    - _Steps: 3
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _AmbColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BrightColor: {r: 0.752, g: 0.752, b: 0.752, a: 1}
+    - _BrightColor: {r: 0, g: 0.17241383, b: 1, a: 1}
     - _Color: {r: 0.6556604, g: 1, b: 0.9156522, a: 1}
-    - _DarkColor: {r: 0.33869413, g: 0.47058824, b: 0.31388235, a: 1}
+    - _DarkColor: {r: 0.43529412, g: 0.4745098, b: 0.6431373, a: 1}
     - _DifColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmiColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

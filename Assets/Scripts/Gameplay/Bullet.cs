@@ -1,29 +1,30 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-#region main settings
+	#region main settings
 
-	[SerializeField, Tooltip("T between 0 and 1")] AnimationCurve damageCurve;
-	[SerializeField, Tooltip("T between 0 and 1")] AnimationCurve speedCurve;
-	[SerializeField, Tooltip("T between 0 and 1")] AnimationCurve stunCurve;
+	[SerializeField, Tooltip ("T between 0 and 1")] AnimationCurve damageCurve;
+	[SerializeField, Tooltip ("T between 0 and 1")] AnimationCurve speedCurve;
+	[SerializeField, Tooltip ("T between 0 and 1")] AnimationCurve stunCurve;
 
-#endregion
+	#endregion
 
-#region refs
+	#region refs
 
 	public PlayerInfo playerInfo;
 
-#endregion
+	#endregion
 
 	public float damage;
 	public float speed;
 	public float stunDuration;
-	
-#region events
+
+	#region events
 	public delegate void OnInit(float normalizedT);
 	/// <summary>
 	/// executes on initializing it, T normalized
@@ -38,22 +39,22 @@ public class Bullet : MonoBehaviour
 	/// happens on damage
 	/// </summary>
 	public OnHit onHit;
-	
-#endregion
+
+	#endregion
 
 	public void Init(PlayerInfo playerInfo)
 	{
 		this.playerInfo = playerInfo;
-		var raw_charge = playerInfo.GetRawCharge();
+		var raw_charge = playerInfo.GetRawCharge ();
 		var normal_charge = raw_charge / playerInfo.GetMaxPossibleCharge ();
-		
+
 
 		damage = damageCurve.Evaluate (normal_charge);
 		speed = speedCurve.Evaluate (normal_charge);
 		stunDuration = stunCurve.Evaluate (normal_charge);
-		
-		onInit_fine?.Invoke(normal_charge);
-		onInit_raw?.Invoke(raw_charge);
+
+		onInit_fine?.Invoke (normal_charge);
+		onInit_raw?.Invoke (raw_charge);
 	}
 
 	#region editor settings
@@ -115,7 +116,7 @@ public class Bullet : MonoBehaviour
 	private void DestroyBullet()
 	{
 		Destroy (gameObject);
-		onHit?.Invoke(damage);
+		onHit?.Invoke (damage);
 	}
 
 }

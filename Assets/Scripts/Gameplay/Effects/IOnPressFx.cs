@@ -9,6 +9,7 @@ namespace PressFX
     public interface IOnPressFx
     {
         /// <param name="normalizedT">normalized</param>
+        [ContextMenu("Apply")]
         public void Apply(float normalizedT);
         
         /// <summary>
