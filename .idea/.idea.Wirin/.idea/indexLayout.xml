@@ -69,11 +69,11 @@
       <Path>.idea</Path>
       <Path>.vscode</Path>
       <Path>Arts</Path>
-      <Path>Library</Path>
       <Path>Logs</Path>
       <Path>Temp</Path>
       <Path>UIElementsSchema</Path>
       <Path>UserSettings</Path>
+      <Path>Wirin zipped</Path>
       <Path>bin</Path>
       <Path>obj</Path>
     </explicitExcludes>

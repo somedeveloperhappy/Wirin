@@ -158,13 +158,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2002652442641132741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7525141788a0ebd448f5627d06a9c26f, type: 3}
+  m_Script: {fileID: 11500000, guid: daf4b7502633dad4b83fb17381afd9a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
-  damage: 2
-  points: 10
-  speed: 0.5
+  points: 0
+  speed: 0.2
+  damage: 1
 --- !u!50 &2002652442641132760
 Rigidbody2D:
   serializedVersion: 4

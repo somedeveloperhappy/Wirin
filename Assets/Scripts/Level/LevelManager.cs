@@ -128,7 +128,7 @@ namespace LevelManaging
 		{
 			if (!CanSpawn ()) return;
 
-			Spawn ();
+			SpawnEnemy ();
 			updateSpawnTime ();
 			Debug.Log ($"spawned an enemy. next spawn at {next_spawn_time}");
 		}
@@ -146,7 +146,7 @@ namespace LevelManaging
 		}
 
 
-		private void Spawn()
+		private void SpawnEnemy()
 		{
 			int enem_index = UnityEngine.Random.Range (0, References.enemies.Length);
 			Vector2 position = lineSegments.GetPoint (UnityEngine.Random.Range (0f, lineSegments.maximumX));

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using LevelManaging;
@@ -7,55 +8,66 @@ namespace Enemies
 {
 	public class EnemyTrig : Enemy
 	{
-		public override float Health
+		private Vector3 targetPosition;
+
+#region caches
+
+		private new Transform transform;
+#endregion
+
+#region settings
+
+		public float speed = 0.2f;
+		public float damage = 1;
+
+#endregion
+
+		protected override void OnInit()
 		{
-			get => throw new System.NotImplementedException ();
-			set => throw new System.NotImplementedException ();
+			// set up values
+			Health = (int)(points / 10);
+			
+			targetPosition = FindObjectOfType<PlayerInfo>(includeInactive: true).parts.pivot.transform.position;
+			// caching
+			transform = gameObject.transform;
+
+			RoateTowrardsTarget();
 		}
 
-		public override bool Equals(object other)
+		protected override void OnSetHealth()
 		{
-			return base.Equals (other);
+			if (Health <= 0)
+			{
+				Health = 0;
+				DestroyEnemy();
+			}
 		}
 
-		public override int GetHashCode()
+		private void RoateTowrardsTarget()
 		{
-			return base.GetHashCode ();
+			transform.up = targetPosition - transform.position;
 		}
 
-		public override void Init(int points)
+		private void Update()
 		{
-			base.Init (points);
+			MoveTowardsTarget();
 		}
 
-		public override string ToString()
+		private void MoveTowardsTarget()
 		{
-			return base.ToString ();
+			transform.position += transform.up * speed * Time.deltaTime;
 		}
 
-		protected override void AfterDestruction()
+		private void OnTriggerEnter2D(Collider2D other)
 		{
-			base.AfterDestruction ();
-		}
-
-		protected override void Awake()
-		{
-			base.Awake ();
-		}
-
-		protected override void BeforeDestruction()
-		{
-			base.BeforeDestruction ();
-		}
-
-		protected override void OnDestroy()
-		{
-			base.OnDestroy ();
-		}
-
-		protected override void OnTakeDamage()
-		{
-			base.OnTakeDamage ();
+			if (other.TryGetComponent<PlayerInfo>(out PlayerInfo playerInfo))
+			{
+				EnemyDamageInfo damageInfo = new EnemyDamageInfo(
+					damage: damage);
+				playerInfo.TakeDamage(damageInfo);
+				
+				DestroyEnemy();
+			}
 		}
 	}
 
