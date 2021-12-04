@@ -1,73 +1,84 @@
 using System;
-using Enemies;
+using Gameplay.EnemyNamespace.Types;
+using LevelManaging;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CanvasSystem
 {
-    public class LevelIndicatorFx : MonoBehaviour, IOnCanvasEnabled
-    {
-        public Text pointsText;
-        public UnityEngine.UI.Image fillImage;
-        public Text levelText;
+	public class LevelIndicatorFx : MonoBehaviour, IOnCanvasEnabled
+	{
+		public Image fillImage;
+		public Text levelText;
+		public Text pointsText;
 
-        #region handy refs
+		public Settings settings;
 
-        LevelManaging.LevelManager levelManager => References.levelManager;
-        int pointsTaken => levelManager.levelStats.pointsTaken;
+		private float showingValue;
+		private float speed;
 
-        #endregion
+		public void OnCanvasEnable() { }
 
-        [Serializable]
-        public struct Settings
-        {
-            [Tooltip(
-                "the showing points will take this long to reach the actual points, recalculated each time we got a new points")]
-            public float reachInSeconds;
-        }
+		private void Start()
+		{
+			References.levelManager.onStartLevel += onLevelStart;
+			References.levelManager.onEnemyDestroy += onEnemyDestroy;
+		}
 
-        public Settings settings;
+		private void onEnemyDestroy(EnemyBase enemy)
+		{
+			// recalculating speed
+			speed = (pointsTaken - showingValue) / settings.reachInSeconds;
+		}
 
-        float showingValue = 0;
-        float speed;
+		private void onLevelStart()
+		{
+			// level number display
+			levelText.text = string.Concat("Level ", levelManager.levelNumber);
+			Show();
+		}
 
-        private void Start() {
-            References.levelManager.onStartLevel += onLevelStart;
-            References.levelManager.onEnemyDestroy += onEnemyDestroy;
-        }
+		public void Update()
+		{
+			if (IsNotPlaying()) return;
 
-        public void OnCanvasEnable() { }
+			// check if should update
+			if (showingValue != pointsTaken)
+			{
+				// updating showing value
+				showingValue += speed * Time.deltaTime;
+				if (showingValue > pointsTaken) showingValue = pointsTaken;
 
-        private void onEnemyDestroy(Enemy enemy) {
-            // recalculating speed
-            speed = (pointsTaken - showingValue) / settings.reachInSeconds;
-        }
+				// show
+				Show();
+			}
+		}
 
-        private void onLevelStart() {
-            // level number display
-            levelText.text = string.Concat("Level ", levelManager.levelNumber);
-            Show();
-        }
+		private void Show()
+		{
+			pointsText.text = (int) showingValue + " / " + levelManager.levelStats.goalPoints;
+			fillImage.material.SetFloat("_value", showingValue / levelManager.levelStats.goalPoints);
+		}
 
-        public void Update() {
-            if (IsNotPlaying()) return;
+		private bool IsNotPlaying()
+		{
+			return !References.gameController.gameplayMechanicsActive;
+		}
 
-            // check if should update
-            if (showingValue != pointsTaken) {
-                // updating showing value
-                showingValue += speed * Time.deltaTime;
-                if (showingValue > pointsTaken) showingValue = pointsTaken;
+		[Serializable]
+		public struct Settings
+		{
+			[Tooltip(
+				"the showing points will take this long to reach the actual points, recalculated each time we got a new points")]
+			public float reachInSeconds;
+		}
 
-                // show
-                Show();
-            }
-        }
+#region handy refs
 
-        private void Show() {
-            pointsText.text = (int) showingValue + " / " + levelManager.levelStats.goalPoints;
-            fillImage.material.SetFloat("_value", showingValue / levelManager.levelStats.goalPoints);
-        }
+		private LevelManager levelManager => References.levelManager;
+		private int pointsTaken => levelManager.levelStats.pointsTaken;
 
-        private bool IsNotPlaying() => !References.gameController.gameplayMechanicsActive;
-    }
+#endregion
+
+	}
 }

@@ -1,20 +1,21 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace FlatVFX
 {
-	[CustomEditor (typeof (BlastSpawner))]
+	[CustomEditor(typeof(BlastSpawner))]
 	public class BlastSpawnerEditor : Editor
 	{
-		public override void OnInspectorGUI() {
-			
-			serializedObject.Update();
-			base.OnInspectorGUI ();
+		public override void OnInspectorGUI()
+		{
 
-			if (GUILayout.Button ("Sort")) 
+			serializedObject.Update();
+			base.OnInspectorGUI();
+
+			if (GUILayout.Button("Sort"))
 			{
-				(target as BlastSpawner).SortBlastsBasedOnMaxT ();
-				serializedObject.ApplyModifiedProperties ();
+				(target as BlastSpawner).SortBlastsBasedOnMaxT();
+				serializedObject.ApplyModifiedProperties();
 			}
 		}
 	}

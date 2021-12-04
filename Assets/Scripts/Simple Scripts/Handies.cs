@@ -1,12 +1,19 @@
-[System.Serializable]
+using System;
+using UnityEngine;
+
+[Serializable]
 public struct MinMax
 {
-    public float min, max;
-    public float Evaluate(float t) => UnityEngine.Mathf.Lerp(min, max, t);
+	public float min, max;
+
+	public float Evaluate(float t)
+	{
+		return Mathf.Lerp(min, max, t);
+	}
 }
 
-[System.Serializable]
+[Serializable]
 public struct MinMax<T>
 {
-    public T min, max;
+	public T min, max;
 }

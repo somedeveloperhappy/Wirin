@@ -78,14 +78,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee83080cf809274f8b91cfdb3d30147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particleSystem: {fileID: 1003123862}
   settings:
-    rateOverTime:
-      min: 0
-      max: 40
     alpha:
       min: 0
       max: 1
-  particleSystem: {fileID: 1003123862}
+    rateOverTime:
+      min: 0
+      max: 40
 --- !u!199 &1003123861
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5177,23 +5177,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d1cf3a57a52c4f4e9f518cf457c59ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particleSystem: {fileID: 1593836566}
   settings:
+    alpha:
+      min: 0
+      max: 0.08
     emissionRate:
       min: 5
       max: 40
     shapeEdgeSizeX:
       min: 0.03
       max: 0.01
-    startSizeY:
-      min: 0.1
-      max: 1
     startLifeTime:
       min: 0.1
       max: 1
-    alpha:
-      min: 0
-      max: 0.08
-  particleSystem: {fileID: 1593836566}
+    startSizeY:
+      min: 0.1
+      max: 1
 --- !u!199 &1593836565
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -10020,14 +10020,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee83080cf809274f8b91cfdb3d30147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particleSystem: {fileID: 1861243685}
   settings:
-    rateOverTime:
-      min: 0
-      max: 40
     alpha:
       min: 0
       max: 1
-  particleSystem: {fileID: 1861243685}
+    rateOverTime:
+      min: 0
+      max: 40
 --- !u!199 &1861243684
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -14853,7 +14853,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2299828311482426098}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07687af6b98a1144e95b18d9159436f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 1784c9488dcddea4eb330ac16045d52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speedDown:
@@ -15141,9 +15141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c214417271846540b0fbd1cf0b8230f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stats:
-    maxHealth: 10
   m_shootings:
+    playerNormalBulletPrefab: {fileID: 3084275624705232902, guid: 661307f2950e67c479b6a935aae63c5c, type: 3}
+    chargeDownLerp: 2
+    maxFineT: 9
     shootCharge:
       serializedVersion: 2
       m_Curve:
@@ -15195,9 +15196,11 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    maxFineT: 9
-    chargeDownLerp: 2
-    bulletPrefab: {fileID: 3084275624705232902, guid: 661307f2950e67c479b6a935aae63c5c, type: 3}
+  m_stats:
+    maxHealth: 10
+  parts:
+    pivot: {fileID: 2299828312801376788}
+    trinon: {fileID: 2299828311482426096}
 --- !u!114 &1776637750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15210,8 +15213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d7f21ea4479934c8a1cf11ff9f366c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInfo: {fileID: 2044437615}
   currentT: 0
+  playerInfo: {fileID: 2044437615}
 --- !u!114 &2299828312801376788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15221,9 +15224,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2299828312801376790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48994a915ba00b348b42d0f5e305ce39, type: 3}
+  m_Script: {fileID: 11500000, guid: dd43e9a27733eb8438f41b4833aae6a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInfo: {fileID: 2044437615}
   scaleOnPress:
     serializedVersion: 2
     m_Curve:
@@ -15248,9 +15252,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  speedOnDown: 2
-  speedOnUp: 30
-  playerInfo: {fileID: 2044437615}
+  speedOnDown: 1
+  speedOnUp: 10
 --- !u!58 &2044437616
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15279,6 +15282,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc889210d002fe4d8c706a1eca46e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraEffect:
+    cameraSize:
+      min: 5
+      max: 8
   shaderEffect:
     chromaticIntensity:
       min: 0
@@ -15286,10 +15293,6 @@ MonoBehaviour:
     lensDistortion:
       min: 0
       max: 0.22
-  cameraEffect:
-    cameraSize:
-      min: 5
-      max: 8
 --- !u!1 &2517771162457215781
 GameObject:
   m_ObjectHideFlags: 0
@@ -15418,16 +15421,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInfo: {fileID: 2044437615}
-  spriteRenderer: {fileID: 2892012180229518967}
   settings:
-    startingFillValue: 0.35
     healthChangeSpeed: 5
-    smoothnessValueMax:
-      min: 0.138
-      max: 0.077
     smoothnessSpeed:
       min: 1
       max: 3
+    smoothnessValueMax:
+      min: 0.138
+      max: 0.077
+    startingFillValue: 0.35
+  spriteRenderer: {fileID: 2892012180229518967}
 --- !u!1 &8231701290396928718
 GameObject:
   m_ObjectHideFlags: 0
@@ -15524,13 +15527,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInfo: {fileID: 2044437615}
-  spriteRenderer: {fileID: 9162938698492642467}
   settings:
-    startingFillValue: 0.35
     healthChangeSpeed: 1
-    smoothnessValueMax:
-      min: 0.138
-      max: 0.077
     smoothnessSpeed:
       min: 1
       max: 3
+    smoothnessValueMax:
+      min: 0.138
+      max: 0.077
+    startingFillValue: 0.35
+  spriteRenderer: {fileID: 9162938698492642467}

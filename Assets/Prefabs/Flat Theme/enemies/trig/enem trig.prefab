@@ -293,8 +293,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d438892cbeb1794aba8e62d80f08067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 2002652442641132743}
-  textMesh: {fileID: 978017236797455822}
+  enemyBase: {fileID: 2002652442641132743}
   onDamageFx:
-    scale: {x: 0.20878775, y: 0.42496708, z: 1}
     color: {r: 1, g: 0, b: 0.8835707, a: 1}
+    scale: {x: 0.20878775, y: 0.42496708, z: 1}
+  textMesh: {fileID: 978017236797455822}

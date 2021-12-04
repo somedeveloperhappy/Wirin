@@ -1,12 +1,11 @@
-using UnityEngine;
 using UnityEditor;
 
-[CustomEditor (typeof (PostPro))]
+[CustomEditor(typeof(PostPro))]
 public class PostProEditor : Editor
 {
 	public override void OnInspectorGUI()
 	{
-		base.OnInspectorGUI ();
+		base.OnInspectorGUI();
 
 		var tar = target as PostPro;
 

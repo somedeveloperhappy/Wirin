@@ -1,43 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
-using Enemies;
+using Gameplay;
+using Gameplay.EnemyNamespace.Types;
+using Gameplay.Player;
 using LevelManaging;
+using PlayManagement;
 using UnityEngine;
 
 public class References : MonoBehaviour
 {
-    static References instance;
+	private static References instance;
+	[SerializeField] private Camera _currentCamera;
+	[SerializeField] private EnemyBase[] _enemies;
+	[SerializeField] private GameController _gameController;
+	[SerializeField] private LevelManager _levelManager;
+	[SerializeField] private Pivot _pivot;
+	[SerializeField] private PlayerPressManager _playerPressManager;
+	[SerializeField] private PostPro _postPro;
+	[SerializeField] private Trinon _trinon;
 
-    static public Pivot pivot => instance?._pivot;
-    [SerializeField] Pivot _pivot;
+	public static Pivot pivot => instance?._pivot;
 
-    static public Trinon trinon => instance?._trinon;
-    [SerializeField] Trinon _trinon;
+	public static Trinon trinon => instance?._trinon;
 
-    static public PostPro postPro => instance?._postPro;
-    [SerializeField] PostPro _postPro;
+	public static PostPro postPro => instance?._postPro;
 
-    static public PlayManagement.PlayerPressManager playerPressManager => instance?._playerPressManager;
-    [SerializeField] PlayManagement.PlayerPressManager _playerPressManager;
+	public static PlayerPressManager playerPressManager => instance?._playerPressManager;
 
-    static public Camera currentCamera => instance?._currentCamera;
-    [SerializeField] Camera _currentCamera;
+	public static Camera currentCamera => instance?._currentCamera;
 
-    static public Enemy[] enemies => instance?._enemies;
-    [SerializeField] Enemy[] _enemies;
+	public static EnemyBase[] enemies => instance?._enemies;
 
-    static public LevelManager levelManager => instance?._levelManager;
-    [SerializeField] LevelManager _levelManager;
+	public static LevelManager levelManager => instance?._levelManager;
 
-    static public PlayManagement.GameController gameController => instance?._gameController;
-    [SerializeField] PlayManagement.GameController _gameController;
+	public static GameController gameController => instance?._gameController;
 
-    private void Awake() {
-        if (!instance) {
-            instance = this;
-        }
-        else {
-            Destroy(this);
-        }
-    }
+	private void Awake()
+	{
+		if (!instance)
+			instance = this;
+		else
+			Destroy(this);
+	}
 }

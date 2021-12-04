@@ -1,16 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RefreshRate2txt : MonoBehaviour
 {
-    UnityEngine.UI.Text text;
+	private Text text;
 
-    private void Awake() {
-        text = GetComponent<UnityEngine.UI.Text>();
-    }
+	private void Awake()
+	{
+		text = GetComponent<Text>();
+	}
 
-    private void Update() {
-        text.text = (1 / Time.unscaledDeltaTime) + "fps";
-    }
+	private void Update()
+	{
+		text.text = 1 / Time.unscaledDeltaTime + "fps";
+	}
 }

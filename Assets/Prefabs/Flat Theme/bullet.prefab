@@ -45,23 +45,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28212ebe9f12a9046947de8585773579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particleSystem: {fileID: 360380467210653528}
   settings:
+    emissionCount:
+      min: 40
+      max: 70
+    lifeTime:
+      min: 0.2
+      max: 0.4
+    startingColor:
+      min: {r: 0.9019608, g: 0.80784315, b: 0, a: 0.2}
+      max: {r: 1, g: 1, b: 1, a: 0.2}
     startingSize:
       min: 0.2
       max: 3
     startingSpeed:
       min: 3
       max: 15
-    startingColor:
-      min: {r: 0.9019608, g: 0.80784315, b: 0, a: 0.2}
-      max: {r: 1, g: 1, b: 1, a: 0.2}
-    lifeTime:
-      min: 0.2
-      max: 0.4
-    emissionCount:
-      min: 40
-      max: 70
-  particleSystem: {fileID: 360380467210653528}
 --- !u!198 &360380467210653528
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4877,7 +4877,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60777ff744bca90429ec19e43db8c34c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 3084275624705232902}
   blasts:
   - gamebject: {fileID: 2769286879729303573, guid: b925831dba25ec641847bca7d6f10ff6, type: 3}
     maxT: 0.2
@@ -4885,6 +4884,7 @@ MonoBehaviour:
     maxT: 0.749
   - gamebject: {fileID: 2769286879729303573, guid: 72fa5110e5a93f54a9c41504c129e15e, type: 3}
     maxT: 1
+  playerNormalBullet: {fileID: 3084275624705232902}
 --- !u!1 &3084275624705232900
 GameObject:
   m_ObjectHideFlags: 0
@@ -4930,7 +4930,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3084275624705232900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f7fa150a2548d54c99eb0167927306b, type: 3}
+  m_Script: {fileID: 11500000, guid: 97ff6a2eb547b504591e6a1d7283f0dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damageCurve:
@@ -5032,10 +5032,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  playerInfo: {fileID: 0}
-  damage: 0
-  speed: 0
-  stunDuration: 0
   boundryRange: 0.38
 --- !u!50 &3400697658332929978
 Rigidbody2D:
@@ -5251,14 +5247,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    trailTime:
-      min: 0.1
+    ColorTransparency:
+      min: 0.5
       max: 1
     endWidth:
       min: 0.02
       max: 0.08
-    ColorTransparency:
-      min: 0.5
+    trailTime:
+      min: 0.1
       max: 1
   trailRenderer: {fileID: 432108887506933934}
 --- !u!96 &432108887506933934
