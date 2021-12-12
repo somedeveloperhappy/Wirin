@@ -6,21 +6,21 @@ namespace Gameplay.Player
 {
 	public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
 	{
-		
+
 		private const int SPEEDUP_BREAKSPD_MULTIP = 2;
-		
-#region general settigns
+
+		#region general settigns
 
 		public SpeedDownCurve speedDown;
 		public SpeedUpCurve speedUp;
 
 		[SerializeField] private float rotateSpeed;
 		[SerializeField] private Vector2 bulletPosOffset;
-		[FormerlySerializedAs("bulletPrefab")] public PlayerNormalBullet playerNormalBulletPrefab;
+		[FormerlySerializedAs ("bulletPrefab")] public PlayerNormalBullet playerNormalBulletPrefab;
 
-#endregion
-	
-#region actions
+		#endregion
+
+		#region actions
 
 		/// <summary>
 		///     gets called every Update frame during shooting press
@@ -31,54 +31,54 @@ namespace Gameplay.Player
 		public event onShootingPressHandler onShootingPressEnd;
 		public event Action onShootingPressStart;
 
-#endregion
-		
+		#endregion
 
-#region refs
+
+		#region refs
 
 		public PlayerInfo playerInfo;
 
-#endregion
+		#endregion
 
 		[HideInInspector] public float rotateSpeedMultiplier = 1;
 		private float rotateSpeedMultiplier_internal = 1;
 
-#region quick references
+		#region quick references
 
 		public Pivot pivot => References.pivot;
 
-#endregion
+		#endregion
 
 		public void OnPressDown(float duration)
 		{
 			// speed up should be cancelled
-			onShootingPressStart?.Invoke();
+			onShootingPressStart?.Invoke ();
 		}
 
 		public void OnPressUp(float duration)
 		{
-			Shoot();
-			onShootingPressEnd?.Invoke(duration);
+			Shoot ();
+			onShootingPressEnd?.Invoke (duration);
 		}
 
 		public void OnPressDownUpdate()
 		{
-			speedDown.IncreaseTime();
-			speedUp.DecreaseTime();
+			speedDown.IncreaseTime ();
+			speedUp.DecreaseTime ();
 
-			apply_internal_speedMultiplier();
-			Move();
+			apply_internal_speedMultiplier ();
+			Move ();
 
-			onShootingPressUpdate?.Invoke(References.playerPressManager.stateDuration);
+			onShootingPressUpdate?.Invoke (References.playerPressManager.stateDuration);
 		}
 
 		public void OnPressUpUpdate()
 		{
-			speedDown.DecreaseTime();
-			speedUp.IncreaseTime();
+			speedDown.DecreaseTime ();
+			speedUp.IncreaseTime ();
 
-			apply_internal_speedMultiplier();
-			Move();
+			apply_internal_speedMultiplier ();
+			Move ();
 		}
 
 		public PlayerInfo GetPlayerInfo()
@@ -94,25 +94,25 @@ namespace Gameplay.Player
 
 		private void Start()
 		{
-			this.Initialize();
-			speedDown.Init();
-			speedUp.Init();
+			this.Initialize ();
+			speedDown.Init ();
+			speedUp.Init ();
 		}
 
 		private void apply_internal_speedMultiplier()
 		{
-			rotateSpeedMultiplier_internal = speedDown.Evaluate() * speedUp.Evaluate();
+			rotateSpeedMultiplier_internal = speedDown.Evaluate () * speedUp.Evaluate ();
 		}
 
 		private void Move()
 		{
-			transform.RotateAround(pivot.transform.position, Vector3.forward,
+			transform.RotateAround (pivot.transform.position, Vector3.forward,
 				rotateSpeed * rotateSpeedMultiplier_internal * rotateSpeedMultiplier * Time.deltaTime);
 		}
 
 		private void Shoot()
 		{
-			Instantiate(playerNormalBulletPrefab, GetBulletPositionInWorld(), transform.rotation).Init(playerInfo);
+			Instantiate (playerNormalBulletPrefab, GetBulletPositionInWorld (), transform.rotation).Init (playerInfo);
 		}
 
 		[Serializable]
@@ -128,7 +128,7 @@ namespace Gameplay.Player
 
 			public float Evaluate()
 			{
-				return curve.Evaluate(time);
+				return curve.Evaluate (time);
 			}
 
 			public void Init()
@@ -146,7 +146,7 @@ namespace Gameplay.Player
 
 			public override void IncreaseTime()
 			{
-				time = Mathf.Lerp(time, last_key_time, Time.deltaTime * speedUpLerp);
+				time = Mathf.Lerp (time, last_key_time, Time.deltaTime * speedUpLerp);
 			}
 
 			public override void DecreaseTime()
@@ -164,7 +164,7 @@ namespace Gameplay.Player
 
 			public override void DecreaseTime()
 			{
-				time = Mathf.Lerp(time, 0, Time.deltaTime * speedDownLerp);
+				time = Mathf.Lerp (time, 0, Time.deltaTime * speedDownLerp);
 			}
 
 			public override void IncreaseTime()

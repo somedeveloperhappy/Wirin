@@ -1,18 +1,18 @@
 using System.Collections.Generic;
-using Gameplay.Player;
 using UnityEngine;
 
 namespace Gameplay.PressSystem
 {
-	[RequireComponent(typeof(PlayerInfo))]
+	[RequireComponent(typeof(Player.PlayerInfo))]
 	public class OnPressFxUpdater : MonoBehaviour, IOnPlayerPress
 	{
 
 
-		[Range(0f, 1f)] public float currentT = -1; // keeping track so it won't calculate something twice in a row
+		[HideInInspector]
+		public float currentT = -1; // keeping track so it won't calculate something twice in a row
 
 		// public IOnPressFx[] instances;
-		public PlayerInfo playerInfo;
+		public Player.PlayerInfo playerInfo;
 
 		private List<IOnPressFx> instances => IOnPressFXSettingsHelper.instances;
 
@@ -32,7 +32,7 @@ namespace Gameplay.PressSystem
 		private void Start()
 		{
 			this.Initialize();
-			playerInfo = GetComponent<PlayerInfo>();
+			playerInfo = GetComponent<Player.PlayerInfo> ();
 		}
 
 		[ContextMenu("FindInstances")]

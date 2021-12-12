@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Gameplay.Bullets;
-using Gameplay.Player;
 using UnityEngine;
 
 namespace Gameplay.EnemyNamespace.Types
@@ -61,7 +59,7 @@ namespace Gameplay.EnemyNamespace.Types
 
 		protected virtual void AfterDestruction() { }
 
-		public void TakeDamage(PlayerBulletDamageInfo damageInfo)
+		public void TakeDamage(Player.PlayerBulletDamageInfo damageInfo)
 		{
 			var health_before = Health;
 			Health -= damageInfo.damage;
@@ -73,7 +71,7 @@ namespace Gameplay.EnemyNamespace.Types
 
 #region events
 
-		public event Action<float, PlayerBulletDamageInfo> onTakeDamage;
+		public event Action<float, Player.PlayerBulletDamageInfo> onTakeDamage;
 		public event Action onDestroy;
 
 #endregion

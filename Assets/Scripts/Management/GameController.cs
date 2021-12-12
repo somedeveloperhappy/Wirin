@@ -1,20 +1,21 @@
 using CanvasSystem;
 using Gameplay.Player;
-using LevelManaging;
+using PlayManager;
 using UnityEngine;
 
-namespace PlayManagement
+namespace Management
 {
 	public class GameController : MonoBehaviour
 	{
 
 		// list of all of the canvases
-		private CanvasSystemOperator[] canvases;
+		private CanvasBase[] canvases;
 
 		public bool gameplayMechanicsActive;
-		public CanvasSystemOperator ingameCanvas;
-		public CanvasSystemOperator mainMenuCanvas;
-		public CanvasSystemOperator winMenuCanvas;
+		public CanvasBase ingameCanvas;
+		public CanvasBase mainMenuCanvas;
+		public CanvasBase winMenuCanvas;
+		public CanvasBase loseMenuCanvas;
 
 		private void Awake()
 		{
@@ -23,19 +24,20 @@ namespace PlayManagement
 			{
 				mainMenuCanvas,
 				ingameCanvas,
-				winMenuCanvas
+				winMenuCanvas,
+				loseMenuCanvas
 			};
 		}
 
 		private void Start()
 		{
-			OpenMainMenu();
+			OpenMainMenu ();
 		}
 
 
 		private void Update()
 		{
-			if (gameplayMechanicsActive) levelManager.Tick();
+			if (gameplayMechanicsActive) levelManager.Tick ();
 		}
 
 		/// <summary>
@@ -44,45 +46,52 @@ namespace PlayManagement
 		public void OpenMainMenu()
 		{
 			//  enable/disable
-			DisableAllCanvasesExceptFor(mainMenuCanvas);
+			DisableAllCanvasesExceptFor (mainMenuCanvas);
 
 			// gameplay stuff disabled
-			DisableAllGameplayMechanics(true, true);
+			DisableAllGameplayMechanics (true, true);
 		}
 
 
 		public void OnWinLevel()
 		{
-			Debug.Log("here");
+			Debug.Log ("here");
 			// enable/disable
-			DisableAllCanvasesExceptFor(winMenuCanvas);
+			DisableAllCanvasesExceptFor (winMenuCanvas);
 
-			Debug.Log("then here");
+			Debug.Log ("then here");
 			// disable functionalities
-			DisableAllGameplayMechanics(true, true);
-			Debug.Log("won the game fully");
-			Debug.Log($"win canvas active {winMenuCanvas.enabled}");
+			DisableAllGameplayMechanics (true, true);
+			Debug.Log ("won the game fully");
+			Debug.Log ($"win canvas active {winMenuCanvas.enabled}");
 		}
 
 		public void OnLoseLevel()
 		{
-			OpenMainMenu();
+			// enable/disable canvas
+			DisableAllCanvasesExceptFor (loseMenuCanvas);
+
+			// set data
+			gameplayMechanicsActive = false;
+
+			// stop gameplay for good
+			DisableAllGameplayMechanics (timeScale_zero: true, stopInputingAbruptly: true);
 		}
 
 		public void StartGame()
 		{
 			// enable/disable
-			DisableAllCanvasesExceptFor(ingameCanvas);
+			DisableAllCanvasesExceptFor (ingameCanvas);
 
 			// set data
 			gameplayMechanicsActive = true;
 
 			// start gameplay functionalities
-			EnableAllGameplayMechanics(true);
-			levelManager.StartLevel();
+			EnableAllGameplayMechanics (true);
+			levelManager.StartLevel ();
 		}
 
-		private void DisableAllCanvasesExceptFor(params CanvasSystemOperator[] exceptionCanvases)
+		private void DisableAllCanvasesExceptFor(params CanvasBase[] exceptionCanvases)
 		{
 			foreach (var canvas in canvases)
 			{
@@ -96,8 +105,8 @@ namespace PlayManagement
 
 				// if reached here, it should be disabled
 				canvas.enabled = false;
-				// go for next canvas
-				aftersearch: ;
+			// go for next canvas
+			aftersearch:;
 			}
 		}
 
@@ -124,12 +133,33 @@ namespace PlayManagement
 
 		}
 
-#region handy refs
+		#region handy refs
 
 		private LevelManager levelManager => References.levelManager;
 		private PlayerPressManager playerPressManager => References.playerPressManager;
 
-#endregion
+		#endregion
 
+
+		public void ExitGameToMainMenu()
+		{
+			foreach (var plyr in PlayerInfo.instances)
+			{
+				plyr.ResetHealth ();
+			}
+			foreach (var enem in Gameplay.EnemyNamespace.Types.EnemyBase.instances)
+			{
+				Destroy (enem.gameObject);
+			}
+			Gameplay.EnemyNamespace.Types.EnemyBase.instances.Clear ();
+
+			foreach (var bullet in Gameplay.Bullets.BulletBase.instances)
+			{
+				Destroy (bullet.gameObject);
+			}
+			Gameplay.Bullets.BulletBase.instances.Clear ();
+
+			OpenMainMenu ();
+		}
 	}
 }

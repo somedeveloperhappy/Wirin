@@ -1,103 +1,104 @@
 using Gameplay;
+using Statics;
 using UnityEditor;
 using UnityEngine;
 
-namespace PlayManagement
+namespace PlayManager
 {
-	public class PlayerPressManager : MonoBehaviour
-	{
+    public class PlayerPressManager : MonoBehaviour
+    {
 
-		/// <summary>
-		///     if false, it won't recieve any inputs
-		/// </summary>
-		public bool canGetInputs = true;
+        /// <summary>
+        ///     if false, it won't recieve any inputs
+        /// </summary>
+        public bool canGetInputs = true;
 
-		public float pressableRange = 4;
+        public float pressableRange = 4;
 
-		/// <summary>
-		///     the duration of the current state ( press, release)
-		/// </summary>
-		public float stateDuration;
+        /// <summary>
+        ///     the duration of the current state ( press, release)
+        /// </summary>
+        public float stateDuration;
 
-		private bool wasPressed; // for checking if in previous frame the pivot was pressed
+        private bool wasPressed; // for checking if in previous frame the pivot was pressed
 
-		private void Update()
-		{
-			InputUpdates();
-		}
+        private void Update()
+        {
+            InputUpdates();
+        }
 
-		private void InputUpdates()
-		{
+        private void InputUpdates()
+        {
 
-			if (wasPressed)
-			{
-				if (InputGetter.isPoinerDown && canGetInputs)
-				{
-					// on down update 
-					downUpdate();
-				}
-				else
-				{
-					// on up start
-					upStart();
-					upUpdate();
-				}
+            if (wasPressed)
+            {
+                if (InputGetter.isPoinerDown && canGetInputs)
+                {
+                    // on down update 
+                    downUpdate();
+                }
+                else
+                {
+                    // on up start
+                    upStart();
+                    upUpdate();
+                }
 
-			}
-			else
-			{
+            }
+            else
+            {
 
-				bool pointerInsideRange()
-				{
-					return Vector2.Distance(InputGetter.GetPointerWorldPosition(), Vector2.zero) <= pressableRange;
-				}
+                bool pointerInsideRange()
+                {
+                    return Vector2.Distance(InputGetter.GetPointerWorldPosition(), Vector2.zero) <= pressableRange;
+                }
 
-				if (InputGetter.isPoinerDown && pointerInsideRange() && canGetInputs)
-				{
-					// on down start
-					downStart();
-					downUpdate();
-				}
-				else
-				{
-					// on up update
-					upUpdate();
-				}
-			}
-		}
+                if (InputGetter.isPoinerDown && pointerInsideRange() && canGetInputs)
+                {
+                    // on down start
+                    downStart();
+                    downUpdate();
+                }
+                else
+                {
+                    // on up update
+                    upUpdate();
+                }
+            }
+        }
 
-		private void downUpdate()
-		{
-			stateDuration += Time.deltaTime;
-			IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressDownUpdate());
-		}
+        private void downUpdate()
+        {
+            stateDuration += Time.deltaTime;
+            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressDownUpdate());
+        }
 
-		private void upStart()
-		{
-			wasPressed = false;
-			IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressUp(stateDuration));
-			stateDuration = 0;
-		}
+        private void upStart()
+        {
+            wasPressed = false;
+            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressUp(stateDuration));
+            stateDuration = 0;
+        }
 
-		private void downStart()
-		{
-			wasPressed = true;
-			IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressDown(stateDuration));
-			stateDuration = 0;
-		}
+        private void downStart()
+        {
+            wasPressed = true;
+            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressDown(stateDuration));
+            stateDuration = 0;
+        }
 
-		private void upUpdate()
-		{
-			stateDuration += Time.deltaTime;
-			IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressUpUpdate());
-		}
+        private void upUpdate()
+        {
+            stateDuration += Time.deltaTime;
+            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressUpUpdate());
+        }
 
 #if UNITY_EDITOR
-		public void OnDrawGizmos()
-		{
-			Handles.color = new Color(1, 0, 0, 0.1f);
-			Handles.DrawSolidDisc(Vector3.zero, Vector3.forward, pressableRange);
-		}
+        public void OnDrawGizmos()
+        {
+            Handles.color = new Color(1, 0, 0, 0.1f);
+            Handles.DrawSolidDisc(Vector3.zero, Vector3.forward, pressableRange);
+        }
 #endif
-	}
+    }
 }

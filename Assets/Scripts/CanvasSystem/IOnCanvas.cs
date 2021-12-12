@@ -7,6 +7,6 @@ namespace CanvasSystem
 
 	public interface IOnCanvasDisabled
 	{
-		public void OnCanvasDisabled();
+		public void OnCanvasDisable();
 	}
 }

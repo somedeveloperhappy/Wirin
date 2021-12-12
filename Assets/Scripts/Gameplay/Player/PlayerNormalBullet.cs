@@ -1,10 +1,10 @@
+using System.Diagnostics.Contracts;
 using Gameplay.Bullets;
-using Gameplay.EnemyNamespace.Types;
 using UnityEngine;
 
 namespace Gameplay.Player
 {
-	public class PlayerNormalBullet : Bullet
+	public class PlayerNormalBullet : BulletBase
 	{
 
 #region main settings
@@ -28,7 +28,8 @@ namespace Gameplay.Player
 
 #endregion
 
-		public float damage;
+		public float damage { get; private set; }
+		public float damageMultiplier = 1;
 
 #region refs
 
@@ -71,7 +72,7 @@ namespace Gameplay.Player
 			var normal_charge = raw_charge / playerInfo.GetMaxPossibleCharge();
 
 
-			damage = damageCurve.Evaluate(normal_charge);
+			damage = damageCurve.Evaluate(normal_charge) * damageMultiplier;
 			speed = speedCurve.Evaluate(normal_charge);
 			stunDuration = stunCurve.Evaluate(normal_charge);
 
@@ -114,9 +115,7 @@ namespace Gameplay.Player
 
 		public void OnCollide(Collision2D other)
 		{
-			Debug.Log($"collided with {other.gameObject.name}");
-
-			if (other.gameObject.TryGetComponent<EnemyBase>(out EnemyBase enemy))
+			if (other.gameObject.TryGetComponent<EnemyNamespace.Types.EnemyBase> (out EnemyNamespace.Types.EnemyBase enemy))
 			{
 				Debug.Log($"Damaging enemy {enemy.name} , damage : {damage}");
 				enemy.TakeDamage(new PlayerBulletDamageInfo(damage, stunDuration));

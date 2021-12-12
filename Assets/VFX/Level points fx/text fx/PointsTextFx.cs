@@ -1,5 +1,5 @@
 using Gameplay.EnemyNamespace.Types;
-using LevelManaging;
+using Management;
 using UnityEngine;
 using UnityEngine.UI;
 

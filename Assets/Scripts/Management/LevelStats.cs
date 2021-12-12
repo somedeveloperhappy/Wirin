@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace LevelManaging
+namespace Management
 {
 	[Serializable]
 	public class LevelStats

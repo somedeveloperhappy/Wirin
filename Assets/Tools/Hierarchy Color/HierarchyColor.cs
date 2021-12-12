@@ -31,7 +31,7 @@ public class HierarchyColor : MonoBehaviour
 		EditorApplication.hierarchyWindowItemOnGUI += onGUI;
 
 		tex = (Texture2D) (Texture) AssetDatabase.LoadAssetAtPath(
-			@"Assets/Scripts/EditorOnly/Hierarchy Color/eyedropper_icon.png", typeof(Texture));
+			@"Assets/Tools/Hierarchy Color/eyedropper_icon.png", typeof(Texture));
 
 		if (!EditorGUIUtility.isProSkin)
 		{

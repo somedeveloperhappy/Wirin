@@ -2,10 +2,10 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace LevelManaging
+namespace Management.Helper.Editor
 {
 	[CustomEditor(typeof(LineSegments))]
-	public class LineSegmentsEditor : Editor
+	public class LineSegmentsEditor : UnityEditor.Editor
 	{
 		[Obsolete]
 		private void OnEnable()

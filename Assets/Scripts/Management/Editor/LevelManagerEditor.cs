@@ -1,20 +1,24 @@
-using LevelManaging;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(LevelManager))]
-public class LevelManagerEditor : Editor
+namespace Management.Editor
 {
-	private void OnEnable()
+	[CustomEditor(typeof(LevelManager))]
+	public class LevelManagerEditor : UnityEditor.Editor
 	{
-		(target as LevelManager).LoadLevelNumberFromPrefs();
-	}
+		private void OnEnable()
+		{
+			if(target == null) return;
+		
+			(target as LevelManager).LoadLevelNumberFromPrefs();
+		}
 
-	public override void OnInspectorGUI()
-	{
-		base.OnInspectorGUI();
+		public override void OnInspectorGUI()
+		{
+			base.OnInspectorGUI();
 
-		EditorGUILayout.Space(10);
-		if (GUILayout.Button("Clear playerPrefs", GUILayout.Height(25))) PlayerPrefs.DeleteAll();
+			EditorGUILayout.Space(10);
+			if (GUILayout.Button("Clear playerPrefs", GUILayout.Height(25))) PlayerPrefs.DeleteAll();
+		}
 	}
 }

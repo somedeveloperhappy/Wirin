@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace PlayManagement
+namespace PlayManager
 {
 	[Serializable]
 	public class PivotScaleSettings

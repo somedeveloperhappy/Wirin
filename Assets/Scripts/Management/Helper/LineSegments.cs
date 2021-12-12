@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LevelManaging
+namespace Management.Helper
 {
 	[CreateAssetMenu]
 	public class LineSegments : ScriptableObject
