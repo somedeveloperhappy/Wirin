@@ -1,188 +1,187 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 namespace UI
 {
-	public partial class ScrollPannel : MonoBehaviour, CanvasSystem.IOnCanvasEnabled, CanvasSystem.IOnCanvasDisabled
-	{
-		public SimpleScripts.MinMax touchYlimit;
-		public SimpleScripts.MinMax scrolXBoundries;
+    public partial class ScrollPannel : MonoBehaviour, CanvasSystem.IOnCanvasEnabled, CanvasSystem.IOnCanvasDisabled
+    {
+        public SimpleScripts.MinMax touchYlimit;
+        public SimpleScripts.MinMax scrolXBoundries;
 
-		[System.Serializable]
-		public struct TransformSettings
-		{
-			[HideInInspector]
-			public Vector2 ofsset;
-			public float distanceX;
-		}
-		public TransformSettings transformSettings;
+        [System.Serializable]
+        public struct TransformSettings
+        {
+            [HideInInspector]
+            public Vector2 ofsset;
+            public float distanceX;
+        }
+        public TransformSettings transformSettings;
 
-		[System.Serializable]
-		public struct ScrolMovement
-		{
-			public float speed;
-			public float cooldownSpeed;
-		}
-		public ScrolMovement scrolMovement;
+        [System.Serializable]
+        public struct ScrolMovement
+        {
+            public float speed;
+            public float cooldownSpeed;
+        }
+        public ScrolMovement scrolMovement;
 
-		public Scrollable[] scrollables;
-
-
-		#region private local vars
-		float mouse_last_pos_x = float.MinValue;
-		float vel = 0;
-		RectTransform m_rectTransform;
-		#endregion
+        public Scrollable[] scrollables;
 
 
-		private void Awake()
-		{
-			m_rectTransform = GetComponent<RectTransform> ();
-		}
-		private void OnEnable()
-		{
-			m_rectTransform = GetComponent<RectTransform> ();
-		}
-
-		private void Update()
-		{
-			var input_delta = GetInputMoveDelta ();
+        #region private local vars
+        float mouse_last_pos_x = float.MinValue;
+        float vel = 0;
+        RectTransform m_rectTransform;
+        #endregion
 
 
-			if (input_delta != 0)
-				vel = input_delta;
-			else
-				vel = Mathf.MoveTowards (vel, 0, scrolMovement.cooldownSpeed * Time.unscaledDeltaTime);
+        private void Awake()
+        {
+            m_rectTransform = GetComponent<RectTransform>();
+        }
+        private void OnEnable()
+        {
+            m_rectTransform = GetComponent<RectTransform>();
+        }
 
-			MoveAllElements ();
-		}
-
-		private void MoveAllElements()
-		{
-			if (vel == 0) return;
-
-			// x boundry checking 
-			if (vel > 0 && scrolXBoundries.min + transform.position.x > 0)
-				return;
-			if (vel < 0 && scrolXBoundries.max + transform.position.x < Screen.width)
-				return;
+        private void Update()
+        {
+            var input_delta = GetInputMoveDelta();
 
 
-			// var moving = Vector3.right * vel * scrolMovement.speed * Time.deltaTime;
-			var moving = Vector3.right * vel * scrolMovement.speed * Time.unscaledDeltaTime;
+            if (input_delta != 0)
+                vel = input_delta;
+            else
+                vel = Mathf.MoveTowards(vel, 0, scrolMovement.cooldownSpeed * Time.unscaledDeltaTime);
 
-			m_rectTransform.position += moving;
+            MoveAllElements();
+        }
 
-			DisableOutsideView ();
-		}
+        private void MoveAllElements()
+        {
+            if (vel == 0) return;
 
-		float GetInputMoveDelta()
-		{
-
-			// #if UNITY_EDITOR
-			// 			// mouse
-			// 			if (Input.GetMouseButtonDown (0))
-			// 			{
-			// 				// we dont want to scrol on tap. just record position
-			// 				mouse_last_pos_x = Input.mousePosition.x;
-			// 			}
-			// 			else if (Input.GetMouseButton (0))
-			// 			{
-			// 				var new_pos = Input.mousePosition;
-			// 				if (isYInsideTouchArea (new_pos.y))
-			// 				{
-			// 					var delta = new_pos.x - mouse_last_pos_x;
-			// 					mouse_last_pos_x = new_pos.x;
-			// 					if (delta != 0) return delta;
-			// 				}
-			// 			}
-			// #endif
-			return Inputs.InputHandler.current.getDelta ().x;
-		}
-
-		bool isYInsideTouchArea(float y) =>
-			y >= touchYlimit.min + m_rectTransform.position.y &&
-			y <= touchYlimit.max + m_rectTransform.position.y;
-
-		public void OnCanvasEnable()
-		{
-			this.enabled = true;
-			ReAutoArrangeAll ();
-		}
-		public void OnCanvasDisable()
-		{
-			this.enabled = false;
-		}
-		public void ReAutoArrangeAll()
-		{
-			GetAutoReferences ();
-			RepositionSubs ();
-			DisableOutsideView ();
-			AutoSetXBoundries ();
-		}
+            // x boundry checking 
+            if (vel > 0 && scrolXBoundries.min + transform.position.x > 0)
+                return;
+            if (vel < 0 && scrolXBoundries.max + transform.position.x < Screen.width)
+                return;
 
 
-		public void GetAutoReferences()
-		{
-			List<Scrollable> r = new List<Scrollable> ();
+            // var moving = Vector3.right * vel * scrolMovement.speed * Time.deltaTime;
+            var moving = Vector3.right * vel * scrolMovement.speed * Time.unscaledDeltaTime;
 
-			foreach (Transform trans in transform)
-			{
-				if (trans.TryGetComponent<Scrollable> (out Scrollable scrollable))
-				{
-					r.Add (scrollable);
-				}
-			}
-			scrollables = r.ToArray ();
-		}
+            m_rectTransform.position += moving;
 
-		public void RepositionSubs()
-		{
-			float last_dist = 0;
-			for (int i = 0; i < scrollables.Length; i++)
-			{
-				scrollables[i].transform.position =
-					transform.position + (Vector3) transformSettings.ofsset
-					+ Vector3.right * (last_dist + transformSettings.distanceX) * i;
-				last_dist = scrollables[i].viewDistance * 2;
-			}
-		}
+            DisableOutsideView();
+        }
 
-		public void DisableOutsideView()
-		{
-			foreach (var sc in scrollables)
-			{
-				if (sc.isOutsideView ())
-				{
-					if (sc.gameObject.activeSelf)
-						sc.gameObject.SetActive (false);
-				}
-				else if (!sc.gameObject.activeSelf)
-				{
-					sc.gameObject.SetActive (true);
-				}
-			}
-		}
+        float GetInputMoveDelta()
+        {
 
-		public void AutoSetXBoundries()
-		{
-			float minPos = float.MaxValue, maxPos = float.MinValue;
-			float distance_min = 0, distance_max = 0;
+            // #if UNITY_EDITOR
+            // 			// mouse
+            // 			if (Input.GetMouseButtonDown (0))
+            // 			{
+            // 				// we dont want to scrol on tap. just record position
+            // 				mouse_last_pos_x = Input.mousePosition.x;
+            // 			}
+            // 			else if (Input.GetMouseButton (0))
+            // 			{
+            // 				var new_pos = Input.mousePosition;
+            // 				if (isYInsideTouchArea (new_pos.y))
+            // 				{
+            // 					var delta = new_pos.x - mouse_last_pos_x;
+            // 					mouse_last_pos_x = new_pos.x;
+            // 					if (delta != 0) return delta;
+            // 				}
+            // 			}
+            // #endif
+            if (Inputs.InputHandler.current.isTouchDown())
+                return Inputs.InputHandler.current.getDelta().x;
+            return 0;
+        }
 
-			foreach (var s in scrollables)
-			{
-				float x = s.transform.position.x;
-				if (x < minPos) { minPos = x; distance_min = s.viewDistance; }
-				if (x > maxPos) { maxPos = x; distance_max = s.viewDistance; }
-			}
+        bool isYInsideTouchArea(float y) =>
+            y >= touchYlimit.min + m_rectTransform.position.y &&
+            y <= touchYlimit.max + m_rectTransform.position.y;
 
-			if (!m_rectTransform) Debug.Log ($"fuck");
-			scrolXBoundries.min = minPos - m_rectTransform.position.x - distance_min * 1.5f;
-			scrolXBoundries.max = maxPos - m_rectTransform.position.x + distance_max * 1.5f;
-		}
-	}
+        public void OnCanvasEnable()
+        {
+            this.enabled = true;
+            ReAutoArrangeAll();
+        }
+        public void OnCanvasDisable()
+        {
+            this.enabled = false;
+        }
+        public void ReAutoArrangeAll()
+        {
+            GetAutoReferences();
+            RepositionSubs();
+            DisableOutsideView();
+            AutoSetXBoundries();
+        }
+
+
+        public void GetAutoReferences()
+        {
+            List<Scrollable> r = new List<Scrollable>();
+
+            foreach (Transform trans in transform)
+            {
+                if (trans.TryGetComponent<Scrollable>(out Scrollable scrollable))
+                {
+                    r.Add(scrollable);
+                }
+            }
+            scrollables = r.ToArray();
+        }
+
+        public void RepositionSubs()
+        {
+            float last_dist = 0;
+            for (int i = 0; i < scrollables.Length; i++)
+            {
+                scrollables[i].transform.position =
+                    transform.position + (Vector3)transformSettings.ofsset
+                    + Vector3.right * (last_dist + transformSettings.distanceX) * i;
+                last_dist = scrollables[i].viewDistance * 2;
+            }
+        }
+
+        public void DisableOutsideView()
+        {
+            foreach (var sc in scrollables)
+            {
+                if (sc.isOutsideView())
+                {
+                    if (sc.gameObject.activeSelf)
+                        sc.gameObject.SetActive(false);
+                }
+                else if (!sc.gameObject.activeSelf)
+                {
+                    sc.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        public void AutoSetXBoundries()
+        {
+            float minPos = float.MaxValue, maxPos = float.MinValue;
+            float distance_min = 0, distance_max = 0;
+
+            foreach (var s in scrollables)
+            {
+                float x = s.transform.position.x;
+                if (x < minPos) { minPos = x; distance_min = s.viewDistance; }
+                if (x > maxPos) { maxPos = x; distance_max = s.viewDistance; }
+            }
+
+            if (!m_rectTransform) Debug.Log($"fuck");
+            scrolXBoundries.min = minPos - m_rectTransform.position.x - distance_min * 1.5f;
+            scrolXBoundries.max = maxPos - m_rectTransform.position.x + distance_max * 1.5f;
+        }
+    }
 }

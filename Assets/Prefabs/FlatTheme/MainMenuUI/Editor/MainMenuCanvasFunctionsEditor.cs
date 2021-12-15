@@ -1,27 +1,27 @@
-using UnityEngine;
-using UnityEditor;
 using FlatTheme.MainMenuUI;
+using UnityEditor;
+using UnityEngine;
 
-[CustomEditor (typeof (MainMenuCanvasFunctions))]
+[CustomEditor(typeof(MainMenuCanvasFunctions))]
 public class MainMenuCanvasFunctionsEditor : Editor
 {
-	public override void OnInspectorGUI()
-	{
-		base.OnInspectorGUI ();
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
 
 
-		if (GUILayout.Button ("Auto Resolve"))
-		{
-			var tar = target as MainMenuCanvasFunctions;
+        if (GUILayout.Button("Auto Resolve"))
+        {
+            var tar = target as MainMenuCanvasFunctions;
 
-			Undo.RecordObject(tar, "main menu canvas functions auto resolver");
-			
-			tar.canvasGroup = tar.GetComponent<CanvasGroup> ();
-			tar.canvasBase = tar.GetComponent<CanvasSystem.CanvasBase> ();
-			tar.graphicRaycaster = tar.GetComponent<UnityEngine.UI.GraphicRaycaster> ();
-			EditorUtility.SetDirty (serializedObject.targetObject);
-			serializedObject.ApplyModifiedProperties ();
-			serializedObject.Update ();
-		}
-	}
+            Undo.RecordObject(tar, "main menu canvas functions auto resolver");
+
+            tar.canvasGroup = tar.GetComponent<CanvasGroup>();
+            tar.canvasBase = tar.GetComponent<CanvasSystem.CanvasBase>();
+            tar.graphicRaycaster = tar.GetComponent<UnityEngine.UI.GraphicRaycaster>();
+            EditorUtility.SetDirty(serializedObject.targetObject);
+            serializedObject.ApplyModifiedProperties();
+            serializedObject.Update();
+        }
+    }
 }

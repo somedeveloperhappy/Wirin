@@ -42,7 +42,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 381, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2017593134292376983
 MonoBehaviour:
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b860836f09c269d4680d8f3ae46ecfe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Tinon Shoot Power
+  upgradeItem: {fileID: 11400000, guid: 771ab0d05d3c0cc44ba3a201c0bd1fe6, type: 2}
   button: {fileID: 2017593134709765390}
   costText: {fileID: 7225349053808871325}
   levelText: {fileID: 2017593134572204688}
@@ -106,10 +106,10 @@ RectTransform:
   m_Father: {fileID: 2017593134292376982}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 38.4, y: 125.8}
-  m_SizeDelta: {x: 143.4378, y: 92.3047}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 95.732, y: 31.54181}
+  m_SizeDelta: {x: 357.594, y: 176.05298}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2017593134572204689
 CanvasRenderer:
@@ -141,11 +141,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 54
+    m_FontSize: 133
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 54
+    m_MaxSize: 139
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -186,10 +186,10 @@ RectTransform:
   m_Father: {fileID: 2017593134292376982}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00076771, y: -0.00063324}
-  m_SizeDelta: {x: 105.7128, y: 195.8692}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -40, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2017593134709765388
 CanvasRenderer:
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -285,13 +285,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UpgradeSystem.UpgradeItems.TrinonPower, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 8962576772742495112}
+        m_TargetAssemblyTypeName: FlatTheme.MainMenuUI.UpgradeItems.HealthUpgradeButton,
+          Assembly-CSharp
+        m_MethodName: UpdateValues
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -329,10 +330,10 @@ RectTransform:
   m_Father: {fileID: 2017593134292376982}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00077056885, y: -67.00063}
-  m_SizeDelta: {x: 263.1433, y: 95.8692}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0.000030518, y: -133}
+  m_SizeDelta: {x: 1326.6279, y: 806.8259}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2017593134934501470
 CanvasRenderer:
@@ -364,18 +365,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 88
+    m_FontSize: 300
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 88
+    m_MaxSize: 300
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u064E Health"
+  m_Text: "\u064EHealth"
 --- !u!1 &2017593135511123313
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,10 +409,10 @@ RectTransform:
   m_Father: {fileID: 2017593134292376982}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 122.3939, y: 213.8354}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2017593135511123316
 CanvasRenderer:
@@ -483,10 +484,10 @@ RectTransform:
   m_Father: {fileID: 2017593134292376982}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -20.65, y: 125.8}
-  m_SizeDelta: {x: 164.7434, y: 103.3269}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -51.480995, y: 32.420013}
+  m_SizeDelta: {x: 410.709, y: 163.06}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2017593135885578490
 CanvasRenderer:
@@ -518,11 +519,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 55
+    m_FontSize: 135
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 81
+    m_MaxSize: 135
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -547,7 +548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5906456040487201327
 RectTransform:
   m_ObjectHideFlags: 0
@@ -562,10 +563,10 @@ RectTransform:
   m_Father: {fileID: 2017593134292376982}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 123.44, y: 213.84}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8412987827002443771
 CanvasRenderer:
@@ -637,10 +638,10 @@ RectTransform:
   m_Father: {fileID: 2017593134292376982}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.2387e-10, y: -34.1}
-  m_SizeDelta: {x: 264.54, y: 92.9388}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 5.2387e-10, y: 119.59}
+  m_SizeDelta: {x: 923.97, y: 355.933}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1155575598207215268
 CanvasRenderer:
@@ -672,11 +673,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 55
+    m_FontSize: 202
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 81
+    m_MaxSize: 202
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

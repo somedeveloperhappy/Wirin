@@ -2,5 +2,5 @@ using UnityEngine;
 
 namespace Management
 {
-	public class EnemySpawnManager : MonoBehaviour { }
+    public class EnemySpawnManager : MonoBehaviour { }
 }

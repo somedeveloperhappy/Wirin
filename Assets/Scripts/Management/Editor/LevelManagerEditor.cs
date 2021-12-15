@@ -3,22 +3,22 @@ using UnityEngine;
 
 namespace Management.Editor
 {
-	[CustomEditor(typeof(LevelManager))]
-	public class LevelManagerEditor : UnityEditor.Editor
-	{
-		private void OnEnable()
-		{
-			if(target == null) return;
-		
-			(target as LevelManager).LoadLevelNumberFromPrefs();
-		}
+    [CustomEditor(typeof(LevelManager))]
+    public class LevelManagerEditor : UnityEditor.Editor
+    {
+        private void OnEnable()
+        {
+            if (target == null) return;
 
-		public override void OnInspectorGUI()
-		{
-			base.OnInspectorGUI();
+            (target as LevelManager).LoadLevelNumberFromPrefs();
+        }
 
-			EditorGUILayout.Space(10);
-			if (GUILayout.Button("Clear playerPrefs", GUILayout.Height(25))) PlayerPrefs.DeleteAll();
-		}
-	}
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            EditorGUILayout.Space(10);
+            if (GUILayout.Button("Clear playerPrefs", GUILayout.Height(25))) PlayerPrefs.DeleteAll();
+        }
+    }
 }

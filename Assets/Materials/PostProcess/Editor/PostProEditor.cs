@@ -3,22 +3,22 @@ using UnityEditor;
 [CustomEditor(typeof(PostPro))]
 public class PostProEditor : Editor
 {
-	public override void OnInspectorGUI()
-	{
-		base.OnInspectorGUI();
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
 
-		var tar = target as PostPro;
+        var tar = target as PostPro;
 
-		// if (tar.pp_mat)
-		// {
-		// 	// var mat_prop = serializedObject.FindProperty (nameof (tar.pp_mat));
-		// 	var mat = new SerializedObject(tar.pp_mat);
-		// 	var iter = mat.GetIterator();
-		// 	iter.Next(true);
-		// 	do
-		// 	{
-		// 		EditorGUILayout.PropertyField(iter, true);
-		// 	} while(iter.Next(false));
-		// }
-	}
+        // if (tar.pp_mat)
+        // {
+        // 	// var mat_prop = serializedObject.FindProperty (nameof (tar.pp_mat));
+        // 	var mat = new SerializedObject(tar.pp_mat);
+        // 	var iter = mat.GetIterator();
+        // 	iter.Next(true);
+        // 	do
+        // 	{
+        // 		EditorGUILayout.PropertyField(iter, true);
+        // 	} while(iter.Next(false));
+        // }
+    }
 }
