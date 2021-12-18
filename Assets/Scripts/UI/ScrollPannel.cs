@@ -51,9 +51,12 @@ namespace UI
 
 
             if (input_delta != 0)
+            {
+                Debug.Log( "input delta : " + input_delta );
                 vel = input_delta;
+            }
             else
-                vel = Mathf.MoveTowards(vel, 0, scrolMovement.cooldownSpeed * Time.unscaledDeltaTime);
+                vel = Mathf.MoveTowards( vel, 0, scrolMovement.cooldownSpeed * Time.unscaledDeltaTime );
 
             MoveAllElements();
         }
@@ -79,25 +82,6 @@ namespace UI
 
         float GetInputMoveDelta()
         {
-
-            // #if UNITY_EDITOR
-            // 			// mouse
-            // 			if (Input.GetMouseButtonDown (0))
-            // 			{
-            // 				// we dont want to scrol on tap. just record position
-            // 				mouse_last_pos_x = Input.mousePosition.x;
-            // 			}
-            // 			else if (Input.GetMouseButton (0))
-            // 			{
-            // 				var new_pos = Input.mousePosition;
-            // 				if (isYInsideTouchArea (new_pos.y))
-            // 				{
-            // 					var delta = new_pos.x - mouse_last_pos_x;
-            // 					mouse_last_pos_x = new_pos.x;
-            // 					if (delta != 0) return delta;
-            // 				}
-            // 			}
-            // #endif
             if (Inputs.InputHandler.current.isTouchDown())
                 return Inputs.InputHandler.current.getDelta().x;
             return 0;
@@ -131,9 +115,9 @@ namespace UI
 
             foreach (Transform trans in transform)
             {
-                if (trans.TryGetComponent<Scrollable>(out Scrollable scrollable))
+                if (trans.TryGetComponent<Scrollable>( out Scrollable scrollable ))
                 {
-                    r.Add(scrollable);
+                    r.Add( scrollable );
                 }
             }
             scrollables = r.ToArray();
@@ -153,16 +137,18 @@ namespace UI
 
         public void DisableOutsideView()
         {
+            Debug.Log( $"auto disabling scrollable buttons. screen height : {Screen.height} height : {Screen.width}" );
+
             foreach (var sc in scrollables)
             {
                 if (sc.isOutsideView())
                 {
                     if (sc.gameObject.activeSelf)
-                        sc.gameObject.SetActive(false);
+                        sc.gameObject.SetActive( false );
                 }
                 else if (!sc.gameObject.activeSelf)
                 {
-                    sc.gameObject.SetActive(true);
+                    sc.gameObject.SetActive( true );
                 }
             }
         }
@@ -179,7 +165,8 @@ namespace UI
                 if (x > maxPos) { maxPos = x; distance_max = s.viewDistance; }
             }
 
-            if (!m_rectTransform) Debug.Log($"fuck");
+            if (!m_rectTransform)
+                m_rectTransform = GetComponent<RectTransform>();
             scrolXBoundries.min = minPos - m_rectTransform.position.x - distance_min * 1.5f;
             scrolXBoundries.max = maxPos - m_rectTransform.position.x + distance_max * 1.5f;
         }

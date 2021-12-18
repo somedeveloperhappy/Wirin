@@ -16,6 +16,9 @@ namespace Gameplay.PressSystem
 
         private List<IOnPressFx> instances => IOnPressFXSettingsHelper.instances;
 
+        private void OnEnable() => this.OnPlayerPressInit();
+        private void OnDisable() => this.OnPlayerPressDestroy();
+
         void IOnPlayerPress.OnPressDown(float duration) { }
         void IOnPlayerPress.OnPressUp(float duration) { }
 
@@ -31,7 +34,6 @@ namespace Gameplay.PressSystem
 
         private void Start()
         {
-            this.Initialize();
             playerInfo = GetComponent<Player.PlayerInfo>();
         }
 

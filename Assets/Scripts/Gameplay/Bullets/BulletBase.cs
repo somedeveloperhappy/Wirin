@@ -3,20 +3,24 @@ using UnityEngine;
 
 namespace Gameplay.Bullets
 {
-    public abstract class BulletBase : MonoBehaviour
+    public abstract class BulletBase : MonoBehaviour, IOnGameplayEnd
     {
         static public List<BulletBase> instances = new List<BulletBase>();
 
-        protected virtual void Awake()
+        public void OnGameplayEnd()
+        {
+            Destroy(gameObject);
+        }
+
+        private void OnEnable()
         {
             instances.Add(this);
+            this.ResettableInit();
         }
-
-        protected virtual void OnDestroy()
+        private void OnDisable()
         {
+            this.ResettableDestroy();
             instances.Remove(this);
         }
-
-
     }
 }

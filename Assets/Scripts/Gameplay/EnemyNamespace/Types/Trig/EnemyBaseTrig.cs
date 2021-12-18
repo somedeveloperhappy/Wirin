@@ -12,10 +12,8 @@ namespace Gameplay.EnemyNamespace.Types.Trig
 
         #endregion
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
-
             // caching
             transform = gameObject.transform;
 

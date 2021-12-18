@@ -79,9 +79,8 @@ namespace Gameplay.Player
             onInit_raw?.Invoke(raw_charge);
         }
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             rigid = GetComponent<Rigidbody2D>();
         }
 

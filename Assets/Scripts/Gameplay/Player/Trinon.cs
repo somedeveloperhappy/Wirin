@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace Gameplay.Player
 {
-    public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart
+    public class Trinon : MonoBehaviour, IOnPlayerPress, IPlayerPart, IOnGameplayEnd
     {
 
         private const int SPEEDUP_BREAKSPD_MULTIP = 2;
@@ -49,6 +49,15 @@ namespace Gameplay.Player
 
         #endregion
 
+
+        private void OnEnable()
+        {
+            this.OnPlayerPressInit();
+        }
+        private void OnDisable()
+        {
+            this.OnPlayerPressDestroy();
+        }
         public void OnPressDown(float duration)
         {
             // speed up should be cancelled
@@ -94,7 +103,6 @@ namespace Gameplay.Player
 
         private void Start()
         {
-            this.Initialize();
             speedDown.Init();
             speedUp.Init();
         }
@@ -115,12 +123,18 @@ namespace Gameplay.Player
             Instantiate(playerNormalBulletPrefab, GetBulletPositionInWorld(), transform.rotation).Init(playerInfo);
         }
 
+        public void OnGameplayEnd()
+        {
+            speedUp.time = 0;
+            speedDown.time = 0;
+        }
+
         [Serializable]
         public abstract class Curve
         {
             public AnimationCurve curve;
             [HideInInspector] public float last_key_time;
-            protected float time;
+            public float time;
 
 
             public abstract void IncreaseTime();

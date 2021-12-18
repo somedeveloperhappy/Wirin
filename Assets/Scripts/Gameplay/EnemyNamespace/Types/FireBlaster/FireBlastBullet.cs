@@ -35,9 +35,8 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
             onInit?.Invoke();
         }
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             rigid = GetComponent<Rigidbody2D>();
         }
 

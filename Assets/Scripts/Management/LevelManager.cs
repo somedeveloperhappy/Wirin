@@ -37,12 +37,12 @@ namespace Management
 
         public void LoadLevelNumberFromPrefs()
         {
-            levelNumber = PlayerPrefs.GetInt("lvl", 1);
+            levelNumber = int.Parse(PlayerPrefs.GetString( "lvl", "1" ));
         }
 
         private void SaveLevelNumberToPrefs()
         {
-            PlayerPrefs.SetInt("lvl", levelNumber);
+            PlayerPrefs.SetString( "lvl", levelNumber.ToString() );
         }
 
         public void Tick()
@@ -53,7 +53,7 @@ namespace Management
 
         public void StartLevel()
         {
-            levelStats = new LevelStats(levelNumber);
+            levelStats = new LevelStats( levelNumber );
 
             // update enemy spawn chances
             UpdateEnemySpawnerChanceSum();
@@ -65,7 +65,7 @@ namespace Management
 
         public IEnumerator WinLevel()
         {
-            Debug.Log($"won level {levelNumber} ... ");
+            Debug.Log( $"won level {levelNumber} ... " );
             levelNumber++;
             SaveLevelNumberToPrefs();
 
@@ -74,7 +74,7 @@ namespace Management
             // timescale towards 0
             while (Time.timeScale > 0.01f)
             {
-                Time.timeScale = Mathf.Lerp(Time.timeScale, 0, WIN_DELAY_WAIT * Time.unscaledDeltaTime);
+                Time.timeScale = Mathf.Lerp( Time.timeScale, 0, WIN_DELAY_WAIT * Time.unscaledDeltaTime );
                 yield return null; // wait for next frame
             }
 
@@ -85,17 +85,17 @@ namespace Management
 
         public IEnumerator LostLevel()
         {
-            Debug.Log($"lost on level {levelNumber}");
+            Debug.Log( $"lost on level {levelNumber}" );
             SaveLevelNumberToPrefs(); // for making sure
 
             // wait and lose
-            gameController.DisableAllGameplayMechanics(stopInputingAbruptly: false);
+            gameController.DisableAllGameplayMechanics( stopInputingAbruptly: false );
             foreach (var enem in EnemyBase.instances) enem.enabled = false;
 
             // timescale towards 0
             while (Time.timeScale > 0.01f)
             {
-                Time.timeScale = Mathf.Lerp(Time.timeScale, 0, LOSE_DELAY_WAIT * Time.unscaledDeltaTime);
+                Time.timeScale = Mathf.Lerp( Time.timeScale, 0, LOSE_DELAY_WAIT * Time.unscaledDeltaTime );
                 yield return null; // wait for next frame
             }
 
@@ -109,9 +109,9 @@ namespace Management
             if (WaitingForWin) return;
 
             levelStats.pointsTaken += enemy.points;
-            Debug.Log("enemy died. checking for win...");
-            CheckForWin(enemy);
-            onEnemyDestroy?.Invoke(enemy);
+            Debug.Log( "enemy died. checking for win..." );
+            CheckForWin( enemy );
+            onEnemyDestroy?.Invoke( enemy );
         }
 
         public void CheckForWin(EnemyBase enemy)
@@ -119,12 +119,18 @@ namespace Management
 
             if (WaitingForWin) return;
 
+            if (!gameController.isAnyPlayerAlive())
+            {
+                Debug.Log( "Almost won, but no player was alive, so good luck next time :)" );
+                return;
+            }
+
             if ((EnemyBase.instances.Count < 1 || EnemyBase.instances.Count == 1 && EnemyBase.instances[0] == enemy) &&
                 levelStats.pointsTaken >= levelStats.goalPoints)
-                StartCoroutine(WinLevel());
+                StartCoroutine( WinLevel() );
             else
                 Debug.Log(
-                    $"did not win yet. points remaining : {levelStats.goalPoints - levelStats.pointsTaken} and {EnemyBase.instances.Count} enemies left");
+                    $"did not win yet. points remaining : {levelStats.goalPoints - levelStats.pointsTaken} and {EnemyBase.instances.Count} enemies left" );
         }
 
 
@@ -134,7 +140,7 @@ namespace Management
 
             TrySpawnEnemy();
             updateSpawnTime();
-            Debug.Log($"spawned an enemy. next spawn at {next_spawn_time}");
+            Debug.Log( $"spawned an enemy. next spawn at {next_spawn_time}" );
         }
 
         private void updateSpawnTime()
@@ -167,28 +173,28 @@ namespace Management
         {
             enemySpawmersChanceSum = 0;
             foreach (var enem in References.enemySpawnInfos)
-                enemySpawmersChanceSum += enem.spawnChance.Evaluate(levelNumber);
+                enemySpawmersChanceSum += enem.spawnChance.Evaluate( levelNumber );
         }
 
         private bool TrySpawnEnemy()
         {
             var enems = References.enemySpawnInfos.ToList();
 
-            var random = Random.Range(0, enemySpawmersChanceSum);
+            var random = Random.Range( 0, enemySpawmersChanceSum );
 
-        head_loop:
+            head_loop:
             for (int i = 0; i < enems.Count; i++)
             {
-                float spawn_chance = enems[i].spawnChance.Evaluate(levelNumber);
+                float spawn_chance = enems[i].spawnChance.Evaluate( levelNumber );
                 if (random <= spawn_chance)
                 {
-                    if (enems[i].canSpawn(levelNumber))
+                    if (enems[i].canSpawn( levelNumber ))
                     {
-                        Spawn(enems[i]);
+                        Spawn( enems[i] );
                         return true;
                     }
                     // else try again but without this enemy
-                    enems.RemoveAt(i);
+                    enems.RemoveAt( i );
                     goto head_loop;
                 }
                 // else :
@@ -196,10 +202,10 @@ namespace Management
             }
             void Spawn(Gameplay.EnemyNamespace.EnemySpawnInfo enem)
             {
-                var position = lineSegments.GetPoint(Random.Range(0f, lineSegments.maximumX));
-                var enemy = Instantiate(enem.prefab, position, Quaternion.identity);
-                enemy.Init(levelStats.GetSpawningPoint());
-                onEnemySpawn?.Invoke(enemy);
+                var position = lineSegments.GetPoint( Random.Range( 0f, lineSegments.maximumX ) );
+                var enemy = Instantiate( enem.prefab, position, Quaternion.identity );
+                enemy.Init( levelStats.GetSpawningPoint() );
+                onEnemySpawn?.Invoke( enemy );
             }
             return false;
         }

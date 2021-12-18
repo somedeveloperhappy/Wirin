@@ -46,79 +46,79 @@ namespace Management
         public void OpenMainMenu()
         {
             //  enable/disable
-            DisableAllCanvasesExceptFor(mainMenuCanvas);
+            DisableAllCanvasesExceptFor( mainMenuCanvas );
 
             // gameplay stuff disabled
-            DisableAllGameplayMechanics(true, true);
+            DisableAllGameplayMechanics( true, true );
         }
 
 
         public void OnWinLevel()
         {
-            Debug.Log("here");
+            Debug.Log( "here" );
             // enable/disable
-            DisableAllCanvasesExceptFor(winMenuCanvas);
+            DisableAllCanvasesExceptFor( winMenuCanvas );
 
-            Debug.Log("then here");
+            Debug.Log( "then here" );
             // disable functionalities
-            DisableAllGameplayMechanics(true, true);
-            Debug.Log("won the game fully");
-            Debug.Log($"win canvas active {winMenuCanvas.enabled}");
+            DisableAllGameplayMechanics( true, true );
+            Debug.Log( "won the game fully" );
+            Debug.Log( $"win canvas active {winMenuCanvas.enabled}" );
         }
 
         public void OnLoseLevel()
         {
             // enable/disable canvas
-            DisableAllCanvasesExceptFor(loseMenuCanvas);
+            DisableAllCanvasesExceptFor( loseMenuCanvas );
 
             // set data
             gameplayMechanicsActive = false;
 
             // stop gameplay for good
-            DisableAllGameplayMechanics(timeScale_zero: true, stopInputingAbruptly: true);
+            DisableAllGameplayMechanics( timeScaleTo0: true, stopInputingAbruptly: true );
         }
 
-        public void StartGame() => StartGame(null, true);
+        public void StartGame() => StartGame( null, true );
         public void StartGame(CanvasBase ignorecanvas = null, bool setTimeScaleTo1 = true)
         {
             // enable/disable
-            DisableAllCanvasesExceptFor(ingameCanvas, ignorecanvas);
+            DisableAllCanvasesExceptFor( ingameCanvas, ignorecanvas );
 
             // set data
             gameplayMechanicsActive = true;
 
             // start gameplay functionalities
-            EnableAllGameplayMechanics(setTimeScaleTo1);
+            EnableAllGameplayMechanics( setTimeScaleTo1 );
             levelManager.StartLevel();
         }
 
-        private void DisableAllCanvasesExceptFor(params CanvasBase[] exceptionCanvases)
+        public void DisableAllCanvasesExceptFor(params CanvasBase[] exceptionCanvases)
         {
+            bool enabled = false;
+
             foreach (var canvas in canvases)
             {
+                enabled = false;
                 foreach (var exceptioncanvas in exceptionCanvases)
                     if (canvas == exceptioncanvas)
                     {
                         // enable this and go for next canvas
-                        canvas.enabled = true;
-                        goto aftersearch;
+                        enabled = true;
                     }
 
                 // if reached here, it should be disabled
-                canvas.enabled = false;
-            // go for next canvas
-            aftersearch:;
+                canvas.enabled = enabled;
             }
         }
 
-        public void DisableAllGameplayMechanics(bool timeScale_zero = false, bool stopInputingAbruptly = false)
+        public void DisableAllGameplayMechanics(bool timeScaleTo0 = false, bool stopInputingAbruptly = false)
         {
             if (stopInputingAbruptly)
                 References.playerPressManager.enabled = false;
             else
                 References.playerPressManager.canGetInputs = false;
 
-            if (timeScale_zero) Time.timeScale = 0;
+            if (timeScaleTo0) Time.timeScale = 0;
             gameplayMechanicsActive = false;
         }
 
@@ -142,25 +142,24 @@ namespace Management
         #endregion
 
 
-        public void ExitGameToMainMenu()
+        public void EndGameplay(bool timeScaleTo0 = true)
         {
-            foreach (var plyr in PlayerInfo.instances)
+            // resetting all resettables
+            for (int i = OnGameplayEnd.instances.Count - 1; i >= 0; i--)
             {
-                plyr.ResetHealth();
+                OnGameplayEnd.instances[i].OnGameplayEnd();
             }
-            foreach (var enem in Gameplay.EnemyNamespace.Types.EnemyBase.instances)
-            {
-                Destroy(enem.gameObject);
-            }
-            Gameplay.EnemyNamespace.Types.EnemyBase.instances.Clear();
 
-            foreach (var bullet in Gameplay.Bullets.BulletBase.instances)
-            {
-                Destroy(bullet.gameObject);
-            }
-            Gameplay.Bullets.BulletBase.instances.Clear();
+            if (timeScaleTo0) Time.timeScale = 0;
 
-            OpenMainMenu();
+            DisableAllGameplayMechanics( timeScaleTo0: timeScaleTo0, stopInputingAbruptly: true );
+        }
+
+        public bool isAnyPlayerAlive()
+        {
+            foreach (var r in PlayerInfo.instances)
+                if (r.GetHealth() > 0) return true;
+            return false;
         }
     }
 }

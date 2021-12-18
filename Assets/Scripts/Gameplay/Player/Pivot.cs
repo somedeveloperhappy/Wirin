@@ -43,9 +43,11 @@ namespace Gameplay.Player
             return playerInfo;
         }
 
+        private void OnEnable() => this.OnPlayerPressInit();
+        private void OnDisable() => this.OnPlayerPressDestroy();
+
         protected virtual void Start()
         {
-            this.Initialize();
 
             scale_onpress_curve_last_time = scaleOnPress.keys[scaleOnPress.keys.Length - 1].time;
         }

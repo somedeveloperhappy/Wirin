@@ -22,9 +22,9 @@ namespace FlatTheme.MainMenuUI
         public void HideCanvasAndStartGame()
         {
             Debug.Log($"HideCanvasAndStartGame");
-            StartCoroutine(HideCanvasAndStartGameAwait());
+            StartCoroutine(HideCanvasAndStartGameAsync());
         }
-        private IEnumerator HideCanvasAndStartGameAwait()
+        private IEnumerator HideCanvasAndStartGameAsync()
         {
 
             // saving state
@@ -65,6 +65,9 @@ namespace FlatTheme.MainMenuUI
             canvasGroup.alpha = 0;
             Time.timeScale = 1;
 
+            // disable fully
+            canvasBase.enabled = false;
+
             // restore defaults
             graphicRaycaster.enabled = true;
             for (int i = 0; i < _posY.Length; i++)
@@ -74,12 +77,8 @@ namespace FlatTheme.MainMenuUI
                 tmp = affectedTransforms[i].localScale;
                 affectedTransforms[i].localScale = _scale[i];
             }
+            canvasGroup.alpha = 1;
 
-            // disable fully
-            canvasBase.enabled = false;
-
-            // start game
-            References.gameController.StartGame();
         }
     }
 

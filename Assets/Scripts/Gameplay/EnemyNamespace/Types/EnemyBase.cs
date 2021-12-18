@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gameplay.EnemyNamespace.Types
 {
-    public abstract class EnemyBase : MonoBehaviour
+    public abstract class EnemyBase : MonoBehaviour, IOnGameplayEnd
     {
         public static List<EnemyBase> instances = new List<EnemyBase>();
         private float m_health;
@@ -16,13 +16,13 @@ namespace Gameplay.EnemyNamespace.Types
         {
             get
             {
-                OnGetHealth(ref m_health);
+                OnGetHealth( ref m_health );
                 return m_health;
             }
             set
             {
                 m_health = value;
-                OnSetHealth(ref m_health);
+                OnSetHealth( ref m_health );
             }
         }
 
@@ -38,21 +38,22 @@ namespace Gameplay.EnemyNamespace.Types
 
         protected abstract void OnInit();
 
-        protected virtual void Awake()
+
+        private void OnEnable()
         {
-            instances.Add(this);
+            instances.Add( this );
+            this.ResettableInit();
         }
-
-
-        protected virtual void OnDestroy()
+        protected virtual void OnDisable()
         {
-            instances.Remove(this);
+            instances.Remove( this );
+            this.ResettableDestroy();
         }
 
         public void DestroyEnemy()
         {
-            Destroy(gameObject);
-            References.levelManager.OnEnemyDestroy(this);
+            Destroy( gameObject );
+            References.levelManager.OnEnemyDestroy( this );
             AfterDestruction();
             onDestroy?.Invoke();
         }
@@ -64,10 +65,16 @@ namespace Gameplay.EnemyNamespace.Types
             var health_before = Health;
             Health -= damageInfo.damage;
             OnTakeDamage();
-            onTakeDamage?.Invoke(health_before, damageInfo);
+            onTakeDamage?.Invoke( health_before, damageInfo );
         }
 
         protected virtual void OnTakeDamage() { }
+
+        public void OnGameplayEnd()
+        {
+            // silent destruction
+            Destroy( gameObject );
+        }
 
         #region events
 

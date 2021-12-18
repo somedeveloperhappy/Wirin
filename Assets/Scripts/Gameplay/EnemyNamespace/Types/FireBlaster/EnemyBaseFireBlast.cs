@@ -31,9 +31,8 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
         private Transform m_target_transform;
         [HideInInspector] public Vector3 target;
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             transform = ((Component)this).transform; // caching transform
         }
 

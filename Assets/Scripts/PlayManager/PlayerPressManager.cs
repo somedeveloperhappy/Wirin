@@ -70,27 +70,27 @@ namespace PlayManager
         private void downUpdate()
         {
             stateDuration += Time.deltaTime;
-            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressDownUpdate());
+            OnPlayerPress.ForeachInstance(pp => pp.OnPressDownUpdate());
         }
 
         private void upStart()
         {
             wasPressed = false;
-            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressUp(stateDuration));
+            OnPlayerPress.ForeachInstance(pp => pp.OnPressUp(stateDuration));
             stateDuration = 0;
         }
 
         private void downStart()
         {
             wasPressed = true;
-            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressDown(stateDuration));
+            OnPlayerPress.ForeachInstance(pp => pp.OnPressDown(stateDuration));
             stateDuration = 0;
         }
 
         private void upUpdate()
         {
             stateDuration += Time.deltaTime;
-            IOnPlayerPressHelper.ForeachInstance(pp => pp.OnPressUpUpdate());
+            OnPlayerPress.ForeachInstance(pp => pp.OnPressUpUpdate());
         }
 
 #if UNITY_EDITOR

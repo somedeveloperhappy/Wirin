@@ -5,28 +5,29 @@ public class UpgradeMenuFunctions : MonoBehaviour
 {
     private CanvasSystem.CanvasBase m_canvas;
 
+    [System.Serializable]
+    public class FadeSettings
+    {
+        public float fadeInSpeed = 2, fadeOutSpeed = 1;
+    }
+    public FadeSettings fadeSettings;
+
     private void Awake()
     {
         m_canvas = GetComponent<CanvasSystem.CanvasBase>();
     }
 
-    public void ShowCanvas(float fadeSpeed)
+    public void ShowCanvas()
     {
-        Debug.Log($"showing upgrade canvas");
-        if (fadeSpeed <= 0)
-            m_canvas.enabled = true;
-        else
-            StartCoroutine(FadeIn(fadeSpeed));
+        Debug.Log( $"showing upgrade canvas" );
+        StartCoroutine( FadeIn() );
     }
-    public void HideCanvas(float fadeSpeed)
+    public void HideCanvas()
     {
-        if (fadeSpeed <= 0)
-            m_canvas.enabled = false;
-        else
-            StartCoroutine(FadeOut(fadeSpeed));
+        StartCoroutine( FadeOut() );
     }
 
-    public IEnumerator FadeOut(float fadeSpeed)
+    public IEnumerator FadeOut()
     {
         var canvasGroup = GetComponent<CanvasGroup>();
 
@@ -34,34 +35,28 @@ public class UpgradeMenuFunctions : MonoBehaviour
         canvasGroup.alpha = 1;
         do
         {
-            canvasGroup.alpha -= fadeSpeed * Time.unscaledDeltaTime;
+            canvasGroup.alpha = Mathf.MoveTowards( canvasGroup.alpha, 0, fadeSettings.fadeOutSpeed * Time.unscaledDeltaTime );
             yield return null;
         }
         while (canvasGroup.alpha > 0);
-        canvasGroup.alpha = 0;
 
-        Debug.Log($"finished");
         // disable
         m_canvas.enabled = false;
     }
 
-    public IEnumerator FadeIn(float fadeSpeed)
+    public IEnumerator FadeIn()
     {
         var canvasGroup = GetComponent<CanvasGroup>();
-
+        m_canvas.enabled = true;
 
         // fade out
         canvasGroup.alpha = 0;
         do
         {
-            canvasGroup.alpha += fadeSpeed * Time.unscaledDeltaTime;
+            canvasGroup.alpha = Mathf.MoveTowards( canvasGroup.alpha, 1, fadeSettings.fadeInSpeed * Time.unscaledDeltaTime );
             yield return null;
         }
         while (canvasGroup.alpha < 1);
-        canvasGroup.alpha = 1;
-
-        // enable
-        m_canvas.enabled = true;
     }
 
 

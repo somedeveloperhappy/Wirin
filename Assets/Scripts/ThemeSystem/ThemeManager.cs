@@ -2,15 +2,34 @@ using UnityEngine;
 
 namespace ThemeSystem
 {
-    [ExecuteAlways]
     [CreateAssetMenu(fileName = "ThemeManager", menuName = "Wirin/ThemeManager", order = 0)]
     public class ThemeManager : ScriptableObject
     {
-        static public ThemeManager instance;
+        static ThemeManager _instance;
+        static public ThemeManager instance
+        {
+            get
+            {
+                if (_instance != null) return _instance;
+                // else get it
+                _instance = FindObjectOfType<ThemeManager>();
+                Debug.Log("Theme manager instance was not set. setting manually");
+                return _instance;
+            }
+            private set
+            {
+                _instance = value;
+            }
+        }
 
+        private void Awake()
+        {
+            Debug.Log("Theme manager activated at awake");
+            instance = this;
+        }
         private void OnEnable()
         {
-            Debug.Log($"theme manager activated");
+            Debug.Log($"theme manager activated at enable!");
             instance = this;
         }
 

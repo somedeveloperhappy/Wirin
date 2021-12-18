@@ -14891,6 +14891,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     last_key_time: 0
+    time: 0
     speedDown: 1
     speedUpLerp: 1
   speedUp:
@@ -14919,6 +14920,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     last_key_time: 0
+    time: 0
     speedDownLerp: 3
     speedUp: 1
   rotateSpeed: 100
@@ -15104,6 +15106,8 @@ GameObject:
   - component: {fileID: 2299828312801376788}
   - component: {fileID: 2044437616}
   - component: {fileID: 1776637748}
+  - component: {fileID: 698659499}
+  - component: {fileID: 1052869701}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -15138,9 +15142,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2299828312801376790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c214417271846540b0fbd1cf0b8230f, type: 3}
+  m_Script: {fileID: 11500000, guid: ba8baa62084389f43a2d3c8607e32437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moneyManager: {fileID: 11400000, guid: 0c54384081f5eb849aa9d540ca35223c, type: 2}
+  upgradeManager: {fileID: 1052869701}
+  parts:
+    pivot: {fileID: 2299828312801376788}
+    trinon: {fileID: 2299828311482426096}
+  m_stats:
+    m_health: 0
+    maxHealth: 4
   m_shootings:
     playerNormalBulletPrefab: {fileID: 3084275624705232902, guid: 661307f2950e67c479b6a935aae63c5c, type: 3}
     chargeDownLerp: 2
@@ -15196,11 +15208,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  m_stats:
-    maxHealth: 10
-  parts:
-    pivot: {fileID: 2299828312801376788}
-    trinon: {fileID: 2299828311482426096}
+  loseSettings:
+    timeDownSpeed: 0.25
 --- !u!114 &1776637750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15214,7 +15223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentT: 0
-  playerInfo: {fileID: 2044437615}
+  playerInfo: {fileID: 0}
 --- !u!114 &2299828312801376788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15227,7 +15236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd43e9a27733eb8438f41b4833aae6a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInfo: {fileID: 2044437615}
+  playerInfo: {fileID: 0}
   scaleOnPress:
     serializedVersion: 2
     m_Curve:
@@ -15264,7 +15273,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -15293,6 +15302,33 @@ MonoBehaviour:
     lensDistortion:
       min: 0
       max: 0.22
+--- !u!114 &698659499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2299828312801376790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49a0b1f25fcc62d4cae52bb73775df72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1052869701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2299828312801376790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95b25ff1e94aef4aa1c2c16e1cc66fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInfo: {fileID: 2044437615}
+  upgradeItems:
+  - {fileID: 11400000, guid: 771ab0d05d3c0cc44ba3a201c0bd1fe6, type: 2}
 --- !u!1 &2517771162457215781
 GameObject:
   m_ObjectHideFlags: 0
@@ -15398,7 +15434,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 88267059e601f3f46960ead3b96279aa, type: 3}
-  m_Color: {r: 0.5411765, g: 0.82745105, b: 0.5411765, a: 1}
+  m_Color: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -11,32 +11,32 @@ namespace Management
         /// <summary>
         ///     the points that when reached, this level is won
         /// </summary>
-        [SerializeField] internal int goalPoints;
+        [SerializeField] public int goalPoints;
 
         /// <summary>
         ///     the points taken so far
         /// </summary>
-        [SerializeField] internal int pointsTaken;
+        [SerializeField] public int pointsTaken;
 
         /// <summary>
         ///     the points the new spawned enemies will have
         /// </summary>
-        [SerializeField] internal int spawningPoints;
+        [SerializeField] public int spawningPoints;
 
         /// <summary>
         ///     the randomizer in addition to spawningPoints
         /// </summary>
-        [SerializeField] internal int spawningPointsSpread;
+        [SerializeField] public int spawningPointsSpread;
 
         /// <summary>
         ///     time delay for spawning next enemy
         /// </summary>
-        [SerializeField] internal float spawnTimeRate;
+        [SerializeField] public float spawnTimeRate;
 
         /// <summary>
         ///     a randomizer in addition to spawnTimeRate
         /// </summary>
-        [SerializeField] internal float spawnTimeRateSpread;
+        [SerializeField] public float spawnTimeRateSpread;
 
 
         public LevelStats(int level)

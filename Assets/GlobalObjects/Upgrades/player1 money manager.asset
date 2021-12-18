@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c871a9de7c61443bbb2dc9868eb7a5, type: 3}
   m_Name: player1 money manager
   m_EditorClassIdentifier: 
-  _coins: 100
+  _coins: 200

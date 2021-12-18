@@ -1,11 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Gameplay.Player
 {
-    public class PlayerInfo : MonoBehaviour, IOnPlayerPress
+    public abstract class PlayerInfo : MonoBehaviour, IOnPlayerPress, IOnGameplayEnd
     {
         public static List<PlayerInfo> instances = new List<PlayerInfo>();
 
@@ -14,11 +15,11 @@ namespace Gameplay.Player
         public Parts parts;
 
         [SerializeField]
-        [InspectorName("Stats")]
-        private Stats m_stats;
+        [InspectorName( "HealthStats" )]
+        private HealthStats m_stats;
 
         [SerializeField]
-        [InspectorName("Shootings")]
+        [InspectorName( "Shootings" )]
         private Shootings m_shootings;
 
 
@@ -41,15 +42,9 @@ namespace Gameplay.Player
 
         public void OnPressUpUpdate()
         {
-            pressT = Mathf.Lerp(pressT, 0, Time.deltaTime * m_shootings.chargeDownLerp);
+            pressT = Mathf.Lerp( pressT, 0, Time.deltaTime * m_shootings.chargeDownLerp );
             if (pressT < 0.001) pressT = 0;
         }
-
-        public Stats GetStats()
-        {
-            return m_stats;
-        }
-
         public Shootings GetShootings()
         {
             return m_shootings;
@@ -57,72 +52,70 @@ namespace Gameplay.Player
 
         public void TakeDamage(EnemyDamageInfo damageinfo)
         {
-            m_stats.Health -= damageinfo.damage;
-            Debug.Log($"taking {damageinfo.damage} damage to player. player health now {m_stats.Health}");
-        }
-
-        public void ResetHealth()
-        {
-            m_stats.Health = m_stats.maxHealth;
+            SetHealth( GetHealth() - damageinfo.damage );
+            Debug.Log( $"taking {damageinfo.damage} damage to player. player health now {GetHealth()}" );
         }
 
         private void Awake()
         {
-            instances.Add(this);
-            this.Initialize();
+            instances.Add( this );
+
             maxpressT = m_shootings.shootCharge.keys[m_shootings.shootCharge.keys.Length - 1].time;
-            maxcharge = m_shootings.shootCharge.Evaluate(maxpressT);
-            maxfineCharge = m_shootings.shootCharge.Evaluate(m_shootings.maxFineT);
+            maxcharge = m_shootings.shootCharge.Evaluate( maxpressT );
+            maxfineCharge = m_shootings.shootCharge.Evaluate( m_shootings.maxFineT );
 
-            m_stats.Health = m_stats.maxHealth;
+            m_stats.m_health = m_stats.maxHealth;
 
-            // prepairing a lost situation 
-            m_stats.onHealthLessThanZero += () => StartCoroutine(References.levelManager.LostLevel());
         }
+
+        #region health things
 
         [Serializable]
-        public class Stats
+        public class HealthStats
         {
 
-            public delegate void OnHealthChanged(float newHealth, HealthChangedType type);
-
-            public enum HealthChangedType
-            {
-                Increase,
-                Decrease
-            }
-
-            private float m_health;
-
+            public delegate void OnHealthChanged(float newHealth, float previousHealth);
+            public float m_health;
             public float maxHealth;
-
-            /// <summary>
-            ///     called after health changed
-            /// </summary>
-            public OnHealthChanged onHealthChanged;
-
-            public Action onHealthLessThanZero;
-
-            public float Health
-            {
-                get => m_health;
-                set
-                {
-                    if (m_health == value) return;
-                    var wasLess = value < m_health;
-                    m_health = value;
-                    if (m_health < 0) onHealthLessThanZero?.Invoke();
-                    onHealthChanged?.Invoke(m_health, wasLess ? HealthChangedType.Decrease : HealthChangedType.Increase);
-                }
-            }
         }
+        /// <summary>
+        ///     called after health changed
+        /// </summary>
+        public HealthStats.OnHealthChanged onHealthChanged;
+
+        public float GetMaxHealth() => m_stats.maxHealth;
+        public float GetHealth() => m_stats.m_health;
+        public void SetHealth(float value)
+        {
+            // check if player is already dead
+            if (m_stats.m_health == 0) return;
+
+            var prevHealth = m_stats.m_health;
+
+            if (value < 0) value = 0;
+            m_stats.m_health = value;
+
+            if (value == 0) StartCoroutine(Lose());
+            onHealthChanged?.Invoke( value, prevHealth );
+        }
+
+        #endregion
+
+        public IEnumerator Lose()
+        {
+            Debug.Log( $"Player {name} is Lost" );
+            References.gameController.DisableAllGameplayMechanics( timeScaleTo0: false, stopInputingAbruptly: true );
+            yield return StartCoroutine( OnLose() );
+            References.gameController.OnLoseLevel();
+        }
+        protected abstract IEnumerator OnLose();
 
         [Serializable]
         public class Shootings
         {
-            [FormerlySerializedAs("bulletPrefab")] public PlayerNormalBullet playerNormalBulletPrefab;
+            [FormerlySerializedAs( "bulletPrefab" )] public PlayerNormalBullet playerNormalBulletPrefab;
             public float chargeDownLerp = 5;
-            [Tooltip("x where Y is 1")] public float maxFineT;
+            [Tooltip( "x where Y is 1" )] public float maxFineT;
             public AnimationCurve shootCharge;
         }
 
@@ -139,7 +132,7 @@ namespace Gameplay.Player
         /// <returns>the current charge. not guaranteed to be between any two numbers</returns>
         public float GetRawCharge()
         {
-            return m_shootings.shootCharge.Evaluate(pressT);
+            return m_shootings.shootCharge.Evaluate( pressT );
         }
 
         /// <returns>between 0 and 1, and it won't take too much time</returns>
@@ -161,7 +154,35 @@ namespace Gameplay.Player
             return maxcharge;
         }
 
+        public bool CanAfford(uint cost) => moneyManager.Coins >= cost;
+
         #endregion
+        public virtual void OnGameplayEnd()
+        {
+            // reset health
+            m_stats.m_health = m_stats.maxHealth;
+            onHealthChanged?.Invoke( m_stats.m_health, m_stats.m_health ); // for effects
+
+            // transforms
+            //parts.trinon.transform.rotation = Quaternion.identity;
+
+
+            // effects
+            pressT = 0;
+        }
+
+
+        private void OnEnable()
+        {
+            this.OnPlayerPressInit();
+            this.ResettableInit();
+        }
+        private void OnDisable()
+        {
+            this.OnPlayerPressDestroy();
+            this.ResettableDestroy();
+        }
+
 
     }
 

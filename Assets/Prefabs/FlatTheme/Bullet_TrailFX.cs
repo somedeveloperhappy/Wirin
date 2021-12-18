@@ -7,9 +7,7 @@ namespace FlatTheme
     public class Bullet_TrailFX : MonoBehaviour
     {
         private PlayerNormalBullet _parentPlayerNormalBullet;
-
         public Settings settings;
-
         public TrailRenderer trailRenderer;
 
 

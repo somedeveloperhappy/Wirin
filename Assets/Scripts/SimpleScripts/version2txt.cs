@@ -7,11 +7,12 @@ namespace SimpleScripts
     [ExecuteAlways]
     public class version2txt : MonoBehaviour
     {
-        public string text = "dev version %VER%";
+        public string format = "dev version %VER%";
+        public TMPro.TMP_Text text;
 
         private void OnEnable()
         {
-            GetComponent<Text>().text = text.Replace("%VER%", Application.version);
+            text.text = format.Replace("%VER%", Application.version);
         }
     }
 }

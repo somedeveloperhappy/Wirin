@@ -26,31 +26,34 @@ namespace FlatTheme
         private void Awake()
         {
             m_material = spriteRenderer.material;
-            playerInfo.GetStats().onHealthChanged += onHealthChanged;
+            playerInfo.onHealthChanged += onHealthChanged;
         }
 
         private void Start()
         {
-            m_healthValue = settings.startingFillValue * playerInfo.GetStats().maxHealth;
-            m_healthtarget = playerInfo.GetStats().maxHealth;
+            m_healthValue = settings.startingFillValue * playerInfo.GetMaxHealth();
+            m_healthtarget = playerInfo.GetMaxHealth();
         }
 
         private void Update()
         {
             // smoothness
-            smoothnessValue = Mathf.Sin(Time.timeSinceLevelLoad * smoothnessSpeed) * smoothnessValueMax;
+            if (m_healthValue == 0)
+                smoothnessValue = 0;
+            else
+                smoothnessValue = Mathf.Sin(Time.timeSinceLevelLoad * smoothnessSpeed) * smoothnessValueMax;
             smoothnessValue *= smoothnessValue; // no minus values now
             SetSmoothness(smoothnessValue);
 
             // fill value
-            m_healthValue = Mathf.Lerp(m_healthValue, m_healthtarget, settings.healthChangeSpeed * Time.deltaTime);
-            SetFillValue(m_healthValue / playerInfo.GetStats().maxHealth);
+            m_healthValue = Mathf.Lerp(m_healthValue, m_healthtarget, settings.healthChangeSpeed * Time.unscaledDeltaTime);
+            SetFillValue(m_healthValue / playerInfo.GetMaxHealth());
 
         }
 
-        private void onHealthChanged(float newHealth, PlayerInfo.Stats.HealthChangedType type)
+        private void onHealthChanged(float newHealth, float previousHealt)
         {
-            var t = newHealth / playerInfo.GetStats().maxHealth;
+            var t = newHealth / playerInfo.GetMaxHealth();
             m_healthtarget = newHealth;
             smoothnessSpeed = settings.smoothnessSpeed.Evaluate(t);
             smoothnessValueMax = settings.smoothnessValueMax.Evaluate(t);
