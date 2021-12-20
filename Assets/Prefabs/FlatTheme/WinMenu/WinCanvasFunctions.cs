@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FlatTheme.WinMenu
 {
-    public class WinCanvasFunctions: MonoBehaviour
+    public class WinCanvasFunctions : MonoBehaviour
     {
         public CanvasGroup canvasGroup;
         public CanvasSystem.CanvasBase canvasSystem;
@@ -39,15 +39,18 @@ namespace FlatTheme.WinMenu
 
         public void Play()
         {
-            AsyncPlay();
+            StartCoroutine( AsyncPlay() );
         }
 
-        async void AsyncPlay()
+        IEnumerator AsyncPlay()
         {
             Time.timeScale = 0;
 
             // disable menu functions
             graphicRaycaster.enabled = false;
+
+            // disabling animation
+            if (TryGetComponent<Animator>( out Animator animator )) animator.enabled = false;
 
             // start game, but timescale is still zero
             References.gameController.StartGame( canvasSystem, false );
@@ -77,7 +80,7 @@ namespace FlatTheme.WinMenu
 
                 // wait for next frame
                 //yield return null;
-                await Task.Yield();
+                yield return null;
 
             } while (canvasGroup.alpha > 0);
 
@@ -99,6 +102,7 @@ namespace FlatTheme.WinMenu
             }
             canvasGroup.alpha = 1;
             graphicRaycaster.enabled = true;
+            if (TryGetComponent<Animator>( out animator )) animator.enabled = true;
 
         }
     }

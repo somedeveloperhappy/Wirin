@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace UpgradeSystem.UpgradeItems
 {
-    [CreateAssetMenu( menuName = "Wirin/Trinon Power" )]
+    [CreateAssetMenu( menuName = "Upgrade/Trinon Power" )]
     public class TrinonPower : UpgradeItem
     {
         public string keyName;
 
-        /// <summary>
+        /// <summary>   
         /// the index below this would be activated	
         /// </summary>
         uint upgradeLevel = 0;
@@ -50,7 +50,7 @@ namespace UpgradeSystem.UpgradeItems
 
 
         public override uint GetNextCost() => IsFullyUpgraded() ? 0 : upgradeSteps[upgradeLevel].cost;
-        public override void Upgrade()
+        internal override void Upgrade()
         {
             if (CanBeUpgraded())
             {

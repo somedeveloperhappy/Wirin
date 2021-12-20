@@ -13,14 +13,12 @@ public class MoneyManagerEditor : Editor
 
         if (GUILayout.Button("Load"))
         {
-            Undo.RecordObject(tar, "money manager changed");
-            tar.Coins = uint.Parse(PlayerPrefs.GetString("coins", "0"));
-            EditorUtility.SetDirty(serializedObject.targetObject);
+            tar.Load();
         }
 
         if (GUILayout.Button("Save"))
         {
-            PlayerPrefs.SetString("coins", tar.Coins.ToString());
+            tar.Save();
         }
     }
 }

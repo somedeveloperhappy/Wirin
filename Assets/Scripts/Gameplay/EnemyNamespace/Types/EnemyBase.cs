@@ -1,3 +1,4 @@
+using Gameplay.CoinsSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Gameplay.EnemyNamespace.Types
         private float m_health;
 
         public int points;
+        public CoinsSystem.CoinSpawner coinSpawner;
 
         /// <returns>the current health for this enemyBase</returns>
         public float Health
@@ -52,11 +54,15 @@ namespace Gameplay.EnemyNamespace.Types
 
         public void DestroyEnemy()
         {
+            SpawnCoins( coinSpawner.GetCoins( (uint)points ) );
+
             Destroy( gameObject );
             References.levelManager.OnEnemyDestroy( this );
             AfterDestruction();
             onDestroy?.Invoke();
         }
+
+        protected abstract void SpawnCoins((Coin coin, int amount)[] coinCases);
 
         protected virtual void AfterDestruction() { }
 

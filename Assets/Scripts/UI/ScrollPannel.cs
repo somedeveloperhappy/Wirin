@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using CanvasSystem;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public partial class ScrollPannel : MonoBehaviour, CanvasSystem.IOnCanvasEnabled, CanvasSystem.IOnCanvasDisabled
+    public partial class ScrollPannel : MonoBehaviour, IOnCanvasEnabled, IOnCanvasDisabled, IDragHandler
     {
-        public SimpleScripts.MinMax touchYlimit;
+        [Tooltip( "The target moving Object (The parent of the scrollable items. it SHOULD NOT be this transform)" )]
+        public RectTransform targetTransform;
         public SimpleScripts.MinMax scrolXBoundries;
 
         [System.Serializable]
@@ -31,55 +33,42 @@ namespace UI
 
         #region private local vars
         float mouse_last_pos_x = float.MinValue;
-        float vel = 0;
-        RectTransform m_rectTransform;
+        float velocity = 0;
         #endregion
 
 
-        private void Awake()
-        {
-            m_rectTransform = GetComponent<RectTransform>();
-        }
         private void OnEnable()
         {
-            m_rectTransform = GetComponent<RectTransform>();
+            AutoSetXBoundries();
         }
 
         private void Update()
         {
-            var input_delta = GetInputMoveDelta();
-
-
-            if (input_delta != 0)
-            {
-                Debug.Log( "input delta : " + input_delta );
-                vel = input_delta;
-            }
-            else
-                vel = Mathf.MoveTowards( vel, 0, scrolMovement.cooldownSpeed * Time.unscaledDeltaTime );
-
+            //Debug.Log( "input delta : " + velocity );
             MoveAllElements();
+            velocity = Mathf.MoveTowards( velocity, 0, scrolMovement.cooldownSpeed * Time.unscaledDeltaTime );
+        }
+        public void OnDrag(PointerEventData eventData)
+        {
+            velocity = eventData.delta.x;
+            Debug.Log( "On Pointer Down" );
         }
 
         private void MoveAllElements()
         {
-            if (vel == 0) return;
+            if (velocity == 0) return;
 
             // x boundry checking 
-            if (vel > 0 && scrolXBoundries.min + transform.position.x > 0)
-                return;
-            if (vel < 0 && scrolXBoundries.max + transform.position.x < Screen.width)
-                return;
+            if (velocity > 0 && velocity + targetTransform.position.x + scrolXBoundries.min > 0)
+                velocity = -targetTransform.position.x - scrolXBoundries.min;
+            if (velocity < 0 && velocity + targetTransform.position.x + scrolXBoundries.max < Screen.width)
+                velocity = -targetTransform.position.x - scrolXBoundries.max + Screen.width;
 
 
-            // var moving = Vector3.right * vel * scrolMovement.speed * Time.deltaTime;
-            var moving = Vector3.right * vel * scrolMovement.speed * Time.unscaledDeltaTime;
-
-            m_rectTransform.position += moving;
-
+            var moving = Vector3.right * velocity * scrolMovement.speed * Time.unscaledDeltaTime;
+            targetTransform.position += moving;
             DisableOutsideView();
         }
-
         float GetInputMoveDelta()
         {
             if (Inputs.InputHandler.current.isTouchDown())
@@ -87,19 +76,8 @@ namespace UI
             return 0;
         }
 
-        bool isYInsideTouchArea(float y) =>
-            y >= touchYlimit.min + m_rectTransform.position.y &&
-            y <= touchYlimit.max + m_rectTransform.position.y;
-
-        public void OnCanvasEnable()
-        {
-            this.enabled = true;
-            ReAutoArrangeAll();
-        }
-        public void OnCanvasDisable()
-        {
-            this.enabled = false;
-        }
+        public void OnCanvasEnable() => this.enabled = true;
+        public void OnCanvasDisable() => this.enabled = false;
         public void ReAutoArrangeAll()
         {
             GetAutoReferences();
@@ -113,7 +91,7 @@ namespace UI
         {
             List<Scrollable> r = new List<Scrollable>();
 
-            foreach (Transform trans in transform)
+            foreach (Transform trans in targetTransform)
             {
                 if (trans.TryGetComponent<Scrollable>( out Scrollable scrollable ))
                 {
@@ -129,7 +107,7 @@ namespace UI
             for (int i = 0; i < scrollables.Length; i++)
             {
                 scrollables[i].transform.position =
-                    transform.position + (Vector3)transformSettings.ofsset
+                    targetTransform.position + (Vector3)transformSettings.ofsset
                     + Vector3.right * (last_dist + transformSettings.distanceX) * i;
                 last_dist = scrollables[i].viewDistance * 2;
             }
@@ -137,7 +115,7 @@ namespace UI
 
         public void DisableOutsideView()
         {
-            Debug.Log( $"auto disabling scrollable buttons. screen height : {Screen.height} height : {Screen.width}" );
+            //Debug.Log( $"auto disabling scrollable buttons. screen height : {Screen.height} height : {Screen.width}" );
 
             foreach (var sc in scrollables)
             {
@@ -165,10 +143,12 @@ namespace UI
                 if (x > maxPos) { maxPos = x; distance_max = s.viewDistance; }
             }
 
-            if (!m_rectTransform)
-                m_rectTransform = GetComponent<RectTransform>();
-            scrolXBoundries.min = minPos - m_rectTransform.position.x - distance_min * 1.5f;
-            scrolXBoundries.max = maxPos - m_rectTransform.position.x + distance_max * 1.5f;
+            if (!targetTransform)
+                targetTransform = GetComponent<RectTransform>();
+            scrolXBoundries.min = Mathf.Min( -targetTransform.position.x, targetTransform.position.x + minPos - distance_min * 1.5f );
+            scrolXBoundries.max = Mathf.Max( Screen.width - targetTransform.position.x, targetTransform.position.x + maxPos + distance_max * 1.5f );
         }
+
+
     }
 }

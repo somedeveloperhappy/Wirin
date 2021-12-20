@@ -8,15 +8,11 @@ public class References : MonoBehaviour
     [SerializeField] private Gameplay.EnemyNamespace.EnemySpawnInfo[] _enemySpawnInfos;
     [SerializeField] private Management.GameController _gameController;
     [SerializeField] private Management.LevelManager _levelManager;
-    [SerializeField] private Gameplay.Player.Pivot _pivot;
     [SerializeField] private PlayManager.PlayerPressManager _playerPressManager;
     [SerializeField] private PostPro _postPro;
-    [SerializeField] private Gameplay.Player.Trinon _trinon;
+    [SerializeField] private Gameplay.Player.PlayerInfo _playerInfo;
 
-    public static Gameplay.Player.Pivot pivot => instance?._pivot;
-
-    public static Gameplay.Player.Trinon trinon => instance?._trinon;
-
+    public static Gameplay.Player.PlayerInfo PlayerInfo => instance?._playerInfo;
     public static PostPro postPro => instance?._postPro;
 
     public static PlayManager.PlayerPressManager playerPressManager => instance?._playerPressManager;
@@ -34,6 +30,6 @@ public class References : MonoBehaviour
         if (!instance)
             instance = this;
         else
-            Destroy(this);
+            Destroy( this );
     }
 }

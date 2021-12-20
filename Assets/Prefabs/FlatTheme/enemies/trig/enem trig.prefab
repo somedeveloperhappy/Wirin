@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: 0
+  coinSpawner: {fileID: 11400000, guid: d2479d67c95785741add270cb87bc044, type: 2}
   speed: 0.5
   damage: 1
 --- !u!50 &2002652442641132760

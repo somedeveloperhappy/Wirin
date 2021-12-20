@@ -112,7 +112,7 @@ namespace FlatTheme.IngameMenu
 
         private void UpdateStates()
         {
-            Debug.Log("updating side lines ");
+            //Debug.Log("updating side lines ");
             // all are off
             lineRight.isON = lineLeft.isON = lineTop.isON = lineBottom.isON = false;
 

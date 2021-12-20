@@ -29,19 +29,19 @@ namespace FlatTheme.WinMenu
         private float lastT = 0;
 
         #region caches
-        private Transform m_transform;
+        private RectTransform m_rectTransform;
         private Vector3 init_pos;
         #endregion
 
 
         public void OnCanvasDisable()
         {
-            m_transform.position = init_pos;
+            m_rectTransform.position = init_pos;
             this.enabled = false;
         }
         public void OnCanvasEnable()
         {
-            init_pos = m_transform.position;
+            init_pos = m_rectTransform.position;
             this.enabled = true;
         }
 
@@ -54,7 +54,8 @@ namespace FlatTheme.WinMenu
 
         private void Awake()
         {
-            m_transform = transform;
+            m_rectTransform = GetComponent<RectTransform>();
+            this.enabled = false;
         }
 
         private void Update()
@@ -71,7 +72,7 @@ namespace FlatTheme.WinMenu
                 ChangeMoveTarget();
             }
 
-            m_transform.position = Vector3.MoveTowards( m_transform.position, currentTarget, Time.unscaledDeltaTime * settings.movingSpeed );
+            m_rectTransform.position = Vector3.MoveTowards( m_rectTransform.position, currentTarget, Time.unscaledDeltaTime * settings.movingSpeed );
         }
 
         private void ChangeMoveTarget()

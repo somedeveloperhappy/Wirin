@@ -8,7 +8,7 @@ namespace UpgradeSystem
         public abstract void LoadState();
         public abstract void SaveState();
         public abstract void Activate();
-        public abstract void Upgrade();
+        internal abstract void Upgrade();
         public abstract uint GetNextCost();
         public abstract bool CanBeUpgraded();
         public abstract bool IsFullyUpgraded();

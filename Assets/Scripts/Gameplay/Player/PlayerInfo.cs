@@ -66,6 +66,9 @@ namespace Gameplay.Player
 
             m_stats.m_health = m_stats.maxHealth;
 
+            // load money
+            moneyManager.Load();
+
         }
 
         #region health things
@@ -95,10 +98,14 @@ namespace Gameplay.Player
             if (value < 0) value = 0;
             m_stats.m_health = value;
 
-            if (value == 0) StartCoroutine(Lose());
+            if (value == 0) StartCoroutine( Lose() );
             onHealthChanged?.Invoke( value, prevHealth );
         }
 
+        public void SetMaxHealth(float maxhealth)
+        {
+            m_stats.maxHealth = maxcharge;
+        }
         #endregion
 
         public IEnumerator Lose()

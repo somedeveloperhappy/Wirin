@@ -96,8 +96,8 @@ namespace FlatTheme
 
         #region handy refs
 
-        public Trinon trinon => References.trinon;
-        public PlayerNormalBullet PlayerNormalBullet => References.trinon.playerNormalBulletPrefab;
+        public Trinon trinon => References.PlayerInfo.parts.trinon;
+        public PlayerNormalBullet PlayerNormalBullet => References.PlayerInfo.parts.trinon.playerNormalBulletPrefab;
 
         #endregion
 

@@ -1,3 +1,4 @@
+using Gameplay.CoinsSystem;
 using UnityEngine;
 
 namespace Gameplay.EnemyNamespace.Types.FireBlaster
@@ -89,7 +90,26 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
             transform.up = target - transform.position;
         }
 
+        protected override void SpawnCoins((Coin coin, int amount)[] ps)
+        {
+            var playerInfo = FindObjectOfType<Player.PlayerInfo>();
 
+            var dist = 0.5f;
+            for (int i = 0; i < ps.Length; i++)
+            {
+                for (int j = 0; j < ps[i].amount; j++)
+                {
+                    var c = Instantiate(
+                        original: ps[i].coin,
+                        position: transform.position + new Vector3(
+                            Random.Range( -dist, dist ),
+                            Random.Range( -dist, dist ),
+                            transform.position.z ),
+                        rotation: Quaternion.identity );
+                    c.Init( playerInfo, ps[i].coin.coinsWorth );
+                }
+            }
+        }
         // protected override void OnTakeDamage()
         // {
         // 	base.OnTakeDamage ();

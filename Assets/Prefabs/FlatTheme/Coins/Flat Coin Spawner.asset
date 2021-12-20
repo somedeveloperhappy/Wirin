@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c658e194b9c487f49b0fa93f0c0cc456, type: 3}
+  m_Name: Flat Coin Spawner
+  m_EditorClassIdentifier: 
+  spawnCases:
+  - coinPrefab: {fileID: -4228147258539302165, guid: ee854177186275d4a9653db1eedb26d1, type: 3}
+    minimunAccepting: 1
+  - coinPrefab: {fileID: -4228147258539302165, guid: 008f2c75f0b456941ab7d718c7a8b41a, type: 3}
+    minimunAccepting: 10
+  - coinPrefab: {fileID: -4228147258539302165, guid: 28fde593eebcd9d468f31c3dd491ab87, type: 3}
+    minimunAccepting: 50

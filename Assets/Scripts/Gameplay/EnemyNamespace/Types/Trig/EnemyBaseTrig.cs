@@ -1,3 +1,4 @@
+using Gameplay.CoinsSystem;
 using UnityEngine;
 
 namespace Gameplay.EnemyNamespace.Types.Trig
@@ -24,7 +25,7 @@ namespace Gameplay.EnemyNamespace.Types.Trig
             // set up values
             Health = (int)(points / 10);
 
-            targetPosition = FindObjectOfType<Player.PlayerInfo>(true).parts.pivot.transform.position;
+            targetPosition = FindObjectOfType<Player.PlayerInfo>( true ).parts.pivot.transform.position;
 
             RoateTowrardsTarget();
         }
@@ -55,14 +56,35 @@ namespace Gameplay.EnemyNamespace.Types.Trig
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            Debug.Log($"colliding with {other.gameObject.name}");
-            if (other.gameObject.TryGetComponent<Player.PlayerInfo>(out var playerInfo))
+            Debug.Log( $"colliding with {other.gameObject.name}" );
+            if (other.gameObject.TryGetComponent<Player.PlayerInfo>( out var playerInfo ))
             {
                 var damageInfo = new Player.EnemyDamageInfo(
-                    damage);
-                playerInfo.TakeDamage(damageInfo);
+                    damage );
+                playerInfo.TakeDamage( damageInfo );
 
                 DestroyEnemy();
+            }
+        }
+
+        protected override void SpawnCoins((Coin coin, int amount)[] ps)
+        {
+            var playerInfo = FindObjectOfType<Player.PlayerInfo>();
+
+            var dist = 0.5f;
+            for (int i = 0; i < ps.Length; i++)
+            {
+                for (int j = 0; j < ps[i].amount; j++)
+                {
+                    var c = Instantiate(
+                        original: ps[i].coin,
+                        position: transform.position + new Vector3(
+                            Random.Range( -dist, dist ),
+                            Random.Range( -dist, dist ),
+                            transform.position.z ),
+                        rotation: Quaternion.identity );
+                    c.Init( playerInfo, ps[i].coin.coinsWorth );
+                }
             }
         }
 

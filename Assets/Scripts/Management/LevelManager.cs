@@ -28,7 +28,6 @@ namespace Management
         #region caches
         private float enemySpawmersChanceSum; // the sum of chances of all enemy spawners in this level
         #endregion
-        public bool WaitingForWin { get; } = false;
 
         private void Awake()
         {
@@ -47,7 +46,6 @@ namespace Management
 
         public void Tick()
         {
-            if (WaitingForWin) return;
             CheckForSpawn();
         }
 
@@ -70,6 +68,8 @@ namespace Management
             SaveLevelNumberToPrefs();
 
             gameController.DisableAllGameplayMechanics();
+
+            yield return new WaitForSeconds( 1 ); // wait for a second
 
             // timescale towards 0
             while (Time.timeScale > 0.01f)
@@ -106,8 +106,6 @@ namespace Management
 
         public void OnEnemyDestroy(EnemyBase enemy)
         {
-            if (WaitingForWin) return;
-
             levelStats.pointsTaken += enemy.points;
             Debug.Log( "enemy died. checking for win..." );
             CheckForWin( enemy );
@@ -116,8 +114,6 @@ namespace Management
 
         public void CheckForWin(EnemyBase enemy)
         {
-
-            if (WaitingForWin) return;
 
             if (!gameController.isAnyPlayerAlive())
             {

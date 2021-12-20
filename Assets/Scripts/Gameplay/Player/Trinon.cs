@@ -16,7 +16,7 @@ namespace Gameplay.Player
 
         [SerializeField] private float rotateSpeed;
         [SerializeField] private Vector2 bulletPosOffset;
-        [FormerlySerializedAs("bulletPrefab")] public PlayerNormalBullet playerNormalBulletPrefab;
+        [FormerlySerializedAs( "bulletPrefab" )] public PlayerNormalBullet playerNormalBulletPrefab;
 
         #endregion
 
@@ -45,8 +45,6 @@ namespace Gameplay.Player
 
         #region quick references
 
-        public Pivot pivot => References.pivot;
-
         #endregion
 
 
@@ -67,7 +65,7 @@ namespace Gameplay.Player
         public void OnPressUp(float duration)
         {
             Shoot();
-            onShootingPressEnd?.Invoke(duration);
+            onShootingPressEnd?.Invoke( duration );
         }
 
         public void OnPressDownUpdate()
@@ -78,7 +76,7 @@ namespace Gameplay.Player
             apply_internal_speedMultiplier();
             Move();
 
-            onShootingPressUpdate?.Invoke(References.playerPressManager.stateDuration);
+            onShootingPressUpdate?.Invoke( References.playerPressManager.stateDuration );
         }
 
         public void OnPressUpUpdate()
@@ -114,13 +112,14 @@ namespace Gameplay.Player
 
         private void Move()
         {
-            transform.RotateAround(pivot.transform.position, Vector3.forward,
-                rotateSpeed * rotateSpeedMultiplier_internal * rotateSpeedMultiplier * Time.deltaTime);
+            var rot = transform.rotation.eulerAngles;
+            rot.z += rotateSpeed * rotateSpeedMultiplier_internal * rotateSpeedMultiplier * Time.deltaTime;
+            transform.rotation = Quaternion.Euler( rot );
         }
 
         private void Shoot()
         {
-            Instantiate(playerNormalBulletPrefab, GetBulletPositionInWorld(), transform.rotation).Init(playerInfo);
+            Instantiate( playerNormalBulletPrefab, GetBulletPositionInWorld(), transform.rotation ).Init( playerInfo );
         }
 
         public void OnGameplayEnd()
@@ -142,7 +141,7 @@ namespace Gameplay.Player
 
             public float Evaluate()
             {
-                return curve.Evaluate(time);
+                return curve.Evaluate( time );
             }
 
             public void Init()
@@ -160,7 +159,7 @@ namespace Gameplay.Player
 
             public override void IncreaseTime()
             {
-                time = Mathf.Lerp(time, last_key_time, Time.deltaTime * speedUpLerp);
+                time = Mathf.Lerp( time, last_key_time, Time.deltaTime * speedUpLerp );
             }
 
             public override void DecreaseTime()
@@ -178,7 +177,7 @@ namespace Gameplay.Player
 
             public override void DecreaseTime()
             {
-                time = Mathf.Lerp(time, 0, Time.deltaTime * speedDownLerp);
+                time = Mathf.Lerp( time, 0, Time.deltaTime * speedDownLerp );
             }
 
             public override void IncreaseTime()

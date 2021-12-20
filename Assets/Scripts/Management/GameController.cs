@@ -16,6 +16,7 @@ namespace Management
         public CanvasBase mainMenuCanvas;
         public CanvasBase winMenuCanvas;
         public CanvasBase loseMenuCanvas;
+        public CanvasBase upgradeMenuCanvas;
 
         private void Awake()
         {
@@ -25,7 +26,8 @@ namespace Management
                 mainMenuCanvas,
                 ingameCanvas,
                 winMenuCanvas,
-                loseMenuCanvas
+                loseMenuCanvas,
+                upgradeMenuCanvas
             };
         }
 
@@ -55,15 +57,17 @@ namespace Management
 
         public void OnWinLevel()
         {
-            Debug.Log( "here" );
             // enable/disable
             DisableAllCanvasesExceptFor( winMenuCanvas );
 
-            Debug.Log( "then here" );
             // disable functionalities
             DisableAllGameplayMechanics( true, true );
-            Debug.Log( "won the game fully" );
             Debug.Log( $"win canvas active {winMenuCanvas.enabled}" );
+
+            // save
+            foreach (var plyr in PlayerInfo.instances)
+                plyr.moneyManager.Save();
+
         }
 
         public void OnLoseLevel()
@@ -76,6 +80,10 @@ namespace Management
 
             // stop gameplay for good
             DisableAllGameplayMechanics( timeScaleTo0: true, stopInputingAbruptly: true );
+
+            // save
+            foreach (var plyr in PlayerInfo.instances)
+                plyr.moneyManager.Save();
         }
 
         public void StartGame() => StartGame( null, true );

@@ -2,62 +2,86 @@ using Gameplay;
 using Statics;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace PlayManager
 {
-    public class PlayerPressManager : MonoBehaviour
+    [RequireComponent( typeof( UnityEngine.UI.Image ) )]
+    public class PlayerPressManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler
     {
-
-        /// <summary>
-        ///     if false, it won't recieve any inputs
-        /// </summary>
         public bool canGetInputs = true;
 
-        public float pressableRange = 4;
+        [Tooltip( "the duration of the current state ( press, release)" )]
+        [HideInInspector] public float stateDuration;
 
-        /// <summary>
-        ///     the duration of the current state ( press, release)
-        /// </summary>
-        public float stateDuration;
+        [Tooltip( "for how much time the pointer shouldnt move much" )]
+        public float pointerDownTimeThreshold = 0.15f;
+
 
         private bool wasPressed; // for checking if in previous frame the pivot was pressed
+        bool is_pointer_in = false;
+        float pointer_start_t = 0; // the time when the pointer started 
+
+
+        #region events
+        public System.Action<PointerEventData> onPointerDown;
+        public System.Action<PointerEventData> onPointerUp;
+        public System.Action<PointerEventData> onPointerExit;
+        public System.Action<PointerEventData> onDrag;
+        #endregion
+
+
+        void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+        {
+            is_pointer_in = true; pointer_start_t = Time.realtimeSinceStartup;
+            onPointerDown?.Invoke( eventData );
+        }
+        void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
+        {
+            is_pointer_in = false;
+            onPointerUp?.Invoke( eventData );
+        }
+        void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+        {
+            is_pointer_in = false;
+            onPointerExit?.Invoke( eventData );
+        }
+        void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+        {
+            Debug.Log( "On Begin Drag" );
+            is_pointer_in = false;
+        }
+        void IDragHandler.OnDrag(PointerEventData eventData) => onDrag?.Invoke( eventData );
 
         private void Update()
         {
             InputUpdates();
         }
-
         private void InputUpdates()
         {
-
-            if (wasPressed)
+            if (is_pointer_in && canGetInputs && Time.realtimeSinceStartup - pointer_start_t >= pointerDownTimeThreshold)
             {
-                if (InputGetter.isPoinerDown && canGetInputs)
+                if (!wasPressed)
                 {
-                    // on down update 
+                    wasPressed = true;
+                    // on down start
+                    downStart();
                     downUpdate();
                 }
                 else
                 {
-                    // on up start
-                    upStart();
-                    upUpdate();
+                    // on down update 
+                    downUpdate();
                 }
-
             }
             else
             {
-
-                bool pointerInsideRange()
+                if (wasPressed)
                 {
-                    return Vector2.Distance(InputGetter.GetPointerWorldPosition(), Vector2.zero) <= pressableRange;
-                }
-
-                if (InputGetter.isPoinerDown && pointerInsideRange() && canGetInputs)
-                {
-                    // on down start
-                    downStart();
-                    downUpdate();
+                    wasPressed = false;
+                    // on up start
+                    upStart();
+                    upUpdate();
                 }
                 else
                 {
@@ -67,38 +91,32 @@ namespace PlayManager
             }
         }
 
+
+        float start_pos, start_t;
+        private void downStart()
+        {
+            OnPlayerPress.ForeachInstance( pp => pp.OnPressDown( stateDuration ) );
+            stateDuration = 0;
+        }
+
         private void downUpdate()
         {
             stateDuration += Time.deltaTime;
-            OnPlayerPress.ForeachInstance(pp => pp.OnPressDownUpdate());
+            OnPlayerPress.ForeachInstance( pp => pp.OnPressDownUpdate() );
         }
 
         private void upStart()
         {
-            wasPressed = false;
-            OnPlayerPress.ForeachInstance(pp => pp.OnPressUp(stateDuration));
+            OnPlayerPress.ForeachInstance( pp => pp.OnPressUp( stateDuration ) );
             stateDuration = 0;
         }
 
-        private void downStart()
-        {
-            wasPressed = true;
-            OnPlayerPress.ForeachInstance(pp => pp.OnPressDown(stateDuration));
-            stateDuration = 0;
-        }
 
         private void upUpdate()
         {
             stateDuration += Time.deltaTime;
-            OnPlayerPress.ForeachInstance(pp => pp.OnPressUpUpdate());
+            OnPlayerPress.ForeachInstance( pp => pp.OnPressUpUpdate() );
         }
 
-#if UNITY_EDITOR
-        public void OnDrawGizmos()
-        {
-            Handles.color = new Color(1, 0, 0, 0.1f);
-            Handles.DrawSolidDisc(Vector3.zero, Vector3.forward, pressableRange);
-        }
-#endif
     }
 }
