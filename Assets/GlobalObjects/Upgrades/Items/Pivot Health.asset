@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyName: pivot_hp
   upgradeSteps:
-  - health: 5
-    cost: 5
-  - health: 6
-    cost: 7
-  - health: 8
+  - health: 2.2
     cost: 10
-  - health: 8
-    cost: 10
+  - health: 2.4
+    cost: 20
+  - health: 2.6
+    cost: 40
+  - health: 3
+    cost: 70

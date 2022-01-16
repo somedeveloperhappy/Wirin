@@ -13,11 +13,11 @@ namespace FlatTheme
 
         public PostProcess postPro;
 
-        public void Apply(float normalizedT)
+        void IOnPressFx.Apply(float normalizedT)
         {
             // overlay
             postPro.main.SetFogIntensity(postPro.settings.fogIntensity.Evaluate(normalizedT));
-            postPro.main.SetSaturation(postPro.settings.saturation.Evaluate(normalizedT));
+            postPro.main.SetSaturation(postPro.settings.saturation.Evaluate(normalizedT)); 
 
             // models
             foreach (var model in models)
@@ -30,18 +30,16 @@ namespace FlatTheme
             lightfx.m_speed = lightfx.speed.Evaluate(normalizedT);
         }
 
-        public void Initialize()
-        {
-            this.DefaultInitialize();
-        }
-
         private void Start()
         {
             // models stuff
             foreach (var model in models) model.mateiral = model.meshRenderer.material;
+            // set random fog color
+            postPro.main.SetFogColor(postPro.settings.fogColors[UnityEngine.Random.Range(0, postPro.settings.fogColors.Length)]);
 
-            Initialize();
         }
+        private void OnEnable() => this.DefaultInitialize();
+        private void OnDisable() => this.DefaultDestroy();
 
         private void Update()
         {
@@ -64,6 +62,7 @@ namespace FlatTheme
             [Serializable]
             public class Settings
             {
+                public Color[] fogColors;
                 public MinMax fogIntensity, saturation;
             }
         }
@@ -96,8 +95,8 @@ namespace FlatTheme
 
         #region handy refs
 
-        public Trinon trinon => References.PlayerInfo.parts.trinon;
-        public PlayerNormalBullet PlayerNormalBullet => References.PlayerInfo.parts.trinon.playerNormalBulletPrefab;
+        public Trinon trinon => References.playerInfo.parts.mainTrinon;
+        public PlayerNormalBullet PlayerNormalBullet => References.playerInfo.GetShootings().playerNormalBulletPrefab;
 
         #endregion
 

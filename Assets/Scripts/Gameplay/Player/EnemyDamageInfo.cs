@@ -6,12 +6,9 @@ namespace Gameplay.Player
     public struct PlayerBulletDamageInfo
     {
         public float damage;
-        public float stunDuration;
-
-        public PlayerBulletDamageInfo(float damage, float stunDuration)
+        public PlayerBulletDamageInfo(float damage)
         {
             this.damage = damage;
-            this.stunDuration = stunDuration;
         }
     }
 }

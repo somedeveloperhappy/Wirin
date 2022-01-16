@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using FlatTheme.WinMenu;
 using UnityEditor;
-using FlatTheme.WinMenu;
+using UnityEngine;
 
-[CustomEditor( typeof( RectBobble ) )]
+[CustomEditor(typeof(RectBobble))]
 public class RectBobbleEditor : Editor
 {
     private void OnSceneGUI()
@@ -13,6 +12,6 @@ public class RectBobbleEditor : Editor
         col.a = 0.2f;
         Handles.color = col;
 
-        Handles.DrawSolidDisc( tar.transform.position, Vector3.back, tar.settings.movingDistance );
+        Handles.DrawSolidDisc(tar.transform.position, Vector3.back, tar.settings.movingDistance);
     }
 }

@@ -23,15 +23,9 @@ namespace FlatTheme
                 cameraEffect.cameraSize.min, cameraEffect.cameraSize.max, normalizedT);
         }
 
-        public void Initialize()
-        {
-            this.DefaultInitialize();
-        }
-
-        private void Start()
-        {
-            Initialize();
-        }
+        private void OnEnable() => this.DefaultInitialize();
+        private void OnDisable() => this.DefaultDestroy();
+        public void Initialize() => OnEnable();
 
         [Serializable]
         public class ShaderEffect

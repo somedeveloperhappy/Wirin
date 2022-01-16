@@ -8,7 +8,11 @@ namespace SimpleScripts
     public struct MinMax
     {
         public float min, max;
-
+        public MinMax(float min, float max)
+        {
+            this.min = min;
+            this.max = max;
+        }
         public float Evaluate(float t)
         {
             return Mathf.Lerp(min, max, t);
@@ -19,6 +23,12 @@ namespace SimpleScripts
     public struct MinMax<T>
     {
         public T min, max;
+
+        public MinMax(T min, T max)
+        {
+            this.min = min;
+            this.max = max;
+        }
     }
 
     static public class HandyFuncs

@@ -3,12 +3,14 @@ using UnityEngine;
 
 namespace FlatTheme.MainMenuUI
 {
-    public class MainMenuCanvasFunctions : MonoBehaviour
+    public class MainMenuCanvasFunctions : MonoBehaviour, CanvasSystem.IOnCanvasEnabled
     {
         public CanvasSystem.CanvasBase canvasBase;
         public RectTransform[] affectedTransforms;
         public UnityEngine.UI.GraphicRaycaster graphicRaycaster;
         public CanvasGroup canvasGroup;
+        public AudioClip gameBackgroundMusic;
+        public UI.SwipeButton swipeButton;
 
         [System.Serializable]
         public class FadeSettings
@@ -38,6 +40,7 @@ namespace FlatTheme.MainMenuUI
 
             // disable further inputs
             graphicRaycaster.enabled = false;
+            swipeButton.enabled = false;
 
             // starting game behind the scenes
             References.gameController.StartGame(canvasBase, false);
@@ -62,6 +65,8 @@ namespace FlatTheme.MainMenuUI
                 yield return null;
             }
             while (canvasGroup.alpha > 0);
+
+            // absolute values
             canvasGroup.alpha = 0;
             Time.timeScale = 1;
 
@@ -79,6 +84,16 @@ namespace FlatTheme.MainMenuUI
             }
             canvasGroup.alpha = 1;
 
+           
+
+        }
+
+        public void OnCanvasEnable()
+        {
+            swipeButton.enabled = true;
+
+            // hide gameplay objects
+            References.gameplayObjects.SetActive(false);
         }
     }
 

@@ -24,6 +24,10 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
         }
         public BulletSettings bulletSettings;
 
+        private void Start()
+        {
+            bulletSettings.damage += enemy.Points * 0.001f;
+        }
 
         public void Shoot()
         {

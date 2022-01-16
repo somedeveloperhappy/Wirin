@@ -39,7 +39,7 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
 
         protected override void OnInit()
         {
-            Health = (int)(points / 15);
+            Health = points;
             m_target_transform = FindObjectOfType<Player.PlayerInfo>().transform;
             target = m_target_transform.position;
             RotateTowardsTarget();
@@ -102,11 +102,11 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
                     var c = Instantiate(
                         original: ps[i].coin,
                         position: transform.position + new Vector3(
-                            Random.Range( -dist, dist ),
-                            Random.Range( -dist, dist ),
-                            transform.position.z ),
-                        rotation: Quaternion.identity );
-                    c.Init( playerInfo, ps[i].coin.coinsWorth );
+                            Random.Range(-dist, dist),
+                            Random.Range(-dist, dist),
+                            transform.position.z),
+                        rotation: Quaternion.identity);
+                    c.Init(playerInfo, ps[i].coin.coinsWorth);
                 }
             }
         }

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace FlatTheme.WinMenu
@@ -10,7 +9,7 @@ namespace FlatTheme.WinMenu
         public CanvasSystem.CanvasBase canvasSystem;
         public UnityEngine.UI.GraphicRaycaster graphicRaycaster;
 
-        [ContextMenu( "Auto Resolve" )]
+        [ContextMenu("Auto Resolve")]
         private void AutoResolve()
         {
             canvasGroup = GetComponent<CanvasGroup>();
@@ -39,7 +38,7 @@ namespace FlatTheme.WinMenu
 
         public void Play()
         {
-            StartCoroutine( AsyncPlay() );
+            StartCoroutine(AsyncPlay());
         }
 
         IEnumerator AsyncPlay()
@@ -50,10 +49,10 @@ namespace FlatTheme.WinMenu
             graphicRaycaster.enabled = false;
 
             // disabling animation
-            if (TryGetComponent<Animator>( out Animator animator )) animator.enabled = false;
+            if (TryGetComponent<Animator>(out Animator animator)) animator.enabled = false;
 
             // start game, but timescale is still zero
-            References.gameController.StartGame( canvasSystem, false );
+            References.gameController.StartGame(canvasSystem, false);
 
             // fade the canvas as well as rise timescale
             do
@@ -102,7 +101,7 @@ namespace FlatTheme.WinMenu
             }
             canvasGroup.alpha = 1;
             graphicRaycaster.enabled = true;
-            if (TryGetComponent<Animator>( out animator )) animator.enabled = true;
+            if (TryGetComponent<Animator>(out animator)) animator.enabled = true;
 
         }
     }

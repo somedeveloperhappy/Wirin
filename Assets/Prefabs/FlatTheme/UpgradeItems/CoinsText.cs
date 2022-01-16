@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FlatTheme.UpgradeItems
 {
@@ -9,7 +8,7 @@ namespace FlatTheme.UpgradeItems
         public UnityEngine.UI.Text text;
         public UpgradeSystem.UpgradeManager upgradeManager;
 
-        [ContextMenu( "Auto Resolve" )]
+        [ContextMenu("Auto Resolve")]
         public void AutoResolve()
         {
             playerInfo = FindObjectOfType<Gameplay.Player.PlayerInfo>();

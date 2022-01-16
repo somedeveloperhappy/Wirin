@@ -12,5 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/FlatThemeScene.unity
     guid: 20d06feed69203c44b1a16c78ed23f3b
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: a671c6f055b67194faca639b75578fde, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: d444d52edd5687f45bf7e4d6cf083436, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 7cd679a94b0cb01408cd9b85d1041184, type: 2}

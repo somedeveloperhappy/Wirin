@@ -16,6 +16,8 @@ namespace SimpleScripts
         {
             if (lockTo60)
                 Application.targetFrameRate = 60;
+            else
+                Application.targetFrameRate = 30;
         }
 
         int frames = 0;

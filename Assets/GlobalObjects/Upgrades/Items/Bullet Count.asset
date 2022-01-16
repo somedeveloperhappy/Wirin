@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4c1f6b122191944893553d3ecf6a828, type: 3}
+  m_Name: Bullet Count
+  m_EditorClassIdentifier: 
+  key: _bc
+  upgradeSteps:
+  - trinonCount: 2
+    cost: 100
+  - trinonCount: 3
+    cost: 750
+  - trinonCount: 4
+    cost: 1500
+  - trinonCount: 5
+    cost: 5000
+  - trinonCount: 6
+    cost: 15000
+  - trinonCount: 7
+    cost: 30000
+  - trinonCount: 8
+    cost: 70000
+  - trinonCount: 9
+    cost: 130000
+  - trinonCount: 10
+    cost: 400000

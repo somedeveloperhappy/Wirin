@@ -77,9 +77,9 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
 
                 DestroyBullet();
             }
-            if (other.transform.CompareTag( Gameplay.Player.Shield.shieldTag ))
+            if (other.transform.CompareTag(Gameplay.Player.Shield.shieldTag))
             {
-                Debug.Log( $"bullet {name} was blocked by a shield" );
+                Debug.Log($"bullet {name} was blocked by a shield");
                 // on shield hit
                 DestroyBullet();
             }

@@ -70,6 +70,7 @@ public class HierarchyColorWindow : EditorWindow
                     target.col_memory[HierarchyColor.GetLocalID(go)] = target.editingColor_fore;
                     // appy to childs of selected
                     ApplyRecursive(go);
+                    Debug.Log($"Appling color to {go.name}");
                 }
         }
 

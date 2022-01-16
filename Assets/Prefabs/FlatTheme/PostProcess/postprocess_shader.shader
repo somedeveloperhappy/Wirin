@@ -5,6 +5,7 @@ Shader "custom/post process"
     {
         _chromatic_intensity ("Chromatic Intensity", Range(0, 1)) = 0.5
         _lens_distortion ("Lens Distortion", Float) = 1
+        _BloomIntensity("Bloom Intensity", Float) = 0
         
         
         [HideInInspector]
@@ -50,6 +51,7 @@ Shader "custom/post process"
             
             float _chromatic_intensity;
             float _lens_distortion;
+            float _BloomIntensity;
             
             float2 Cent2Sat(float2 uv) {
                 return (uv + 1) / 2;
@@ -95,6 +97,9 @@ Shader "custom/post process"
                 
                 actual_col.r = (actual_col.r + r*5) / (5*CHROMATIC_SAMPLES + 1);
                 actual_col.b = (actual_col.b + b*5) / (5*CHROMATIC_SAMPLES + 1);
+
+                if(actual_col.r > 1)
+                    return 1;
                 
                 return actual_col;    
             }

@@ -7,15 +7,11 @@ namespace Gameplay.Player
     {
 
         #region main settings
-
-        [SerializeField, Tooltip("T between 0 and 1")]
-        private AnimationCurve damageCurve;
+        public float damageMin = 0, damageMax = 100;
+        public float EvaluateDamage(float charge) => Mathf.Lerp(damageMin, damageMax, charge);
 
         [SerializeField, Tooltip("T between 0 and 1")]
         private AnimationCurve speedCurve;
-
-        [SerializeField, Tooltip("T between 0 and 1")]
-        private AnimationCurve stunCurve;
 
         #endregion
 
@@ -26,6 +22,7 @@ namespace Gameplay.Player
         private float last_screen_bound_check;
 
         #endregion
+
 
         public float damage { get; private set; }
         public float damageMultiplier = 1;
@@ -45,11 +42,6 @@ namespace Gameplay.Player
         /// </summary>
         public OnInit onInit_fine;
 
-        /// <summary>
-        ///     executes on initializing it, T not normalized
-        /// </summary>
-        public OnInit onInit_raw;
-
         public delegate void OnHit(float damage);
 
         /// <summary>
@@ -62,21 +54,17 @@ namespace Gameplay.Player
 
         private Rigidbody2D rigid;
         public float speed;
-        public float stunDuration;
 
         public void Init(PlayerInfo playerInfo)
         {
             this.playerInfo = playerInfo;
-            var raw_charge = playerInfo.GetRawCharge();
-            var normal_charge = raw_charge / playerInfo.GetMaxPossibleCharge();
+            var normal_charge = playerInfo.GetNormalCharge();
 
-
-            damage = damageCurve.Evaluate(normal_charge) * damageMultiplier;
+            damage = EvaluateDamage(normal_charge) * damageMultiplier;
+            Debug.Log($"bullet dmg ({damageMin},{damageMax}) : {damage}");
             speed = speedCurve.Evaluate(normal_charge);
-            stunDuration = stunCurve.Evaluate(normal_charge);
 
             onInit_fine?.Invoke(normal_charge);
-            onInit_raw?.Invoke(raw_charge);
         }
 
         protected void Awake()
@@ -116,7 +104,7 @@ namespace Gameplay.Player
             if (other.gameObject.TryGetComponent<EnemyNamespace.Types.EnemyBase>(out EnemyNamespace.Types.EnemyBase enemy))
             {
                 Debug.Log($"Damaging enemy {enemy.name} , damage : {damage}");
-                enemy.TakeDamage(new PlayerBulletDamageInfo(damage, stunDuration));
+                enemy.TakeDamage(new PlayerBulletDamageInfo(damage * damageMultiplier));
 
                 DestroyBullet();
             }

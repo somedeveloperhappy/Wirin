@@ -7,18 +7,18 @@ namespace FlatTheme
 {
     public class OnPress_SideVFX : MonoBehaviour, IOnPressFx
     {
-        public new ParticleSystem particleSystem;
+        public ParticleSystem m_particleSystem;
 
         public Settings settings;
 
-        public void Apply(float normalizedT)
+        void IOnPressFx.Apply(float normalizedT)
         {
             // set emisison rate
-            var emission = particleSystem.emission;
+            var emission = m_particleSystem.emission;
             emission.rateOverTime = Mathf.Lerp(settings.rateOverTime.min, settings.rateOverTime.max, normalizedT);
 
             // set alpha
-            var main = particleSystem.main;
+            var main = m_particleSystem.main;
             var startCol = main.startColor;
             var col = startCol.color;
             col.a = Mathf.Lerp(settings.alpha.min, settings.alpha.max, normalizedT);
@@ -27,15 +27,22 @@ namespace FlatTheme
 
         }
 
-        public void Initialize()
+        private void OnEnable()
         {
             this.DefaultInitialize();
+            m_particleSystem.Play();
+            (this as IOnPressFx).Apply(0);
+        }
+
+        private void OnDisable()
+        {
+            this.DefaultDestroy();
+            m_particleSystem.Stop();
         }
 
         private void Start()
         {
-            particleSystem ??= GetComponent<ParticleSystem>();
-            Initialize();
+            m_particleSystem ??= GetComponent<ParticleSystem>();
         }
 
         [Serializable]
@@ -47,8 +54,8 @@ namespace FlatTheme
 
         #region quick refs
 
-        public Trinon trinon => References.PlayerInfo.parts.trinon;
-        public PlayerNormalBullet PlayerNormalBullet => References.PlayerInfo.parts.trinon.playerNormalBulletPrefab;
+        public Trinon trinon => References.playerInfo.parts.mainTrinon;
+        public PlayerNormalBullet PlayerNormalBullet => References.playerInfo.GetShootings().playerNormalBulletPrefab;
 
         #endregion
 

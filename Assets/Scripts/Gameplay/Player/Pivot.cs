@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay.Player
 {
-    public class Pivot : MonoBehaviour, IOnPlayerPress, IPlayerPart
+    public class Pivot : MonoBehaviour, IOnPlayerPress
     {
 
         #region refs

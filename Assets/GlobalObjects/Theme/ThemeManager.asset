@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1cbd97b29a07694fb4d4a5aba257553, type: 3}
   m_Name: ThemeManager
   m_EditorClassIdentifier: 
-  themes:
-  - name: Flat
+  m_themes:
+  - name: flat
     owned: 1
-  enabledIndex: 0
+  - name: 3d
+    owned: 0
+  m_enabledIndex: 0

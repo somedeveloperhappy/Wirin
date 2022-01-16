@@ -20,15 +20,15 @@ namespace UpgradeSystem
 
         public void Load()
         {
-            Debug.Log( $"Loading money" );
+            Debug.Log($"Loading money");
 
-            _coins = uint.Parse( PlayerPrefs.GetString( "coins", "0" ) );
+            _coins = uint.Parse(PlayerPrefs.GetString("coins", "0"));
         }
 
         public void Save()
         {
-            Debug.Log( $"Saving Coins" );
-            PlayerPrefs.SetString( "coins", _coins.ToString() );
+            Debug.Log($"Saving Coins");
+            PlayerPrefs.SetString("coins", _coins.ToString());
         }
     }
 }

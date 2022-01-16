@@ -101,14 +101,14 @@ public class PrefsEditor : EditorWindow
         {
             foreach (var mod in modifieds)
             {
-                Debug.Log( $"Setting key {mod.Key} val {mod.Value}" );
+                Debug.Log($"Setting key {mod.Key} val {mod.Value}");
                 if (mod.Value == string.Empty) continue;
 
                 if (mod.Value == DELETE_WORD)
                     PlayerPrefs.DeleteKey(mod.Key);
                 else
                     PlayerPrefs.SetString(mod.Key, mod.Value);
-                Debug.Log( $"key {mod.Key} is now {PlayerPrefs.GetString( mod.Key )}" );
+                Debug.Log($"key {mod.Key} is now {PlayerPrefs.GetString(mod.Key)}");
             }
 
             GetPrefs();

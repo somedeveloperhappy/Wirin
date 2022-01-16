@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using CanvasSystem;
 using UnityEngine;
-using CanvasSystem;
 
 namespace FlatTheme.WinMenu
 {
@@ -9,7 +8,7 @@ namespace FlatTheme.WinMenu
         public Management.LevelManager LevelManager;
         public TMPro.TMP_Text text;
 
-        [ContextMenu( "Auto Resolve" )]
+        [ContextMenu("Auto Resolve")]
         private void AutoResolve()
         {
             text = GetComponent<TMPro.TMP_Text>();

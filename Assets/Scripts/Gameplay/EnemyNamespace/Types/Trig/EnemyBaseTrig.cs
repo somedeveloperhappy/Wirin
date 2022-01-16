@@ -23,9 +23,9 @@ namespace Gameplay.EnemyNamespace.Types.Trig
         protected override void OnInit()
         {
             // set up values
-            Health = (int)(points / 10);
+            Health = Mathf.Ceil(points / 100f);
 
-            targetPosition = FindObjectOfType<Player.PlayerInfo>( true ).parts.pivot.transform.position;
+            targetPosition = FindObjectOfType<Player.PlayerInfo>(true).parts.pivot.transform.position;
 
             RoateTowrardsTarget();
         }
@@ -56,12 +56,12 @@ namespace Gameplay.EnemyNamespace.Types.Trig
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            Debug.Log( $"colliding with {other.gameObject.name}" );
-            if (other.gameObject.TryGetComponent<Player.PlayerInfo>( out var playerInfo ))
+            Debug.Log($"colliding with {other.gameObject.name}");
+            if (other.gameObject.TryGetComponent<Player.PlayerInfo>(out var playerInfo))
             {
                 var damageInfo = new Player.EnemyDamageInfo(
-                    damage );
-                playerInfo.TakeDamage( damageInfo );
+                    damage);
+                playerInfo.TakeDamage(damageInfo);
 
                 DestroyEnemy();
             }
@@ -79,11 +79,11 @@ namespace Gameplay.EnemyNamespace.Types.Trig
                     var c = Instantiate(
                         original: ps[i].coin,
                         position: transform.position + new Vector3(
-                            Random.Range( -dist, dist ),
-                            Random.Range( -dist, dist ),
-                            transform.position.z ),
-                        rotation: Quaternion.identity );
-                    c.Init( playerInfo, ps[i].coin.coinsWorth );
+                            Random.Range(-dist, dist),
+                            Random.Range(-dist, dist),
+                            transform.position.z),
+                        rotation: Quaternion.identity);
+                    c.Init(playerInfo, ps[i].coin.coinsWorth);
                 }
             }
         }

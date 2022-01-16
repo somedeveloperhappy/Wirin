@@ -15,7 +15,7 @@ namespace FlatTheme
         private float speed;
 
         private float t; // timer for lero effects
-        public TextMesh textMesh;
+        public TMPro.TextMeshPro textMesh;
 
 
         private void Start()
@@ -25,7 +25,10 @@ namespace FlatTheme
 
             enemyBase.onTakeDamage += onTakeDamage;
         }
-
+        private void OnDestroy()
+        {
+            enemyBase.onTakeDamage -= onTakeDamage;
+        }
 
         private void onTakeDamage(float previousHealth, PlayerBulletDamageInfo damageInfo)
         {

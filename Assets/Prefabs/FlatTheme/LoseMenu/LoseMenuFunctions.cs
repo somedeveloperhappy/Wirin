@@ -1,68 +1,57 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace FlatTheme.LoseMenu
 {
     public class LoseMenuFunctions : MonoBehaviour
     {
-        public UnityEngine.UI.GraphicRaycaster graphicRaycaster;
         public CanvasSystem.CanvasBase canvasBase;
-        public CanvasGroup canvasGroup;
+        public CanvasGroup OverlayCanvasGroup;
+        public UnityEngine.UI.Image overlayObject;
 
         [System.Serializable]
         public class FadeOutSettings
         {
-            public float fadeOutSpeed = 1;
+            public float overlayFadeInSpeed = 1;
         }
         public FadeOutSettings fadeOutSettings;
 
-        [ContextMenu( "Auto Resolve" )]
+        [ContextMenu("Auto Resolve")]
         public void AutoResolve()
         {
-            graphicRaycaster = GetComponent<UnityEngine.UI.GraphicRaycaster>();
+            overlayObject = GetComponent<UnityEngine.UI.Image>();
             canvasBase = GetComponent<CanvasSystem.CanvasBase>();
-            canvasGroup = GetComponent<CanvasGroup>();
+            OverlayCanvasGroup = GetComponent<CanvasGroup>();
         }
 
         public void ExitToMainMenu()
         {
-            StartCoroutine( ExitToMenuAsync() );
+            StartCoroutine(ExitToMenuAsync());
         }
 
         private IEnumerator ExitToMenuAsync()
         {
-            // end gameplay mechanichs
-            References.gameController.EndGameplay( timeScaleTo0: true );
-
-            // open main menu in background
-            References.gameController.DisableAllCanvasesExceptFor(
-                new CanvasSystem.CanvasBase[] { canvasBase, References.gameController.mainMenuCanvas }
-            );
-
+            Debug.Log("Exiting to main menu...");
             // disable functionlities of the canvas
-            graphicRaycaster.enabled = false;
+            overlayObject.gameObject.SetActive(true);
 
-            // hide 
+            // loading scene in background
+            var current_scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            var reload_scene = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(
+                sceneBuildIndex: UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex,
+                UnityEngine.SceneManagement.LoadSceneMode.Single);
+            reload_scene.completed += (op) =>
+            {
+                Debug.Log("Finished exitToMenuAsync shit");
+            };
+
+            // waiting for the reload scene to completely load up
             do
             {
-                canvasGroup.alpha -= Time.unscaledDeltaTime * fadeOutSettings.fadeOutSpeed;
+                OverlayCanvasGroup.alpha += Time.unscaledDeltaTime * fadeOutSettings.overlayFadeInSpeed;
+                Debug.Log($"reload scene : {reload_scene.progress}%");
                 yield return null;
-            } while (canvasGroup.alpha > 0);
-
-            // set absolute values
-            canvasGroup.alpha = 0;
-
-            // completely disbale this canvas
-            canvasBase.enabled = false;
-
-            // things back to normal
-            graphicRaycaster.enabled = true;
-
-            // open main menu
-            References.gameController.OpenMainMenu();
-            Debug.Log( "Finished exitToMenuAsync shit" );
-
+            } while (!reload_scene.isDone);
         }
     }
 }

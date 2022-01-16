@@ -1,8 +1,5 @@
-using CanvasSystem;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UpgradeSystem
 {
@@ -20,7 +17,7 @@ namespace UpgradeSystem
                 up.LoadState();
             foreach (var ui in upgradeItems)
             {
-                ui.Init( playerInfo );
+                ui.Init(playerInfo);
                 ui.Activate();
             }
         }
@@ -32,21 +29,21 @@ namespace UpgradeSystem
                 if (item.name.ToLower() == itemName.ToLower())
                     return item;
 
-            Debug.Log( $"Item {itemName} does not exist" );
+            Debug.Log($"Item {itemName} does not exist");
             return null;
         }
 
         public bool CanUpgrade(String itemName)
         {
-            var item = GetUpgradeItemByName( itemName );
-            return CanUpgrade( item );
+            var item = GetUpgradeItemByName(itemName);
+            return CanUpgrade(item);
         }
 
         public bool CanUpgrade(UpgradeItem item) => (!item) ? false : item.CanBeUpgraded();
 
         public uint GetUpgradeItemCostByName(string itemName)
         {
-            var item = GetUpgradeItemByName( itemName );
+            var item = GetUpgradeItemByName(itemName);
             if (!item) return 0;
             return item.GetNextCost();
         }
@@ -55,8 +52,10 @@ namespace UpgradeSystem
         {
             if (upgradeItem.CanBeUpgraded())
             {
-                playerInfo.moneyManager.Coins -= upgradeItem.GetNextCost();
+                uint cost = upgradeItem.GetNextCost();
                 upgradeItem.Upgrade();
+                playerInfo.moneyManager.Coins -= cost;
+                playerInfo.moneyManager.Save();
                 onUpgrade?.Invoke();
             }
         }

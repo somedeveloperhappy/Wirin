@@ -1,6 +1,5 @@
-﻿using System.Collections;
+﻿using SimpleScripts;
 using UnityEngine;
-using SimpleScripts;
 
 namespace FlatTheme.Common
 {
@@ -21,8 +20,8 @@ namespace FlatTheme.Common
 
         private void Update()
         {
-            var t = Mathf.Sin( Time.unscaledTime * speed );
-            image.color = Color.Lerp( color.min, color.max, t );
+            var t = Mathf.Sin(Time.unscaledTime * speed);
+            image.color = Color.Lerp(color.min, color.max, t);
         }
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -27,8 +25,8 @@ namespace Gameplay.CoinsSystem
 
         private void Update()
         {
-            transform.position = Vector3.MoveTowards( transform.position, playerInfo.transform.position, settings.speed * Time.unscaledDeltaTime );
-            if (Vector3.Distance( transform.position, playerInfo.transform.position ) <= 0.5f)
+            transform.position = Vector3.MoveTowards(transform.position, playerInfo.transform.position, settings.speed * Time.unscaledDeltaTime);
+            if (Vector3.Distance(transform.position, playerInfo.transform.position) <= 0.5f)
             {
                 ApplyCoin();
             }
@@ -36,10 +34,10 @@ namespace Gameplay.CoinsSystem
 
         public void ApplyCoin()
         {
-            Debug.Log( $"Adding {coinsWorth} coins..." );
+            Debug.Log($"Adding {coinsWorth} coins...");
 
             playerInfo.moneyManager.Coins += coinsWorth;
-            Destroy( gameObject );
+            Destroy(gameObject);
             onApply?.Invoke();
         }
 

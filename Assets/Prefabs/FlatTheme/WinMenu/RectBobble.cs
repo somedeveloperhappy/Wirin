@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using CanvasSystem;
 using SimpleScripts;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace FlatTheme.WinMenu
 {
-    [RequireComponent( typeof( Image ) )]
+    [RequireComponent(typeof(Image))]
     public class RectBobble : MonoBehaviour, IOnCanvasEnabled, IOnCanvasDisabled
     {
         #region refs
@@ -46,7 +44,7 @@ namespace FlatTheme.WinMenu
         }
 
 
-        [ContextMenu( "Auto Resolve" )]
+        [ContextMenu("Auto Resolve")]
         private void AutoResolve()
         {
             image = GetComponent<Image>();
@@ -60,9 +58,9 @@ namespace FlatTheme.WinMenu
 
         private void Update()
         {
-            var t = Mathf.Sin( Time.realtimeSinceStartup * settings.colorChangeSpeed );
+            var t = Mathf.Sin(Time.realtimeSinceStartup * settings.colorChangeSpeed);
 
-            image.color = Color.Lerp( settings.color.min, settings.color.max, t );
+            image.color = Color.Lerp(settings.color.min, settings.color.max, t);
 
 
             // moving system
@@ -72,15 +70,15 @@ namespace FlatTheme.WinMenu
                 ChangeMoveTarget();
             }
 
-            m_rectTransform.position = Vector3.MoveTowards( m_rectTransform.position, currentTarget, Time.unscaledDeltaTime * settings.movingSpeed );
+            m_rectTransform.position = Vector3.MoveTowards(m_rectTransform.position, currentTarget, Time.unscaledDeltaTime * settings.movingSpeed);
         }
 
         private void ChangeMoveTarget()
         {
             currentTarget = init_pos + new Vector3(
-                Random.Range( -settings.movingDistance / 2, settings.movingDistance / 2 ),
-                Random.Range( -settings.movingDistance / 2, settings.movingDistance / 2 ),
-                0 );
+                Random.Range(-settings.movingDistance / 2, settings.movingDistance / 2),
+                Random.Range(-settings.movingDistance / 2, settings.movingDistance / 2),
+                0);
         }
     }
 }

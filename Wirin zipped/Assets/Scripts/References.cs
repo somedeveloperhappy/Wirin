@@ -27,9 +27,9 @@ public class References : MonoBehaviour
 
     static public LevelManager levelManager => instance?._levelManager;
     [SerializeField] LevelManager _levelManager;
+    [SerializeField] PlayManagement.GameController _gameController;
 
     static public PlayManagement.GameController gameController => instance?._gameController;
-    [SerializeField] PlayManagement.GameController _gameController;
 
     private void Awake() {
         if (!instance) {

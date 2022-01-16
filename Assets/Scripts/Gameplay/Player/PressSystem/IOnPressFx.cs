@@ -12,11 +12,6 @@ namespace Gameplay.PressSystem
         /// <param name="normalizedT">normalized</param>
         [ContextMenu("Apply")]
         public void Apply(float normalizedT);
-
-        /// <summary>
-        ///     this should be called as soon as possible. preferably in Start
-        /// </summary>
-        public void Initialize();
     }
 
     public static class IOnPressFXSettingsHelper
@@ -27,6 +22,10 @@ namespace Gameplay.PressSystem
         {
             if (!instances.Contains(instance))
                 instances.Add(instance);
+        }
+        public static void DefaultDestroy(this IOnPressFx instance)
+        {
+            instances.Remove(instance);
         }
     }
 }

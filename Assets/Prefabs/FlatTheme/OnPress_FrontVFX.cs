@@ -6,24 +6,24 @@ namespace FlatTheme
 {
     public class OnPress_FrontVFX : MonoBehaviour, IOnPressFx
     {
-        public new ParticleSystem particleSystem;
+        public ParticleSystem m_particleSystem;
 
         public Settings settings;
 
-        public void Apply(float normalizedT)
+        void IOnPressFx.Apply(float normalizedT)
         {
             // set emission rate
-            var emission = particleSystem.emission;
+            var emission = m_particleSystem.emission;
             emission.rateOverTime = Mathf.Lerp(settings.emissionRate.min, settings.emissionRate.max, normalizedT);
 
             // set shape scale x
-            var shape = particleSystem.shape;
+            var shape = m_particleSystem.shape;
             shape.scale = new Vector3(
                 Mathf.Lerp(settings.shapeEdgeSizeX.min, settings.shapeEdgeSizeX.max, normalizedT), shape.scale.y,
                 shape.scale.z);
 
             // set main size y
-            var main = particleSystem.main;
+            var main = m_particleSystem.main;
             main.startSizeY = Mathf.Lerp(settings.startSizeY.min, settings.startSizeY.max, normalizedT);
 
             // set start ligetime
@@ -37,17 +37,24 @@ namespace FlatTheme
             main.startColor = startCol;
         }
 
-        public void Initialize()
+        private void OnEnable()
         {
             this.DefaultInitialize();
+            m_particleSystem.Play();
+            ((IOnPressFx)this).Apply(0);
+        }
+
+        private void OnDisable()
+        {
+            this.DefaultDestroy();
+            m_particleSystem.Stop();
         }
 
         private void Start()
         {
-
-            particleSystem ??= GetComponent<ParticleSystem>();
-            Initialize();
+            m_particleSystem ??= GetComponent<ParticleSystem>();
         }
+
 
         [Serializable]
         public class Settings

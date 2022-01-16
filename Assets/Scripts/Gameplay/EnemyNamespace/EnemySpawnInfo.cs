@@ -9,7 +9,7 @@ namespace Gameplay.EnemyNamespace
         [Tooltip("The chance to spawn, when is requested to. x being the level number")]
         public AnimationCurve spawnChance;
 
-        public EnemyBase prefab;
+        public ThemeSystem.ThemeBased<EnemyBase> prefab;
 
         [Tooltip("This enemyBase will not be spawned in a level lower than this")]
         public int startingLevel;

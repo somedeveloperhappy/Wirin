@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Gameplay.CoinsSystem
 {
-    [CreateAssetMenu(menuName ="CoinSpawner")]
+    [CreateAssetMenu(menuName = "CoinSpawner")]
     public class CoinSpawner : ScriptableObject
     {
         [System.Serializable]
@@ -26,7 +25,7 @@ namespace Gameplay.CoinsSystem
                 int amount = (int)(coinsAmount / spawnCases[i].minimunAccepting);
                 if (amount != 0)
                 {
-                    r.Add( (spawnCases[i].coinPrefab, amount) );
+                    r.Add((spawnCases[i].coinPrefab, amount));
                     coinsAmount -= (uint)amount * (uint)spawnCases[i].minimunAccepting;
                 }
             }

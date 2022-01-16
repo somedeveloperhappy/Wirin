@@ -9,13 +9,6 @@ public class GameCreator : MonoBehaviour
 
     private void Start()
     {
-        try
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);
-        }
-        catch (System.Exception e)
-        {
-            debugText.text = e.Message;
-        }
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);
     }
 }

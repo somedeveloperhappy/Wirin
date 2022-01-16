@@ -10,7 +10,8 @@ namespace Gameplay.EnemyNamespace.Types
         public static List<EnemyBase> instances = new List<EnemyBase>();
         private float m_health;
 
-        public int points;
+        protected int points;
+        public int Points => points;
         public CoinsSystem.CoinSpawner coinSpawner;
 
         /// <returns>the current health for this enemyBase</returns>
@@ -18,13 +19,13 @@ namespace Gameplay.EnemyNamespace.Types
         {
             get
             {
-                OnGetHealth( ref m_health );
+                OnGetHealth(ref m_health);
                 return m_health;
             }
             set
             {
                 m_health = value;
-                OnSetHealth( ref m_health );
+                OnSetHealth(ref m_health);
             }
         }
 
@@ -43,21 +44,21 @@ namespace Gameplay.EnemyNamespace.Types
 
         private void OnEnable()
         {
-            instances.Add( this );
+            instances.Add(this);
             this.ResettableInit();
         }
         protected virtual void OnDisable()
         {
-            instances.Remove( this );
+            instances.Remove(this);
             this.ResettableDestroy();
         }
 
         public void DestroyEnemy()
         {
-            SpawnCoins( coinSpawner.GetCoins( (uint)points ) );
+            SpawnCoins(coinSpawner.GetCoins((uint)points));
 
-            Destroy( gameObject );
-            References.levelManager.OnEnemyDestroy( this );
+            Destroy(gameObject);
+            References.levelManager.OnEnemyDestroy(this);
             AfterDestruction();
             onDestroy?.Invoke();
         }
@@ -71,7 +72,7 @@ namespace Gameplay.EnemyNamespace.Types
             var health_before = Health;
             Health -= damageInfo.damage;
             OnTakeDamage();
-            onTakeDamage?.Invoke( health_before, damageInfo );
+            onTakeDamage?.Invoke(health_before, damageInfo);
         }
 
         protected virtual void OnTakeDamage() { }
@@ -79,7 +80,7 @@ namespace Gameplay.EnemyNamespace.Types
         public void OnGameplayEnd()
         {
             // silent destruction
-            Destroy( gameObject );
+            Destroy(gameObject);
         }
 
         #region events
