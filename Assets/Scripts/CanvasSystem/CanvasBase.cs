@@ -49,14 +49,14 @@ namespace CanvasSystem
         private void OnEnable()
         {
             Debug.Log($"{name} enabled");
-            FillAutomatically();
+            // FillAutomatically();
             m_canvas.enabled = true;
             foreach (var obj in canvasEnableds) obj.OnCanvasEnable();
         }
 
         private void OnDisable()
         {
-            FillAutomatically();
+            // FillAutomatically();
             m_canvas.enabled = false;
             foreach (var obj in canvasDisableds) obj.OnCanvasDisable();
         }

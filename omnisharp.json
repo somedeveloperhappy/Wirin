@@ -3,7 +3,6 @@
         "SpaceAfterCast": true,
         "SpaceAfterMethodCallName": false,
         "SpaceAfterSemicolonsInForStatement": true,
-        "SpaceWithinSquareBrackets": false,
-        "SpaceWithinMethodCallParentheses": true
+        "SpaceWithinSquareBrackets": false
     }
 }

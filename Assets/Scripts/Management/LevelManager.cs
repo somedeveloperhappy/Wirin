@@ -83,26 +83,26 @@ namespace Management
             References.gameController.OnWinLevel();
         }
 
-        public IEnumerator LostLevel()
-        {
-            Debug.Log($"lost on level {levelNumber}");
-            SaveLevelNumberToPrefs(); // for making sure
+        // public IEnumerator LostLevel()
+        // {
+        //     Debug.Log($"lost on level {levelNumber}");
+        //     SaveLevelNumberToPrefs(); // for making sure
 
-            // wait and lose
-            gameController.DisableAllGameplayMechanics(stopInputingAbruptly: false);
-            foreach (var enem in EnemyBase.instances) enem.enabled = false;
+        //     // wait and lose
+        //     gameController.DisableAllGameplayMechanics(stopInputingAbruptly: false);
+        //     foreach (var enem in EnemyBase.instances) enem.enabled = false;
 
-            // timescale towards 0
-            while (Time.timeScale > 0.01f)
-            {
-                Time.timeScale = Mathf.Lerp(Time.timeScale, 0, LOSE_DELAY_WAIT * Time.unscaledDeltaTime);
-                yield return null; // wait for next frame
-            }
+        //     // timescale towards 0
+        //     while (Time.timeScale > 0.01f)
+        //     {
+        //         Time.timeScale = Mathf.Lerp(Time.timeScale, 0, LOSE_DELAY_WAIT * Time.unscaledDeltaTime);
+        //         yield return null; // wait for next frame
+        //     }
 
-            Time.timeScale = 0;
+        //     Time.timeScale = 0;
 
-            gameController.OnLoseLevel();
-        }
+        //     gameController.OnLoseLevel();
+        // }
 
         public void OnEnemyDestroy(EnemyBase enemy)
         {
@@ -199,7 +199,7 @@ namespace Management
             void Spawn(Gameplay.EnemyNamespace.EnemySpawnInfo enem)
             {
                 var position = lineSegments.GetPoint(Random.Range(0f, lineSegments.maximumX));
-                var enemy = Instantiate(enem.prefab.GetValue(), position, Quaternion.identity);
+                var enemy = Instantiate(enem.prefab, position, Quaternion.identity);
                 enemy.Init(levelStats.GetSpawningPoint());
                 onEnemySpawn?.Invoke(enemy);
                 Debug.Log($"Spawned enemy {enemy.name} with {enemy.Points}");

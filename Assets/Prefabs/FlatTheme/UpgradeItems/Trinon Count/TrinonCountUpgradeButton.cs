@@ -113,7 +113,6 @@ namespace FlatTheme.UpgradeItems.TrinonCount
         public override void UpdateVisuals()
         {
             bool canUpgrade = upgradeItem.CanBeUpgraded();
-            Debug.Log($"bullet shit could be upped {canUpgrade}");
             bool fullyUpgraded = upgradeItem.IsFullyUpgraded();
 
             costText.text = fullyUpgraded ? string.Empty : upgradeItem.GetNextCost().ToString();

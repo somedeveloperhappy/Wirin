@@ -28,6 +28,7 @@ namespace FlatTheme
             m_material = spriteRenderer.material;
             playerInfo.onHealthChanged += onHealthChanged;
         }
+        private void OnDestroy() => playerInfo.onHealthChanged -= onHealthChanged;
 
         private void Start()
         {
@@ -57,6 +58,7 @@ namespace FlatTheme
             m_healthtarget = newHealth;
             smoothnessSpeed = settings.smoothnessSpeed.Evaluate(t);
             smoothnessValueMax = settings.smoothnessValueMax.Evaluate(t);
+            Debug.Log($"health changed to {newHealth}");
         }
 
         public void SetSmoothness(float smoothness)

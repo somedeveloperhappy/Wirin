@@ -88,9 +88,9 @@ Material:
     - _blur_intensity: 0.076
     - _chromEffect: 0
     - _chrom_intensity: 0.071
-    - _chromatic_intensity: 0.000000022088631
+    - _chromatic_intensity: 0
     - _is_blur_mask: 0
-    - _lens_distortion: 0.000000026997213
+    - _lens_distortion: 0
     - _samples: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

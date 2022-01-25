@@ -36,8 +36,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  prefab:
-    values:
-    - {fileID: 2002652442641132743, guid: 6d267e9641d69594db83543491f07636, type: 3}
-    - {fileID: 0}
+  prefabs:
+    flatPrefab: {fileID: 2002652442641132743, guid: 6d267e9641d69594db83543491f07636, type: 3}
   startingLevel: 0

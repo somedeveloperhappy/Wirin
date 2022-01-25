@@ -39,7 +39,7 @@ namespace Gameplay.EnemyNamespace.Types.FireBlaster
 
         protected override void OnInit()
         {
-            Health = points;
+            Health = points * 0.2f;
             m_target_transform = FindObjectOfType<Player.PlayerInfo>().transform;
             target = m_target_transform.position;
             RotateTowardsTarget();

@@ -6,14 +6,8 @@ namespace Inputs
     {
         static public InputHandler current;
 
-        private void OnEnable()
-        {
-            current = this;
-        }
-        private void OnDisable()
-        {
-            current = null;
-        }
+        private void OnEnable() => current = this;
+        private void OnDisable() => current = null;
 
 
         Vector2 touch_pos_record;

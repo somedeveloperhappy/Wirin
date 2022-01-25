@@ -10588,6 +10588,60 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1724268295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1724268296}
+  - component: {fileID: 1724268297}
+  m_Layer: 0
+  m_Name: sfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1724268296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724268295}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5541085662682600306}
+  m_Father: {fileID: 2299828312801376789}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1724268297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724268295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d037d7e95b0a3040a775d4a00ab569b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInfo: {fileID: 2044437615}
+  shoot:
+    shoot_mini: {fileID: 8300000, guid: b8fdd1758bd284740858b8cee0e285bc, type: 3}
+    shoot_big: {fileID: 8300000, guid: aa6871a500b974f4a8d67b195f4f4f4c, type: 3}
+    volume: 1
+  trinonChange:
+    addSound: {fileID: 8300000, guid: 7a953946945cf234ead3b305e7a77813, type: 3}
+    addSoundVolume: 0.15
+    removeSound: {fileID: 8300000, guid: be54047fdb18b1f45817cf143dd45491, type: 3}
+    removeSoundVolume: 0.5
 --- !u!1 &1861243682
 GameObject:
   m_ObjectHideFlags: 0
@@ -15602,10 +15656,10 @@ MonoBehaviour:
   settings:
     spriteRenderer: {fileID: 650654792379247643}
     center:
-      min: 0.2
-      max: 1
+      min: 1
+      max: 0
     range:
-      min: 0.25
+      min: 0
       max: 1
     add:
       min: 0
@@ -15870,7 +15924,7 @@ Transform:
   - {fileID: 303651677}
   - {fileID: 865814217}
   - {fileID: 1246331160}
-  - {fileID: 5541085662682600306}
+  - {fileID: 1724268296}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15907,7 +15961,7 @@ MonoBehaviour:
   m_rotationSettings:
     speedUpAcceleration: 40
     breakLerpSpeed: 1
-    maxSpeed: 360
+    maxSpeed: 200
     velocity: 0
   loseSettings:
     timeDownSpeed: 0.25
@@ -16143,7 +16197,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 88267059e601f3f46960ead3b96279aa, type: 3}
-  m_Color: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
+  m_Color: {r: 0.3186632, g: 0.8773585, b: 0.34741953, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -16188,7 +16242,7 @@ GameObject:
   - component: {fileID: 7979074181863742200}
   - component: {fileID: 7339956679724184380}
   m_Layer: 0
-  m_Name: sound
+  m_Name: charge sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16201,12 +16255,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5839938383999540205}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2299828312801376789}
-  m_RootOrder: 7
+  m_Father: {fileID: 1724268296}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7979074181863742200
 MonoBehaviour:

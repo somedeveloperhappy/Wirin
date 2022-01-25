@@ -31,7 +31,6 @@ namespace UpgradeSystem.UpgradeItems
         {
             var val = PlayerPrefs.GetString(keyName, "0");
             upgradeLevel = uint.Parse(val);
-            Debug.Log($"loaded val : {val} , lvl {upgradeLevel}");
         }
 
         public override void SaveState()

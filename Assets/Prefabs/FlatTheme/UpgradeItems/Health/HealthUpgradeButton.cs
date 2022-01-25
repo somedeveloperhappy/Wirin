@@ -78,7 +78,6 @@ namespace FlatTheme.UpgradeItems.Health
             bool fullyUpgraded = upgradeItem.IsFullyUpgraded();
 
             uint cost = upgradeItem.GetNextCost();
-            Debug.Log($"Cost of health is {cost}");
 
             costText.text = fullyUpgraded ? "" : cost.ToString();
 

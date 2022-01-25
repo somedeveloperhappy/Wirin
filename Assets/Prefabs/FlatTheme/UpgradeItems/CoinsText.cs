@@ -5,14 +5,14 @@ namespace FlatTheme.UpgradeItems
     public class CoinsText : MonoBehaviour, CanvasSystem.IOnCanvasEnabled, CanvasSystem.IOnCanvasDisabled
     {
         public Gameplay.Player.PlayerInfo playerInfo;
-        public UnityEngine.UI.Text text;
+        public TMPro.TMP_Text text;
         public UpgradeSystem.UpgradeManager upgradeManager;
 
         [ContextMenu("Auto Resolve")]
         public void AutoResolve()
         {
             playerInfo = FindObjectOfType<Gameplay.Player.PlayerInfo>();
-            text = GetComponent<UnityEngine.UI.Text>();
+            text = GetComponent<TMPro.TMP_Text>();
             upgradeManager = FindObjectOfType<UpgradeSystem.UpgradeManager>();
         }
 

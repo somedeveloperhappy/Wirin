@@ -3,36 +3,27 @@ using UnityEngine;
 
 namespace UpgradeSystem
 {
-    public abstract class UpgradeItemButton<T>
-        : MonoBehaviour, CanvasSystem.IOnCanvasEnabled, CanvasSystem.IOnCanvasDisabled
-        where T : UpgradeItem
-    {
-        public T upgradeItem;
-        public AudioClip popInSound;
+        public abstract class UpgradeItemButton : MonoBehaviour
+        {
+                static public List<UpgradeItemButton> instances = new List<UpgradeItemButton>();
 
-
-        static protected List<UpgradeItemButton<T>> liveInstances = new List<UpgradeSystem.UpgradeItemButton<T>>();
-        public virtual void OnCanvasDisable()
-        {
-            liveInstances.Remove(this);
+                public abstract void UpdateVisuals();
         }
-        public virtual void OnCanvasEnable()
+        public abstract class UpgradeItemButton<T> : UpgradeItemButton, CanvasSystem.IOnCanvasEnabled
+            where T : UpgradeItem
         {
-            UpdateVisuals();
-            liveInstances.Add(this);
+                public T upgradeItem;
+                public AudioClip popInSound;
+                private void Awake() => instances.Add(this);
+                private void OnDestroy() => instances.Remove(this);
+                public virtual void OnCanvasEnable() => UpdateVisuals();
+                protected virtual void OnEnable() => References.menu_sfx.Play(popInSound);
+                public void Upgrade()
+                {
+                        OnUpgrade();
+                        //update visuals for all live instances / buttons
+                        foreach (var instance in instances) instance.UpdateVisuals();
+                }
+                protected abstract void OnUpgrade();
         }
-        protected virtual void OnEnable()
-        {
-            //AudioSource.PlayClipAtPoint(popInSound, Vector3.zero);
-            References.staticSounds.Play(popInSound);
-        }
-        public abstract void UpdateVisuals();
-        public void Upgrade()
-        {
-            OnUpgrade();
-            // update visuals for all live instances/buttons
-            liveInstances.ForEach(instance => instance.UpdateVisuals());
-        }
-        protected abstract void OnUpgrade();
-    }
 }

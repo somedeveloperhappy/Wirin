@@ -50,8 +50,8 @@ namespace FlatTheme.Player
         void Apply(float normalizedT)
         {
             // charge sound
-            m_chargeSoundSettings.source.volume = m_chargeSoundSettings.volumeCurve.Evaluate(normalizedT);
-            m_chargeSoundSettings.source.pitch = m_chargeSoundSettings.pitch.Evaluate(normalizedT) * m_chargeSoundSettings.volumeMultiplier;
+            m_chargeSoundSettings.source.volume = m_chargeSoundSettings.volumeCurve.Evaluate(normalizedT) * m_chargeSoundSettings.volumeMultiplier;
+            m_chargeSoundSettings.source.pitch = m_chargeSoundSettings.pitch.Evaluate(normalizedT);
 
             // reverb settings
             audioMixer.SetFloat(m_reverbSettings.parameterName, m_reverbSettings.amount.Evaluate(normalizedT));

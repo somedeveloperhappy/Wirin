@@ -6,7 +6,6 @@ namespace Management
 {
     public class GameController : MonoBehaviour
     {
-
         // list of all of the canvases
         private CanvasBase[] canvases;
 
@@ -16,11 +15,25 @@ namespace Management
             winMenuCanvas,
             loseMenuCanvas,
             upgradeMenuCanvas,
-            pauseMenuCanvas;
+            pauseMenuCanvas,
+            highscoreMenuCanvas,
+            submitscoreMenuCanvas;
         [HideInInspector] public bool isPaused = false;
 
-        public AudioClip gameBackgroundMusic;
+        #region score
+        /// <summary>
+        /// the score for the current game
+        /// </summary>
+        private decimal current_score = 0;
+        static public bool shouldShowSubmitScore = false;
+        static public decimal lastGameScore = 0;
+        #endregion
 
+        #region  events
+        public System.Action onRetry;
+        public System.Action onStartGame;
+        #endregion
+        public decimal CurrentScore => current_score;
         private void Awake()
         {
             // make canvases ready
@@ -31,13 +44,20 @@ namespace Management
                 winMenuCanvas,
                 loseMenuCanvas,
                 upgradeMenuCanvas,
-                pauseMenuCanvas
+                pauseMenuCanvas,
+                highscoreMenuCanvas,
+                submitscoreMenuCanvas
             };
         }
 
         private void Start()
         {
             OpenMainMenu();
+            if (shouldShowSubmitScore)
+            {
+                Debug.Log("shouldShowSubmitScore is true");
+                submitscoreMenuCanvas.enabled = true;
+            }
         }
 
 
@@ -61,6 +81,9 @@ namespace Management
 
         public void OnWinLevel()
         {
+            // add to scores
+            current_score += levelManager.levelStats.pointsTaken;
+
             // enable/disable
             DisableAllCanvasesExceptFor(winMenuCanvas);
 
@@ -70,10 +93,9 @@ namespace Management
 
             // save
             References.playerInfo.moneyManager.Save();
-
         }
 
-        public void OnLoseLevel()
+        public void OpenLoseMenu()
         {
             // enable/disable canvas
             DisableAllCanvasesExceptFor(loseMenuCanvas);
@@ -84,11 +106,27 @@ namespace Management
             // stop gameplay for good
             DisableAllGameplayMechanics(timeScaleTo0: true, stopInputingAbruptly: true);
 
-            // stop gameplay music
-            References.backgroundMusic.Play(null);
-
             // save
             References.playerInfo.moneyManager.Save();
+        }
+        public void Retry()
+        {
+            // set player health full
+            References.playerInfo.SetHealth(References.playerInfo.GetMaxHealth());
+            onRetry?.Invoke();
+            EnableAllGameplayMechanics(timeScale_one: false);
+            DisableAllCanvasesExceptFor(exceptionCanvases: ingameCanvas);
+
+            gameplayMechanicsActive = true;
+            
+        }
+
+        public void SaveGameScoreAndReset()
+        {
+            // score starts from zero
+            lastGameScore = current_score + levelManager.levelStats.pointsTaken;
+            Debug.Log($"lost with {lastGameScore} scores");
+            current_score = 0;
         }
 
         public void StartGame() => StartGame(null, true);
@@ -104,8 +142,10 @@ namespace Management
             EnableAllGameplayMechanics(setTimeScaleTo1);
             levelManager.StartLevel();
 
-            // play the ingame background music
-            References.backgroundMusic.Play(gameBackgroundMusic);
+            // disable the show submit menu for the time being
+            shouldShowSubmitScore = false;
+
+            onStartGame?.Invoke();
         }
 
         public void DisableAllCanvasesExceptFor(params CanvasBase[] exceptionCanvases)
@@ -120,6 +160,7 @@ namespace Management
                     {
                         // enable this and go for next canvas
                         enabled = true;
+                        break;
                     }
 
                 // if reached here, it should be disabled

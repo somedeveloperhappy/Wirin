@@ -41,7 +41,6 @@ namespace UpgradeSystem.UpgradeItems
 
         public override bool IsFullyUpgraded()
         {
-            Debug.Log($"isfully upgraded ? {upgradeLevel} : {maxUpgradeLevel}");
             return upgradeLevel >= maxUpgradeLevel;
         }
 

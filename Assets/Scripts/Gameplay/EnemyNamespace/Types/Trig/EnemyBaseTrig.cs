@@ -23,7 +23,7 @@ namespace Gameplay.EnemyNamespace.Types.Trig
         protected override void OnInit()
         {
             // set up values
-            Health = Mathf.Ceil(points / 100f);
+            Health = Mathf.Ceil(points * 0.01f);
 
             targetPosition = FindObjectOfType<Player.PlayerInfo>(true).parts.pivot.transform.position;
 
@@ -56,7 +56,7 @@ namespace Gameplay.EnemyNamespace.Types.Trig
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            Debug.Log($"colliding with {other.gameObject.name}");
+            Debug.Log($"{name} colliding with {other.gameObject.name}");
             if (other.gameObject.TryGetComponent<Player.PlayerInfo>(out var playerInfo))
             {
                 var damageInfo = new Player.EnemyDamageInfo(
