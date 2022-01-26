@@ -10634,14 +10634,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInfo: {fileID: 2044437615}
   shoot:
-    shoot_mini: {fileID: 8300000, guid: b8fdd1758bd284740858b8cee0e285bc, type: 3}
-    shoot_big: {fileID: 8300000, guid: aa6871a500b974f4a8d67b195f4f4f4c, type: 3}
-    volume: 1
+    shoot_mini:
+      clip: {fileID: 8300000, guid: b8fdd1758bd284740858b8cee0e285bc, type: 3}
+      volume: 0.9
+    shoot_big:
+      clip: {fileID: 8300000, guid: aa6871a500b974f4a8d67b195f4f4f4c, type: 3}
+      volume: 0.4
   trinonChange:
-    addSound: {fileID: 8300000, guid: 7a953946945cf234ead3b305e7a77813, type: 3}
-    addSoundVolume: 0.15
-    removeSound: {fileID: 8300000, guid: be54047fdb18b1f45817cf143dd45491, type: 3}
-    removeSoundVolume: 0.5
+    addSound:
+      clip: {fileID: 8300000, guid: 7a953946945cf234ead3b305e7a77813, type: 3}
+      volume: 0.2
+    removeSound:
+      clip: {fileID: 8300000, guid: be54047fdb18b1f45817cf143dd45491, type: 3}
+      volume: 1
 --- !u!1 &1861243682
 GameObject:
   m_ObjectHideFlags: 0
@@ -16281,8 +16286,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: b2700276a9c91d24c902eda8f9a22ce8, type: 3}
     - {fileID: 8300000, guid: 18fce5d4a86c0c6489787735ea9ac4d6, type: 3}
     pitch:
-      min: 1
-      max: 3
+      min: 0.05
+      max: 1
     volumeCurve:
       serializedVersion: 2
       m_Curve:
@@ -16316,7 +16321,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    volumeMultiplier: 0.357
+    volumeMultiplier: 0.13
   m_reverbSettings:
     amount:
       min: -10000
@@ -16346,7 +16351,7 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 1
+  BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 1
   rolloffCustomCurve:

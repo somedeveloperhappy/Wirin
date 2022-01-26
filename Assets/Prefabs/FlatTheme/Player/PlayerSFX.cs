@@ -1,4 +1,5 @@
 using System;
+using SimpleScripts;
 using UnityEngine;
 
 namespace FlatTheme.Player
@@ -10,17 +11,13 @@ namespace FlatTheme.Player
                 [System.Serializable]
                 public struct Shoot
                 {
-                        public AudioClip shoot_mini, shoot_big;
-                        public float volume;
+                        public Sound shoot_mini, shoot_big;
                 }
                 public Shoot shoot;
 
                 [System.Serializable] public struct TrinonChange
                 {
-                        public AudioClip addSound;
-                        public float addSoundVolume;
-                        public AudioClip removeSound;
-                        public float removeSoundVolume;
+                        public Sound addSound, removeSound;
                 }
                 public TrinonChange trinonChange;
 
@@ -42,16 +39,16 @@ namespace FlatTheme.Player
                         playerInfo.onTrinonRemove -= onTrinonRemove;
                 }
 
-                private void onTrinonRemove() => References.ingame_sfx.Play(trinonChange.removeSound, trinonChange.removeSoundVolume);
-                private void onTrinonAdd() => References.ingame_sfx.Play(trinonChange.addSound, trinonChange.addSoundVolume);
+                private void onTrinonRemove() => References.ingame_sfx.Play(trinonChange.removeSound.clip, trinonChange.removeSound.volume);
+                private void onTrinonAdd() => References.ingame_sfx.Play(trinonChange.addSound.clip, trinonChange.addSound.volume);
 
 
                 private void OnShoot()
                 {
                         float charge = playerInfo.GetNormalCharge();
 
-                        References.ingame_sfx.Play(shoot.shoot_mini, shoot.volume * (1 - charge));
-                        References.ingame_sfx.Play(shoot.shoot_big, shoot.volume * charge);
+                        References.ingame_sfx.Play(shoot.shoot_mini.clip, shoot.shoot_mini.volume * (1 - charge));
+                        References.ingame_sfx.Play(shoot.shoot_big.clip, shoot.shoot_big.volume * charge);
                 }
         }
 }

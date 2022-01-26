@@ -78,7 +78,6 @@ namespace Gameplay.EnemyNamespace.Types.Laser
             }
             else
             {
-                Debug.Log("moving towards player");
                 MoveTowardsTarget();
                 if (Vector2.Distance(transform.position, target) <= settings.laserDistance)
                 {

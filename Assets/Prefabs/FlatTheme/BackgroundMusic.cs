@@ -21,7 +21,7 @@ namespace FlatTheme
                 private void playMusic()
                 {
                         int ind = Random.Range(0, musics.Length);
-                        References.backgroundMusic.Play(musics[ind], crossfadeSpeed: fade);
+                        References.backgroundMusic.Play(musics[ind], AudioSystem.BackgroundMusic.Source.ingame, crossfadeSpeed: fade);
                 }
         }
 }
